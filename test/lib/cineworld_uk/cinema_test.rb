@@ -24,6 +24,27 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '.find(id)' do
+    subject { CineworldUk::Cinema.find(id) }
+
+    before do
+      body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas.html') )
+      stub_request(:get, 'http://www.cineworld.co.uk/cinemas').to_return( status: 200, body: body, headers: {} )
+    end
+
+    describe 'Brighton' do
+      let(:id) { 3 }
+
+      it 'returns a cinema' do
+        subject.must_be_instance_of(CineworldUk::Cinema)
+
+        subject.id.must_equal 3
+        subject.brand.must_equal 'Cineworld'
+        subject.name.must_equal 'Brighton'
+      end
+    end
+  end
+
   describe '.new id, name, url' do
     it 'stores id, name, slug and url' do
       cinema = CineworldUk::Cinema.new '3', 'Brighton'

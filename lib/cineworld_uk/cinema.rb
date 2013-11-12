@@ -36,6 +36,19 @@ module CineworldUk
       end[1..-1]
     end
 
+    # Find a single cinema
+    # @param [Integer, String] id the cinema id of the format 3/'3' as used on the cineworld.co.uk website
+    # @return [CineworldUk::Cinema, nil]
+    # @example
+    #   CineworldUk::Cinema.find('3')
+    #   #=> <CineworldUk::Cinema brand="Cineworld" name="Brighton" slug="brighton" id=3 url="...">
+    def self.find(id)
+      id = id.to_i
+      return nil unless id > 0
+
+      all.select { |cinema| cinema.id == id }[0]
+    end
+
     private
 
     def self.parsed_cinemas
