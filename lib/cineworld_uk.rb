@@ -1,6 +1,9 @@
-require "cineworld_uk/version"
+require 'httparty'
+require 'nokogiri'
 
-require "cineworld_uk/cinema"
+require_relative './cineworld_uk/version'
+
+require_relative './cineworld_uk/cinema'
 
 module CineworldUk
 end

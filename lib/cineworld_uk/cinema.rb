@@ -24,5 +24,26 @@ module CineworldUk
       @slug  = @name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
       @url   = "http://www.cineworld.co.uk/cinemas/#{@id}/information"
     end
+
+    # Return basic cinema information for all cinemas
+    # @return [Array<CineworldUk::Cinema>]
+    # @example
+    #   CineworldUk::Cinema.all
+    #   #=> [<CineworldUk::Cinema brand="Cineworld" name="Brighton" slug="brighton" id=3 url="...">, <CineworldUk::Cinema brand="Cineworld" name="The O2, Greenwich" slug="the-o2-greenwich" url="...">, ...]
+    def self.all
+      parsed_cinemas.css('#cinemaId option[value]').map do |option|
+        new option['value'], option.text
+      end[1..-1]
+    end
+
+    private
+
+    def self.parsed_cinemas
+      Nokogiri::HTML(cinemas_response)
+    end
+
+    def self.cinemas_response
+      @cinemas_response = HTTParty.get('http://www.cineworld.co.uk/cinemas')
+    end
   end
 end
