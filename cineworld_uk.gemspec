@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = CineworldUk::VERSION
   spec.authors       = ["Andy Croll"]
   spec.email         = ["andy@goodscary.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Cineworld cinema data}
+  spec.summary       = %q{Parses cinema and showing data from the cineworld.co.uk website}
+  spec.homepage      = "https://github.com/andycroll/cineworld_uk"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
