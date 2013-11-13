@@ -49,6 +49,19 @@ module CineworldUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # Films with showings scheduled at this cinema
+    # @return [Array<OdeonUk::Film>]
+    # @example
+    #   cinema = OdeonUk::Cinema.find('71')
+    #   cinema.films
+    #   #=> [<OdeonUk::Film name="Iron Man 3">, <OdeonUk::Film name="Star Trek Into Darkness">]
+    def films
+      film_nodes.map do |node|
+        parser = CineworldUk::Internal::FilmWithScreeningsParser.new node.to_s
+        parser.film_name.length > 0 ? CineworldUk::Film.new(parser.film_name) : nil
+      end.compact.uniq
+    end
+
     private
 
     def self.parsed_cinemas
@@ -57,6 +70,18 @@ module CineworldUk
 
     def self.cinemas_response
       @cinemas_response = HTTParty.get('http://www.cineworld.co.uk/cinemas')
+    end
+
+    def film_nodes
+      parsed_whatson.css('.section.light #filter-reload > .span9').to_s.split('<hr>')
+    end
+
+    def parsed_whatson
+      Nokogiri::HTML(whatson_response)
+    end
+
+    def whatson_response
+      @whatson_response = HTTParty.get("http://www.cineworld.co.uk/whatson?cinema=#{@id}")
     end
   end
 end

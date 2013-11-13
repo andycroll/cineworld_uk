@@ -62,4 +62,41 @@ describe CineworldUk::Cinema do
       cinema.slug.must_equal 'the-o2-greenwich'
     end
   end
+
+  describe '#films' do
+    let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+    subject { cinema.films }
+
+    before do
+      body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'whatson', 'brighton.html') )
+      stub_request(:get, 'http://www.cineworld.co.uk/whatson?cinema=3').to_return( status: 200, body: body, headers: {} )
+    end
+
+    it 'returns an array of films' do
+      subject.must_be_instance_of(Array)
+      subject.each do |item|
+        item.must_be_instance_of(CineworldUk::Film)
+      end
+    end
+
+    it 'returns correct number of films' do
+      subject.count.must_equal 24
+    end
+
+    it 'returns uniquely named films' do
+      subject.each_with_index do |item, index|
+        subject.each_with_index do |jtem, i|
+          if index != i
+            item.name.wont_equal jtem.name
+            item.wont_equal jtem
+          end
+        end
+      end
+    end
+
+    it 'returns film objects with correct names' do
+      subject.first.name.must_equal 'Gravity'
+      subject.last.name.must_equal 'Don Jon'
+    end
+  end
 end
