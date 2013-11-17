@@ -110,6 +110,78 @@ describe CineworldUk::Internal::FilmWithScreeningsParser do
     end
   end
 
+  describe '#showings' do
+    subject { CineworldUk::Internal::FilmWithScreeningsParser.new(film_html).showings }
+
+    describe 'passed valid film html in headline position' do
+      let(:film_html) { read_film_html('brighton/gravity') }
+
+      it 'returns a hash keyed by type of performance' do
+        subject.must_be_instance_of Hash
+        subject.keys.each { |key| key.must_be_instance_of String }
+      end
+
+      it 'returns an array of Times for each type of performance' do
+        subject.each do |key, value|
+          value.must_be_instance_of Array
+          value.each do |item|
+            item.must_be_instance_of Time
+          end
+        end
+      end
+
+      it 'returns the correct number of Times' do
+        subject.keys.must_equal ['2D', '3D']
+        subject['2D'].count.must_equal 49
+        subject['3D'].count.must_equal 89
+      end
+
+      it 'returns Times in UTC' do
+        subject['2D'].first.must_equal Time.utc(2013, 11, 13, 12, 0, 0)
+        subject['2D'].last.must_equal Time.utc(2013, 11, 21, 20, 30, 0)
+
+        subject['3D'].first.must_equal Time.utc(2013, 11, 13, 12, 50, 0)
+        subject['3D'].last.must_equal Time.utc(2013, 11, 21, 17, 45, 0)
+      end
+    end
+
+    describe 'passed valid film html in headline position with crazy screens' do
+      let(:film_html) { read_film_html('the-o2-greenwich/gravity') }
+
+      it 'returns the correct number of Times' do
+        subject.keys.sort.must_equal ['2D', '3D', '3D D-BOX']
+        subject['2D'].count.must_equal 5
+        subject['3D'].count.must_equal 24
+        subject['3D D-BOX'].count.must_equal 19
+      end
+
+      it 'returns Times in UTC' do
+        subject['2D'].first.must_equal Time.utc(2013, 11, 18, 15, 30, 0)
+        subject['2D'].last.must_equal Time.utc(2013, 11, 21, 18, 35, 0)
+
+        subject['3D'].first.must_equal Time.utc(2013, 11, 16, 22, 15, 0)
+        subject['3D'].last.must_equal Time.utc(2013, 11, 21, 21, 0, 0)
+
+        subject['3D D-BOX'].first.must_equal Time.utc(2013, 11, 17, 11, 30, 0)
+        subject['3D D-BOX'].last.must_equal Time.utc(2013, 11, 20, 19, 0, 0)
+      end
+    end
+
+    describe 'passed valid film html in headline position with 2d imax' do
+      let(:film_html) { read_film_html('glasgow-imax-at-gsc/the-hunger-games-catching-fire') }
+
+      it 'returns the correct number of Times' do
+        subject.keys.sort.must_equal ['2D IMAX']
+        subject['2D IMAX'].count.must_equal 27
+      end
+
+      it 'returns Times in UTC' do
+        subject['2D IMAX'].first.must_equal Time.utc(2013, 11, 20, 00, 30, 0)
+        subject['2D IMAX'].last.must_equal Time.utc(2013, 11, 28, 20, 40, 0)
+      end
+    end
+  end
+
   private
 
   def read_film_html(filename)
