@@ -99,4 +99,35 @@ describe CineworldUk::Cinema do
       subject.last.name.must_equal 'Don Jon'
     end
   end
+
+  describe '#screenings' do
+    let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+    subject { cinema.screenings }
+
+    before do
+      body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'whatson', 'brighton.html') )
+      stub_request(:get, 'http://www.cineworld.co.uk/whatson?cinema=3').to_return( status: 200, body: body, headers: {} )
+    end
+
+    it 'returns an array of screenings' do
+      subject.must_be_instance_of(Array)
+      subject.each do |item|
+        item.must_be_instance_of(CineworldUk::Screening)
+      end
+    end
+
+    it 'returns screening objects with correct film names' do
+      subject.first.film_name.must_equal 'Gravity'
+      subject.last.film_name.must_equal 'Don Jon'
+    end
+
+    it 'returns screening objects with correct cinema name' do
+      subject.each { |screening| screening.cinema_name.must_equal 'Brighton' }
+    end
+
+    it 'returns screening objects with correct UTC times' do
+      subject.first.when.must_equal Time.utc(2013, 11, 13, 12, 0, 0)
+      subject.last.when.must_equal Time.utc(2013, 11, 21, 21, 30, 0)
+    end
+  end
 end

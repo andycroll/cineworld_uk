@@ -62,26 +62,43 @@ module CineworldUk
       end.compact.uniq
     end
 
+    # All planned screenings
+    # @return [Array<CineworldUk::Screening>]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.screenings
+    #   # => [<CineworldUk::Screening film_name="Iron Man 3" cinema_name="Brighton" when="..." varient="...">, <CineworldUk::Screening ...>]
+    def screenings
+      film_nodes.map do |node|
+        parser = CineworldUk::Internal::FilmWithScreeningsParser.new node.to_s
+        parser.showings.map do |screening_type, times|
+          times.map do |time|
+            CineworldUk::Screening.new parser.film_name, self.name, time, screening_type
+          end
+        end
+      end.flatten
+    end
+
     private
 
     def self.parsed_cinemas
-      Nokogiri::HTML(cinemas_response)
+      @parsed_cinemas ||= Nokogiri::HTML(cinemas_response)
     end
 
     def self.cinemas_response
-      @cinemas_response = HTTParty.get('http://www.cineworld.co.uk/cinemas')
+      @cinemas_response ||= HTTParty.get('http://www.cineworld.co.uk/cinemas')
     end
 
     def film_nodes
-      parsed_whatson.css('.section.light #filter-reload > .span9').to_s.split('<hr>')
+      @film_nodes ||= parsed_whatson.css('.section.light #filter-reload > .span9').to_s.split('<hr>')
     end
 
     def parsed_whatson
-      Nokogiri::HTML(whatson_response)
+      @parsed_whatson ||= Nokogiri::HTML(whatson_response)
     end
 
     def whatson_response
-      @whatson_response = HTTParty.get("http://www.cineworld.co.uk/whatson?cinema=#{@id}")
+      @whatson_response ||= HTTParty.get("http://www.cineworld.co.uk/whatson?cinema=#{@id}")
     end
   end
 end
