@@ -9,6 +9,7 @@ require_relative './cineworld_uk/internal/film_with_screenings_parser'
 
 require_relative './cineworld_uk/cinema'
 require_relative './cineworld_uk/film'
+require_relative './cineworld_uk/screening'
 
 module CineworldUk
 end
