@@ -100,6 +100,53 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#locality' do
+    subject { cinema.locality }
+
+    describe '(london o2)' do
+      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'London'
+      end
+    end
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'Brighton'
+      end
+    end
+  end
+
+  describe '#postal_code' do
+    subject { cinema.postal_code }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the post code' do
+        subject.must_equal 'BN2 5UF'
+      end
+    end
+  end
+
   describe '#screenings' do
     let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
     subject { cinema.screenings }
@@ -128,6 +175,23 @@ describe CineworldUk::Cinema do
     it 'returns screening objects with correct UTC times' do
       subject.first.when.must_equal Time.utc(2013, 11, 13, 12, 0, 0)
       subject.last.when.must_equal Time.utc(2013, 11, 21, 21, 30, 0)
+    end
+  end
+
+  describe '#street_address' do
+    subject { cinema.street_address }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the street address' do
+        subject.must_equal 'Brighton Marina'
+      end
     end
   end
 end

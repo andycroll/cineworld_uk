@@ -62,6 +62,28 @@ module CineworldUk
       end.compact.uniq
     end
 
+    # The locality (town) of the cinema
+    # @return [String]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.locality
+    #   #=> 'Brighton'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def locality
+      london_address? ? final_address_line_non_postal_code : address_parts[-2]
+    end
+
+    # Post code of the cinema
+    # @return [String]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.postal_code
+    #   #=> 'BN2 5UF'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def postal_code
+      final_address_line_array[-2..-1]*' '
+    end
+
     # All planned screenings
     # @return [Array<CineworldUk::Screening>]
     # @example
@@ -79,6 +101,17 @@ module CineworldUk
       end.flatten
     end
 
+    # The street adress of the cinema
+    # @return a String
+    # @example
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.street_address
+    #   #=> 'Brighton Marina'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def street_address
+      address_parts[0]
+    end
+
     private
 
     def self.parsed_cinemas
@@ -89,8 +122,32 @@ module CineworldUk
       @cinemas_response ||= HTTParty.get('http://www.cineworld.co.uk/cinemas')
     end
 
+    def address_parts
+      @address_parts ||= parsed_information.css('address.marker').to_s.split('<br>')[-2].split(',').map(&:strip)
+    end
+
     def film_nodes
       @film_nodes ||= parsed_whatson.css('.section.light #filter-reload > .span9').to_s.split('<hr>')
+    end
+
+    def final_address_line_array
+      address_parts[-1].split(' ')
+    end
+
+    def final_address_line_non_postal_code
+      final_address_line_array[0..-3]*' '
+    end
+
+    def information_response
+      @information_response ||= HTTParty.get("http://www.cineworld.co.uk/cinemas/#{@id}/information")
+    end
+
+    def london_address?
+      final_address_line_non_postal_code == 'London'
+    end
+
+    def parsed_information
+      @parsed_information ||= Nokogiri::HTML(information_response)
     end
 
     def parsed_whatson
