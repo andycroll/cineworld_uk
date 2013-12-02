@@ -63,6 +63,75 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#extended_address' do
+    subject { cinema.extended_address }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns nil' do
+        subject.must_be_nil
+      end
+    end
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bristol.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/4/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the second line' do
+        subject.must_equal 'Hengrove Way'
+      end
+    end
+
+    describe '(bury st edmunds)' do
+      let(:cinema) { CineworldUk::Cinema.new('6', 'Bury St. Edmunds') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bury-st-edmunds.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/6/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_be_nil
+      end
+    end
+
+    describe '(london chelsea)' do
+      let(:cinema) { CineworldUk::Cinema.new('10', 'London - Chelsea') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'chelsea.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/10/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the second line' do
+        subject.must_equal 'Chelsea'
+      end
+    end
+
+    describe '(london o2)' do
+      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the second line' do
+        subject.must_equal 'Peninsula Square'
+      end
+    end
+  end
+
   describe '#films' do
     let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
     subject { cinema.films }
@@ -103,19 +172,6 @@ describe CineworldUk::Cinema do
   describe '#locality' do
     subject { cinema.locality }
 
-    describe '(london o2)' do
-      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
-
-      before do
-        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
-        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
-      end
-
-      it 'returns the town/city' do
-        subject.must_equal 'London'
-      end
-    end
-
     describe '(brighton)' do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
@@ -126,6 +182,58 @@ describe CineworldUk::Cinema do
 
       it 'returns the town/city' do
         subject.must_equal 'Brighton'
+      end
+    end
+
+    describe '(bristol)' do
+      let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bristol.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/4/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'Bristol'
+      end
+    end
+
+    describe '(bury st edmunds)' do
+      let(:cinema) { CineworldUk::Cinema.new('6', 'Bury St. Edmunds') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bury-st-edmunds.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/6/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'Bury St. Edmunds'
+      end
+    end
+
+    describe '(london chelsea)' do
+      let(:cinema) { CineworldUk::Cinema.new('10', 'London - Chelsea') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'chelsea.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/10/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'London'
+      end
+    end
+
+    describe '(london o2)' do
+      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'London'
       end
     end
   end
@@ -143,6 +251,49 @@ describe CineworldUk::Cinema do
 
       it 'returns the post code' do
         subject.must_equal 'BN2 5UF'
+      end
+    end
+  end
+
+  describe '#region' do
+    subject { cinema.region }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_equal 'East Sussex'
+      end
+    end
+
+    describe '(bristol)' do
+      let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bristol.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/4/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns nil' do
+        subject.must_be_nil
+      end
+    end
+
+    describe '(bury st edmunds)' do
+      let(:cinema) { CineworldUk::Cinema.new('6', 'Bury St. Edmunds') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bury-st-edmunds.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/6/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the town/city' do
+        subject.must_be_nil
       end
     end
   end

@@ -49,6 +49,21 @@ module CineworldUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # The second address line of the cinema
+    # @return [String, nil]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(10)
+    #   cinema.extended_address
+    #   #=> 'Chelsea'
+    #
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.extended_address
+    #   #=> nil
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def extended_address
+       remaining_address * ', ' unless remaining_address.empty?
+    end
+
     # Films with showings scheduled at this cinema
     # @return [Array<OdeonUk::Film>]
     # @example
@@ -70,7 +85,7 @@ module CineworldUk
     #   #=> 'Brighton'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def locality
-      london_address? ? final_address_line_non_postal_code : address_parts[-2]
+      adr_has_region? && !adr_in_london? ? final_address_array[-2] : final_address_array[-1]
     end
 
     # Post code of the cinema
@@ -81,7 +96,18 @@ module CineworldUk
     #   #=> 'BN2 5UF'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def postal_code
-      final_address_line_array[-2..-1]*' '
+      final_line_array[-2..-1]*' '
+    end
+
+    # The region (county) of the cinema if provided
+    # @return [String, nil]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(3)
+    #   cinema.region
+    #   #=> 'East Sussex'
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def region
+      final_line_non_postal_code if adr_has_region?
     end
 
     # All planned screenings
@@ -126,24 +152,32 @@ module CineworldUk
       @address_parts ||= parsed_information.css('address.marker').to_s.split('<br>')[-2].split(',').map(&:strip)
     end
 
+    def adr_in_london?
+      final_line_non_postal_code == 'London'
+    end
+
+    def adr_has_region?
+      final_line_non_postal_code != name
+    end
+
     def film_nodes
       @film_nodes ||= parsed_whatson.css('.section.light #filter-reload > .span9').to_s.split('<hr>')
     end
 
-    def final_address_line_array
+    def final_address_array
+      address_parts[0..-2] << final_line_non_postal_code
+    end
+
+    def final_line_array
       address_parts[-1].split(' ')
     end
 
-    def final_address_line_non_postal_code
-      final_address_line_array[0..-3]*' '
+    def final_line_non_postal_code
+      final_line_array[0..-3]*' '
     end
 
     def information_response
       @information_response ||= HTTParty.get("http://www.cineworld.co.uk/cinemas/#{@id}/information")
-    end
-
-    def london_address?
-      final_address_line_non_postal_code == 'London'
     end
 
     def parsed_information
@@ -152,6 +186,10 @@ module CineworldUk
 
     def parsed_whatson
       @parsed_whatson ||= Nokogiri::HTML(whatson_response)
+    end
+
+    def remaining_address
+      final_address_array.delete_if { |e| e == street_address || e == locality || e == region }
     end
 
     def whatson_response
