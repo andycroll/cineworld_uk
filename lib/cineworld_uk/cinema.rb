@@ -49,6 +49,25 @@ module CineworldUk
       all.select { |cinema| cinema.id == id }[0]
     end
 
+    # Address of the cinema
+    # @return [Hash] of different address parts
+    # @example
+    #   cinema = CineworldUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema.adr
+    #   #=> { street_address: '44-47 Gardner Street', extended_address: 'North Laine', locality: 'Brighton', postal_code: 'BN1 1UN', country_name: 'United Kingdom' }
+    # @note Uses the standard method naming as at http://microformats.org/wiki/adr
+    def adr
+      {
+        street_address: street_address,
+        extended_address: extended_address,
+        locality: locality,
+        region: region,
+        postal_code: postal_code,
+        country: 'United Kingdom'
+      }
+    end
+    alias_method :address, :adr
+
     # The second address line of the cinema
     # @return [String, nil]
     # @example
@@ -107,7 +126,7 @@ module CineworldUk
     #   #=> 'East Sussex'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def region
-      final_line_non_postal_code if adr_has_region?
+      final_line_non_postal_code if adr_has_region? && !adr_in_london?
     end
 
     # All planned screenings

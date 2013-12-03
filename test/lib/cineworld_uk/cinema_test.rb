@@ -63,6 +63,110 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#adr' do
+    subject { cinema.adr }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the address hash' do
+        subject.must_equal({
+          street_address: 'Brighton Marina',
+          extended_address: nil,
+          locality: 'Brighton',
+          region: 'East Sussex',
+          postal_code: 'BN2 5UF',
+          country: 'United Kingdom'
+        })
+      end
+    end
+
+    describe '(bristol)' do
+      let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bristol.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/4/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the address hash' do
+        subject.must_equal({
+          street_address: 'Hengrove Leisure Park',
+          extended_address: 'Hengrove Way',
+          locality: 'Bristol',
+          region: nil,
+          postal_code: 'BS14 0HR',
+          country: 'United Kingdom'
+        })
+      end
+    end
+
+    describe '(bury st edmunds)' do
+      let(:cinema) { CineworldUk::Cinema.new('6', 'Bury St. Edmunds') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'bury-st-edmunds.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/6/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the address hash' do
+        subject.must_equal({
+          street_address: 'Parkway',
+          extended_address: nil,
+          locality: 'Bury St. Edmunds',
+          region: nil,
+          postal_code: 'IP33 3BA',
+          country: 'United Kingdom'
+        })
+      end
+    end
+
+    describe '(london chelsea)' do
+      let(:cinema) { CineworldUk::Cinema.new('10', 'London - Chelsea') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'chelsea.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/10/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the address hash' do
+        subject.must_equal({
+          street_address: '279 Kings Road',
+          extended_address: 'Chelsea',
+          locality: 'London',
+          region: nil,
+          postal_code: 'SW3 5EW',
+          country: 'United Kingdom'
+        })
+      end
+    end
+
+    describe '(london o2)' do
+      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the address hash' do
+        subject.must_equal({
+          street_address: 'The O2',
+          extended_address: 'Peninsula Square',
+          locality: 'London',
+          region: nil,
+          postal_code: 'SE10 0DX',
+          country: 'United Kingdom'
+        })
+      end
+    end
+  end
+
   describe '#extended_address' do
     subject { cinema.extended_address }
 
@@ -79,7 +183,7 @@ describe CineworldUk::Cinema do
       end
     end
 
-    describe '(brighton)' do
+    describe '(bristol)' do
       let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
 
       before do
@@ -266,7 +370,7 @@ describe CineworldUk::Cinema do
         stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
       end
 
-      it 'returns the town/city' do
+      it 'returns the county' do
         subject.must_equal 'East Sussex'
       end
     end
@@ -292,10 +396,24 @@ describe CineworldUk::Cinema do
         stub_request(:get, 'http://www.cineworld.co.uk/cinemas/6/information').to_return( status: 200, body: body, headers: {} )
       end
 
-      it 'returns the town/city' do
+      it 'returns nil' do
         subject.must_be_nil
       end
     end
+
+    describe '(london o2)' do
+      let(:cinema) { CineworldUk::Cinema.new('79', 'The O2, Grenwich') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'the-o2-grenwich.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/79/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns nil' do
+        subject.must_be_nil
+      end
+    end
+
   end
 
   describe '#screenings' do
