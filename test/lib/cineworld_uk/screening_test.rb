@@ -7,20 +7,22 @@ describe CineworldUk::Screening do
       screening.film_name.must_equal 'Iron Man 3'
       screening.cinema_name.must_equal "Duke's At Komedia"
       screening.when.must_equal Time.utc(2013, 9, 12, 10, 0)
+      screening.booking_url.must_equal nil
       screening.varient.must_equal nil
     end
 
     it 'stores varient if passed' do
-      screening = CineworldUk::Screening.new 'Iron Man 3', "Duke's At Komedia", Time.utc(2013, 9, 12, 11, 0), '2d'
+      screening = CineworldUk::Screening.new 'Iron Man 3', "Duke's At Komedia", Time.utc(2013, 9, 12, 11, 0), 'http://link.com', '2d'
       screening.film_name.must_equal 'Iron Man 3'
       screening.cinema_name.must_equal "Duke's At Komedia"
       screening.when.must_equal Time.utc(2013, 9, 12, 11, 0)
+      screening.booking_url.must_equal 'http://link.com'
       screening.varient.must_equal '2d'
     end
   end
 
   describe '#date' do
-    subject { CineworldUk::Screening.new('Iron Man 3', "Duke's At Komedia", Time.utc(2013, 9, 12, 11, 0), '3d').date }
+    subject { CineworldUk::Screening.new('Iron Man 3', "Duke's At Komedia", Time.utc(2013, 9, 12, 11, 0)).date }
     it 'should return date of showing' do
       subject.must_be_instance_of(Date)
       subject.must_equal Date.new(2013, 9, 12)

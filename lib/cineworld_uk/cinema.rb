@@ -139,8 +139,8 @@ module CineworldUk
       film_nodes.map do |node|
         parser = CineworldUk::Internal::FilmWithScreeningsParser.new node.to_s
         parser.showings.map do |screening_type, times|
-          times.map do |time|
-            CineworldUk::Screening.new parser.film_name, self.name, time, screening_type
+          times.map do |array|
+            CineworldUk::Screening.new parser.film_name, self.name, array[0], array[1], screening_type
           end
         end
       end.flatten

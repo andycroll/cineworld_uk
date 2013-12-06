@@ -65,7 +65,7 @@ module CineworldUk
           if has_bookable_link_node?(li)
             time_array = performance_date_array(li) + performance_time_array(li)
             time = tz.local_to_utc(Time.utc(*time_array))
-            result.merge(key => (result[key] || []) << time)
+            result.merge(key => (result[key] || []) << [time, booking_url(li)])
           else
             result
           end
@@ -73,6 +73,10 @@ module CineworldUk
       end
 
       private
+
+      def booking_url(node)
+        'http://www.cineworld.co.uk' + performance_link(node)['href']
+      end
 
       def dbox?(node)
         node.css('.tooltip-box .icon-service-dbox').count > 0

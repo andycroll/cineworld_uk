@@ -3,6 +3,8 @@ module CineworldUk
   # The object representing a single screening on the Cineworld UK website
   class Screening
 
+    # @return [String] the booking URL on the cinema website
+    attr_reader :booking_url
     # @return [String] the cinema name
     attr_reader :cinema_name
     # @return [String] the film name
@@ -15,9 +17,10 @@ module CineworldUk
     # @param [String] film_name the film name
     # @param [String] cinema_name the cinema name
     # @param [Time] time datetime of the screening (UTC preferred)
+    # @param [String] booking_url direct link to the booking page for this screening
     # @param [String] varient the type of showing (e.g. 3d/baby/live)
-    def initialize(film_name, cinema_name, time, varient=nil)
-      @cinema_name, @film_name, @varient = cinema_name, film_name, varient
+    def initialize(film_name, cinema_name, time, booking_url=nil, varient=nil)
+      @booking_url, @cinema_name, @film_name, @varient = booking_url, cinema_name, film_name, varient
       @when = time.utc? ? time : TZInfo::Timezone.get('Europe/London').local_to_utc(time)
     end
 
