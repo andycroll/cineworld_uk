@@ -1,3 +1,6 @@
+## 1.0.0, _6th Dec 2013_
+
+First ready-for-public release
 
 - Added changelog
 - added booking url to screenings
