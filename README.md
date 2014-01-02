@@ -41,13 +41,13 @@ cinema.films
 #=> [<CineworldUK::Film name="Iron Man 3">, <CineworldUK::Film name="Star Trek: Into Darkness">]
 
 cinema.screenings
-#=> [<CineworldUK::Screening film="About Time" when="2013-09-09 11:00 UTC" varient="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" varient="kids">, <CineworldUK::Screening ..>, <CineworldUK::Screening ...>]
+#=> [<CineworldUK::Screening film="About Time" when="2013-09-09 11:00 UTC" variant="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" variant="kids">, <CineworldUK::Screening ..>, <CineworldUK::Screening ...>]
 
 cinema.screenings_of 'Iron Man 3'
-#=> [<CineworldUK::Screening film="Iron Man 3" when="2013-09-09 11:00 UTC" varient="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" varient="kids">]
+#=> [<CineworldUK::Screening film="Iron Man 3" when="2013-09-09 11:00 UTC" variant="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" variant="kids">]
 
 cinema.screenings_of <CineworldUK::Film name="Iron Man 3">
-#=> [<CineworldUK::Screening film="Iron Man 3" when="2013-09-09 11:00 UTC" varient="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" varient="kids">]
+#=> [<CineworldUK::Screening film="Iron Man 3" when="2013-09-09 11:00 UTC" variant="3d">, <CineworldUK::Screening film="Iron Man 3" when="2013-09-09 13:50 UTC" variant="kids">]
 ```
 
 ## Contributing

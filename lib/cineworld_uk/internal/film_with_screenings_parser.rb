@@ -60,7 +60,7 @@ module CineworldUk
       def showings
         tz = TZInfo::Timezone.get('Europe/London')
         @nokogiri_html.css('.schedule .performances > li').inject({}) do |result, li|
-          key = performance_varient(li)
+          key = performance_variant(li)
 
           if has_bookable_link_node?(li)
             time_array = performance_date_array(li) + performance_time_array(li)
@@ -120,7 +120,7 @@ module CineworldUk
         end
       end
 
-      def performance_varient(node)
+      def performance_variant(node)
         dimension(node) + "#{ ' D-BOX' if dbox?(node) }#{ ' IMAX' if imax?(node) }"
       end
     end

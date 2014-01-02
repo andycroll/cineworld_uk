@@ -134,7 +134,7 @@ module CineworldUk
     # @example
     #   cinema = CineworldUk::Cinema.find(3)
     #   cinema.screenings
-    #   # => [<CineworldUk::Screening film_name="Iron Man 3" cinema_name="Brighton" when="..." varient="...">, <CineworldUk::Screening ...>]
+    #   # => [<CineworldUk::Screening film_name="Iron Man 3" cinema_name="Brighton" when="..." variant="...">, <CineworldUk::Screening ...>]
     def screenings
       film_nodes.map do |node|
         parser = CineworldUk::Internal::FilmWithScreeningsParser.new node.to_s
