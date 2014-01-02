@@ -15,7 +15,7 @@ module CineworldUk
       # The film name
       # @return [String]
       def film_name
-        name = @nokogiri_html.css('.span5 h1 a,.span7 h1 a, .span7 h1').children[0].to_s
+        name = original_name
 
         # screening types
         name = name.gsub 'Take 2 Thursday - ', '' # take 2 thursday
@@ -94,6 +94,14 @@ module CineworldUk
         node.css('.tooltip-box .icon-service-imax').count > 0
       end
 
+      def hfr?(node)
+        node.css('.tooltip-box .icon-service-hfr').count > 0
+      end
+
+      def original_name
+        @original_name ||= @nokogiri_html.css('.span5 h1 a,.span7 h1 a, .span7 h1').children[0].to_s
+      end
+
       def performance_date_array(node)
         if has_bookable_link_node?(node)
           match = performance_link_text(node).match(/date\=(\d{4})(\d{2})(\d{2})/)
@@ -121,7 +129,7 @@ module CineworldUk
       end
 
       def performance_variant(node)
-        dimension(node) + "#{ ' D-BOX' if dbox?(node) }#{ ' IMAX' if imax?(node) }"
+        dimension(node) + "#{ ' D-BOX' if dbox?(node) }#{ ' IMAX' if imax?(node) }#{ ' HFR' if hfr?(node) }"
       end
     end
   end

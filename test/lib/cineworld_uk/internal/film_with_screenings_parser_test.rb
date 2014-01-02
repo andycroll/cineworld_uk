@@ -190,6 +190,29 @@ describe CineworldUk::Internal::FilmWithScreeningsParser do
         subject['2D IMAX'].last[0].must_equal Time.utc(2013, 11, 28, 20, 40, 0)
       end
     end
+
+    describe 'passed valid film html with H(obbity)FR' do
+      let(:film_html) { read_film_html('the-o2-greenwich/the-hobbit-desolation-of-smaug') }
+
+      it 'returns the correct number of Times' do
+        subject.keys.sort.must_equal ['2D', '3D D-BOX', '3D HFR']
+        subject['2D'].count.must_equal 26
+        subject['3D HFR'].count.must_equal 1
+        subject['3D D-BOX'].count.must_equal 23
+      end
+
+      it 'returns Times in UTC' do
+        subject['2D'].first[0].must_equal Time.utc(2014, 1, 2, 16, 20, 0)
+        subject['2D'].last[0].must_equal Time.utc(2014, 1, 9, 19, 20, 0)
+
+        subject['3D HFR'].first[0].must_equal Time.utc(2014, 1, 2, 19, 20, 0)
+        subject['3D HFR'].last[0].must_equal Time.utc(2014, 1, 2, 19, 20, 0)
+
+        subject['3D D-BOX'].first[0].must_equal Time.utc(2014, 1, 2, 17, 0, 0)
+        subject['3D D-BOX'].last[0].must_equal Time.utc(2014, 1, 9, 20, 20, 0)
+      end
+    end
+
   end
 
   private
