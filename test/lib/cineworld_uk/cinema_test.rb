@@ -61,6 +61,13 @@ describe CineworldUk::Cinema do
       cinema.name.must_equal 'The O2, Greenwich'
       cinema.slug.must_equal 'the-o2-greenwich'
     end
+
+    it 'removes " - " and replaces it with a colon ": "' do
+      cinema = CineworldUk::Cinema.new 88, 'Glasgow - IMAX at GSC'
+      cinema.id.must_equal 88
+      cinema.name.must_equal 'Glasgow: IMAX at GSC'
+      cinema.slug.must_equal 'glasgow-imax-at-gsc'
+    end
   end
 
   describe '#adr' do

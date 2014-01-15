@@ -20,7 +20,7 @@ module CineworldUk
     def initialize(id, name)
       @brand = 'Cineworld'
       @id    = id.to_i
-      @name  = name.gsub('London - ','')
+      @name  = name.gsub('London - ','').gsub(' - ', ': ')
       @slug  = @name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
       @url   = "http://www.cineworld.co.uk/cinemas/#{@id}/information"
     end
