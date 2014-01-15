@@ -280,6 +280,36 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#full_name' do
+    subject { cinema.full_name }
+
+    describe 'simple name (brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'brighton.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/3/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the brand in the name' do
+        subject.must_equal 'Cineworld Brighton'
+      end
+    end
+
+    describe 'complex name (glasgow imax)' do
+      let(:cinema) { CineworldUk::Cinema.new('88', 'Glasgow - IMAX at GSC') }
+
+      before do
+        body = File.read( File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'cinemas', 'glasgow-imax-at-gsc.html') )
+        stub_request(:get, 'http://www.cineworld.co.uk/cinemas/88/information').to_return( status: 200, body: body, headers: {} )
+      end
+
+      it 'returns the brand in the name' do
+        subject.must_equal 'Cineworld Glasgow: IMAX at GSC'
+      end
+    end
+  end
+
   describe '#locality' do
     subject { cinema.locality }
 

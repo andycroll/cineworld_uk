@@ -96,6 +96,16 @@ module CineworldUk
       end.compact.uniq
     end
 
+    # The name of the cinema including the brand
+    # @return [String]
+    # @example
+    #   cinema = CineworldUk::Cinema.find(88)
+    #   cinema.full_name
+    #   #=> 'Cineworld Glasgow: IMAX at GSC'
+    def full_name
+      "#{brand} #{name}"
+    end
+
     # The locality (town) of the cinema
     # @return [String]
     # @example
