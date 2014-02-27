@@ -1,5 +1,3 @@
-require 'titleize'
-
 module CineworldUk
 
   # Internal utility classes: Do not use
