@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module CineworldUk
 
   # Internal utility classes: Do not use
