@@ -5,6 +5,7 @@ A simple gem to parse the [Cineworld UK website](http://cineworld.co.uk) and spi
 [![Gem Version](https://badge.fury.io/rb/cineword_uk.png)](http://badge.fury.io/rb/cineworld_uk)
 [![Code Climate](https://codeclimate.com/github/andycroll/cineworld_uk.png)](https://codeclimate.com/github/andycroll/cineworld_uk)
 [![Build Status](https://travis-ci.org/andycroll/cineworld_uk.png?branch=master)](https://travis-ci.org/andycroll/cineworld_uk)
+[![Inline docs](http://inch-pages.github.io/github/andycroll/cineworld_uk.png)](http://inch-pages.github.io/github/andycroll/cineworld_uk)
 
 ## Installation
 
