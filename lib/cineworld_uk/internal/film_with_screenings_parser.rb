@@ -1,9 +1,7 @@
 module CineworldUk
-
   # Internal utility classes: Do not use
   # @api private
   module Internal
-
     # Parses a chunk of HTML to derive movie showing data
     class FilmWithScreeningsParser
 

@@ -1,5 +1,4 @@
 module CineworldUk
-
   # The object representing a film on the Cineworld UK website
   class Film
     include Comparable
@@ -13,14 +12,14 @@ module CineworldUk
     # @return [CineworldUk::Film]
     def initialize(name)
       @name = name
-      @slug = name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
+      @slug = name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
     end
 
     # Allows sort on objects
     # @param [CineworldUk::Film] other another film object
     # @return [Integer] -1, 0 or 1
-    def <=> other
-      self.slug <=> other.slug
+    def <=>(other)
+      slug <=> other.slug
     end
 
     # Check an object is the same as another object.
@@ -28,7 +27,7 @@ module CineworldUk
     # @return [Boolean] True if both objects are the same exact object, or if
     #   they are of the same type and share an equal slug
     # @note Guided by http://woss.name/2011/01/20/equality-comparison-and-ordering-in-ruby/
-    def eql? other
+    def eql?(other)
       self.class == other.class && self == other
     end
 
@@ -41,7 +40,7 @@ module CineworldUk
     # @return [Integer] hash of slug
     # @note Guided by http://woss.name/2011/01/20/equality-comparison-and-ordering-in-ruby/
     def hash
-      self.slug.hash
+      slug.hash
     end
   end
 end

@@ -1,8 +1,6 @@
 module CineworldUk
-
   # The object representing a cinema on the Cineworld UK website
   class Cinema
-
     # @return [String] the brand of the cinema
     attr_reader :brand
     # @return [Integer] the numeric id of the cinema on the Odeon website
@@ -20,8 +18,8 @@ module CineworldUk
     def initialize(id, name)
       @brand = 'Cineworld'
       @id    = id.to_i
-      @name  = name.gsub('London - ','').gsub(' - ', ': ')
-      @slug  = @name.downcase.gsub(/[^0-9a-z ]/,'').gsub(/\s+/, '-')
+      @name  = name.gsub('London - ', '').gsub(' - ', ': ')
+      @slug  = @name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
       @url   = "http://www.cineworld.co.uk/cinemas/#{@id}/information"
     end
 
@@ -80,7 +78,7 @@ module CineworldUk
     #   #=> nil
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def extended_address
-       remaining_address * ', ' unless remaining_address.empty?
+      remaining_address * ', ' unless remaining_address.empty?
     end
 
     # Films with showings scheduled at this cinema

@@ -1,8 +1,6 @@
 module CineworldUk
-
   # The object representing a single screening on the Cineworld UK website
   class Screening
-
     # @return [String] the booking URL on the cinema website
     attr_reader :booking_url
     # @return [String] the cinema name

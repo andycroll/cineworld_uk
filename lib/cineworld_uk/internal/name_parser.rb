@@ -1,12 +1,9 @@
 module CineworldUk
-
   # Internal utility classes: Do not use
   # @api private
   module Internal
-
     # Parses a string to derive a standardized movie title
     class NameParser
-
       attr_reader :original_name
 
       def initialize(name)
@@ -17,15 +14,15 @@ module CineworldUk
       # Process the name and return the final string
       # @return [String]
       def standardize
-        strip_and_squeeze.
-          ampersands_into_text.
-          into_ampersand_if_second_to_last.
-          remove_indian_languages.
-          remove_screening_details.
-          replace_non_film_prefix.
-          remove_newlines.
-          remove_dates.
-          title_case
+        strip_and_squeeze
+          .ampersands_into_text
+          .into_ampersand_if_second_to_last
+          .remove_indian_languages
+          .remove_screening_details
+          .replace_non_film_prefix
+          .remove_newlines
+          .remove_dates
+          .title_case
         to_s
       end
 

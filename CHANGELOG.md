@@ -7,6 +7,7 @@ Bugfix
 Under the hood
 
 - Travis gets Ruby 2.1.2
+- General Rubocop improvements
 
 ## 1.0.6 _28th Feb 2014_
 
