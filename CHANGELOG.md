@@ -1,3 +1,9 @@
+## MASTER
+
+Bugfix
+
+- Cineworld changed their markup
+
 ## 1.0.6 _28th Feb 2014_
 
 Bugfix
