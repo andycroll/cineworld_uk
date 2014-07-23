@@ -84,7 +84,7 @@ describe CineworldUk::Film do
         it 'retuns only one' do
           result = [film, otherfilm].uniq
           result.count.must_equal 1
-          result.must_equal [ CineworldUk::Film.new('AAAA') ]
+          result.must_equal [CineworldUk::Film.new('AAAA')]
         end
       end
     end
@@ -97,7 +97,7 @@ describe CineworldUk::Film do
         let(:otherfilm) { CineworldUk::Film.new 'BBBB' }
 
         it 'retuns -1' do
-          subject.must_equal -1
+          subject.must_equal(-1)
         end
       end
 

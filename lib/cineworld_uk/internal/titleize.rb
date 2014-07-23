@@ -1,16 +1,13 @@
 # encoding: UTF-8
 module CineworldUk
-
   # Internal utility classes: Do not use
   # @api private
   module Internal
-
     # @note Modified from titleize gem
     #   https://github.com/granth/titleize
     module Titleize
-
       # List of words not to capitalize unless they lead a phrase
-      SMALL_WORDS = %w{a an and as at but by en for if in of on or the to via vs vs.}
+      WORDS = %w(a an and as at but by en for if in of on or the to via vs vs.)
 
       extend self
 
@@ -28,24 +25,24 @@ module CineworldUk
       # @return [String]
       def titleize(title)
         title = title.dup
-        title.downcase! unless title[/[[:lower:]]/]  # assume all-caps need fixing
+        title.downcase! unless title[/[[:lower:]]/]  # assume all-caps fixing
 
         phrases(title).map do |phrase|
           words = phrase.split
           words.map do |word|
             def word.capitalize
               # like String#capitalize, but it starts with the first letter
-              self.sub(/[[:alpha:]].*/) {|subword| subword.capitalize}
+              sub(/[[:alpha:]].*/) { |subword| subword.capitalize }
             end
 
             case word
-            when /[[:alpha:]]\.[[:alpha:]]/  # words with dots in, like "example.com"
+            when /[[:alpha:]]\.[[:alpha:]]/  # words with dots in
               word
             when /[-‑]/  # hyphenated word (regular and non-breaking)
               word.split(/([-‑])/).map do |part|
-                SMALL_WORDS.include?(part) ? part : part.capitalize
+                WORDS.include?(part) ? part : part.capitalize
               end.join
-            when /^[[:alpha:]].*[[:upper:]]/ # non-first letter capitalized already
+            when /^[[:alpha:]].*[[:upper:]]/ # non-first letter capitalized
               word
             when /^[[:digit:]]/  # first character is a number
               word
@@ -53,13 +50,13 @@ module CineworldUk
               word.upcase
             when words.first, words.last
               word.capitalize
-            when *(SMALL_WORDS + SMALL_WORDS.map {|small| small.capitalize })
+            when *(WORDS + WORDS.map { |small| small.capitalize })
               word.downcase
             else
               word.capitalize
             end
-          end.join(" ")
-        end.join(" ")
+          end.join(' ')
+        end.join(' ')
       end
 
       # Splits a title into an array based on punctuation.
@@ -70,14 +67,13 @@ module CineworldUk
       #   "more complicated: titling"        # => ["more complicated:", "titling"]
       #   "even more: complicated - titling" # => ["even more:", "complicated -", "titling"]
       def phrases(title)
-        phrases = title.scan(/.+?(?:[-:.;?!] |$)/).map {|phrase| phrase.strip }
+        phrases = title.scan(/.+?(?:[-:.;?!] |$)/).map { |phrase| phrase.strip }
 
         # rejoin phrases that were split on the '.' from a small word
         if phrases.size > 1
           phrases[0..-2].each_with_index do |phrase, index|
-            if SMALL_WORDS.include?(phrase.split.last.downcase)
-              phrases[index] << " " + phrases.slice!(index + 1)
-            end
+            next unless WORDS.include?(phrase.split.last.downcase)
+            phrases[index] << ' ' + phrases.slice!(index + 1)
           end
         end
 

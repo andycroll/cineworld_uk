@@ -45,9 +45,9 @@ module CineworldUk
       end
 
       def remove_indian_languages
-        languages = ['Malayalam', 'Tamil']
+        languages = %w(Malayalam Tamil)
 
-        _remove(/\((#{languages*'|'})\)/i)
+        _remove(/\((#{languages * '|'})\)/i)
         self
       end
 
@@ -58,7 +58,7 @@ module CineworldUk
       end
 
       def remove_dates
-        _remove(/\-? \d{1,2}\/\d{1,2}\/\d{2,4}/)
+        _remove(%r(-? \d{1,2}/\d{1,2}/\d{2,4}))
         self
       end
 
@@ -70,15 +70,18 @@ module CineworldUk
       def replace_non_film_prefix
         _replace 'Bolshoi Ballet Live -', 'Bolshoi:'
 
-        @name = 'National Theatre: ' + @name.gsub(/\- NT .+ encore/, '') if @name.match /\- NT .+ encore/
+        if @name.match(/\- NT .+ encore/)
+          @name = 'National Theatre: ' + @name.gsub(/\- NT .+ encore/, '')
+        end
+
         _replace 'NT Live:', 'National Theatre:'
 
         _replace 'MET Opera -', 'Met Opera:'
         _replace 'Royal Ballet Live:', 'Royal Ballet:'
 
         # fill out Royal Opera House
-        if pure_name_match = @name.match(/Royal Opera Live\: (.+) \-.+/)
-          @name = 'Royal Opera House: ' + pure_name_match[1]
+        @name.match(/Royal Opera Live\: (.+) \-.+/) do |match|
+          @name = 'Royal Opera House: ' + match[1]
         end
         _replace 'Royal Opera Live:', 'Royal Opera House:'
 

@@ -1,6 +1,8 @@
 require_relative '../../../test_helper'
 
 describe CineworldUk::Internal::WhatsonParser do
+  let(:described_class) { CineworldUk::Internal::WhatsonParser }
+
   let(:website) { Minitest::Mock.new }
 
   before do
@@ -8,7 +10,7 @@ describe CineworldUk::Internal::WhatsonParser do
   end
 
   describe '#films_with_screenings' do
-    subject { CineworldUk::Internal::WhatsonParser.new(3).films_with_screenings }
+    subject { described_class.new(3).films_with_screenings }
 
     before do
       website.expect(:whatson, brighton_whatson_html, [3])

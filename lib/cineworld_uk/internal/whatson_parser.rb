@@ -23,11 +23,11 @@ module CineworldUk
       private
 
       def films_html
-        whatson_doc.css(FILM_CSS).map { |html| html.to_s.gsub(/^\s+/, '') }
+        whatson_doc.css(FILM_CSS).map { |n| n.to_s.gsub(/^\s+/, '') }
       end
 
       def screenings_html
-        whatson_doc.css(SCREENINGS_CSS).map { |html| html.to_s.gsub(/^\s+/, '') }
+        whatson_doc.css(SCREENINGS_CSS).map { |n| n.to_s.gsub(/^\s+/, '') }
       end
 
       def whatson

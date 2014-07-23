@@ -6,8 +6,14 @@ describe CineworldUk::Internal::Titleize do
     subject { CineworldUk::Internal::Titleize.titleize(string) }
 
     [
-      ['star wars: episode iv - a new hope', 'Star Wars: Episode IV - A New Hope'],
-      ['star wars: episode v - the empire strikes back', 'Star Wars: Episode V - The Empire Strikes Back'],
+      [
+        'star wars: episode iv - a new hope',
+        'Star Wars: Episode IV - A New Hope'
+      ],
+      [
+        'star wars: episode v - the empire strikes back',
+        'Star Wars: Episode V - The Empire Strikes Back'
+      ],
       ['2 fast 2 furious', '2 Fast 2 Furious'],
       ['saw iv', 'Saw IV'],
       ['fast & Furious 6', 'Fast & Furious 6'],
@@ -20,7 +26,6 @@ describe CineworldUk::Internal::Titleize do
           subject.must_equal test_case[1]
         end
       end
-
     end
   end
 
@@ -28,7 +33,10 @@ describe CineworldUk::Internal::Titleize do
     subject { CineworldUk::Internal::Titleize.phrases(string) }
 
     [
-      ['star wars: episode iv - a new hope',['star wars:','episode iv -','a new hope']],
+      [
+        'star wars: episode iv - a new hope',
+        ['star wars:', 'episode iv -', 'a new hope']
+      ]
     ].each do |test_case|
 
       describe test_case[0] do
@@ -38,6 +46,5 @@ describe CineworldUk::Internal::Titleize do
         end
       end
     end
-
   end
 end
