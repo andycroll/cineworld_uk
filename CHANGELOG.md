@@ -4,8 +4,17 @@ Bugfix
 
 - Cineworld changed their markup
 
+Features
+
+- Less logic in the Cinema class. Moved to `Film` and `Screening`.
+- Introduce `Internal::Website` class for all website comms
+- Rewrite Parsers and tests to be less exact but less fragile
+- Screening now uses the `FilmWithScreeningsParser`
 - Build `WhatsonParser` to break into 'films with screenings'
 - `FilmWithScreenings` then uses `ScreeningParser` class to get individual screening info
+- `ruby test/fixture_updator.rb` produces new fixtures from the live website
+  - it will break a few tests when run and committed but most should be ok
+
 Under the hood
 
 - Travis gets Ruby 2.1.2

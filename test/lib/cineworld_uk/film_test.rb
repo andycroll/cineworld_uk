@@ -11,6 +11,43 @@ describe CineworldUk::Film do
     end
   end
 
+  describe '.at(cinema_id)' do
+    let(:website) { Minitest::Mock.new }
+
+    subject { CineworldUk::Film.at(3) }
+
+    before do
+      website.expect(:whatson, whatson_html('brighton'), [3])
+    end
+
+    it 'returns an array of films' do
+      CineworldUk::Internal::Website.stub :new, website do
+        subject.must_be_instance_of(Array)
+        subject.each do |film|
+          film.must_be_instance_of(CineworldUk::Film)
+        end
+      end
+    end
+
+    it 'returns a decent number of films' do
+      CineworldUk::Internal::Website.stub :new, website do
+        subject.count.must_be :>, 15
+      end
+    end
+
+    it 'returns uniquely named films' do
+      CineworldUk::Internal::Website.stub :new, website do
+        subject.each_with_index do |item, index|
+          subject.each_with_index do |jtem, i|
+            next if index == i
+            item.name.wont_equal jtem.name
+            item.wont_equal jtem
+          end
+        end
+      end
+    end
+  end
+
   describe 'Comparable' do
     it 'includes comparable methods' do
       film = CineworldUk::Film.new 'AAAA'
@@ -91,5 +128,15 @@ describe CineworldUk::Film do
         end
       end
     end
+  end
+
+  private
+
+  def read_file(filepath)
+    File.read(File.expand_path(filepath, __FILE__))
+  end
+
+  def whatson_html(filename)
+    read_file("../../../fixtures/whatson/#{filename}.html")
   end
 end
