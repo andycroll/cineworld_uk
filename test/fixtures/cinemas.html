@@ -2,28 +2,52 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Cineworld Cinemas: Choose Your Local Cinema To See  Film Times For The Latest Movies And 3D Performances In Your Area</title>
+        <title>Choose Your Local Cinema To See  Film Times For The Latest Movies And 3D Performances In Your Area | Cineworld Cinemas</title>
 
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link type="image/x-icon" rel="shortcut icon" href="/cw/assets/favicon.ico" />
+        <meta name="viewport" content="user-scalable=yes, width=1280, minimum-scale=0.5, maximum-scale=3.0" />
+
+                <link rel="shortcut icon" type="image/x-icon" href="/cw/assets/favicon.ico"  />
+                <link rel="icon" type="image/png" href="/cw/assets/favicon-196x196.png" sizes="196x196" />
+                <link rel="icon" type="image/png" href="/cw/assets/favicon-160x160.png" sizes="160x160" />
+                <link rel="icon" type="image/png" href="/cw/assets/favicon-96x96.png" sizes="96x96" />
+                <link rel="icon" type="image/png" href="/cw/assets/favicon-32x32.png" sizes="32x32" />
+                <link rel="icon" type="image/png" href="/cw/assets/favicon-16x16.png" sizes="16x16" />
+
+
+                <meta name="application-name" content="Cineworld Cinemas" />
+                <meta name="msapplication-tooltip" content="Cineworld Cinemas" />
+                <meta name="msapplication-starturl" content="http://www.cineworld.co.uk" />
+                <meta name="msapplication-task" content="name=Home; action-uri=http://www.cineworld.co.uk; icon-uri=http://www.cineworld.co.uk/cw/assets/favicon.ico;" />
+                <meta name="msapplication-task" content="name=What's On; action-uri=http://www.cineworld.co.uk/whatson; icon-uri=http://www.cineworld.co.uk/cw/assets/favicon.ico;" />
+                <meta name="msapplication-task" content="name=Our Cinemas; action-uri=http://www.cineworld.co.uk/cinemas; icon-uri=http://www.cineworld.co.uk/cw/assets/favicon.ico;" />
+                <meta name="msapplication-task" content="name=Explore Cineworld; action-uri=http://www.cineworld.co.uk/explore; icon-uri=http://www.cineworld.co.uk/cw/assets/favicon.ico;" />
+                <meta name="msapplication-task" content="name=Cineworld Blog; action-uri=http://www.cineworld.co.uk/blog; icon-uri=http://www.cineworld.co.uk/cw/assets/favicon.ico;" />
+                <meta name="msapplication-TileColor" content="#231f20" />
+                <meta name="msapplication-TileImage" content="/cw/assets/mstile-144x144.png" />
+                <meta name="msapplication-square70x70logo" content="/cw/assets/mstile-70x70.png" />
+                <meta name="msapplication-square144x144logo" content="/cw/assets/mstile-144x144.png" />
+                <meta name="msapplication-square150x150logo" content="/cw/assets/mstile-150x150.png" />
+                <meta name="msapplication-square310x310logo" content="/cw/assets/mstile-310x310.png" />
+                <meta name="msapplication-wide310x150logo" content="/cw/assets/mstile-310x150.png" />
+                <meta name="msapplication-notification" content="frequency=60; polling-uri=/syndication/tile_notifications_1_cw_gb.xml; polling-uri2=/syndication/tile_notifications_2_cw_gb.xml; polling-uri3=/syndication/tile_notifications_3_cw_gb.xml; polling-uri4=/syndication/tile_notifications_4_cw_gb.xml; polling-uri5=/syndication/tile_notifications_5_cw_gb.xml;" />
 
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/bootstrap.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/jquery.fancybox.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/nivo.slider.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/nivo.slider.default.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/zebra.datepicker.packed.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld.typography.packed.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld.layout.packed.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld.print.packed.css" media="print" />
+        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop-typography.packed.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop.packed.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-print.packed.css" media="print" />
         <!--[if IE]>
-            <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld.ie.packed.css" media="all" />
+            <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop-ie.packed.css" media="all" />
         <![endif]-->
         <!--[if lt IE 8]>
-            <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld.ie7.packed.css" media="all" />
+            <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop-ie7.packed.css" media="all" />
         <![endif]-->
 
         <script type="text/javascript" src="/cw/assets/javascript/log4j.packed.js"></script>
@@ -32,30 +56,77 @@
             <script type="text/javascript" src="/cw/assets/javascript/jquery.pseudo.packed.js"></script>
         <![endif]-->
 
-        <!-- This comment replaces content that was removed due to user's cookie settings -->
+            <script type="text/javascript">
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-35708014-1']);
+                _gaq.push(['_setDomainName', 'cineworld.co.uk']);
+                _gaq.push(['_trackPageview']);
+
+                (function () {
+                    var ga = document.createElement('script');
+                    ga.type = 'text/javascript';
+                    ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
 
         
         
         <meta name="Description" content="Cineworld Cinemas have digital screens across the UK: Choose your local cinema to see  film times for the latest movies, 3D, IMAX and D-box performances in your area." />
         <meta name="Keywords" content="Cinemas, local cinema branches, local cinema listings, Film times, local multiplex" />
         <link rel="canonical" href="http://www.cineworld.co.uk/cinemas" />
+        <link rel="alternate" media="only screen and (max-width: 640px)" href=”http://www.cineworld.co.uk/mobile/cinemas" >
 	
 
 
 
         <!-- cinwebprweb13.901e.sys.carrenza.net -->
 
-        <!-- This comment replaces content that was removed due to user's cookie settings -->
+    <!-- Start Visual Website Optimizer Asynchronous Code -->
+    <script type='text/javascript'>
+    var _vwo_code=(function(){
+    var account_id=46415,
+    settings_tolerance=2000,
+    library_tolerance=2500,
+    use_existing_jquery=false,
+    // DO NOT EDIT BELOW THIS LINE
+    f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
+    </script>
+    <!-- End Visual Website Optimizer Asynchronous Code -->
     </head>
 
-    <body class="cineworld gb cinema search">
+    <body class="cineworld gb web browser cinema search">
         <div id="fb-root"></div>
+
+    <div class="notification cookie" style="display: none;">
+            <div>
+    <h3 class="h1">Cookies Notification</h3>
+
+                <div class="text">
+        <p>This website uses cookies to provide you with a better experience.<br /><br />You can adjust your cookie settings at any time at the bottom of each page.&nbsp; If you do not adjust your settings, you are consenting to us issuing all cookies to you.<br /><br /></p>
+
+                    <p>This notification will be automatically dismissed in <span class="remaining">15</span> seconds, <a class="dismiss">dismiss this countdown</a>.</p>
+                </div>
+
+                <div class="actions">
+                    <p>
+                        <a href="/cookies/settings">Change settings</a><br />
+                        <a href="/cookies/about" target="_blank">Find out more about Cookies</a>
+                    </p>
+                    <p>
+                        <a class="action primary">Continue</a>
+                    </p>
+                </div>
+            </div>
+    </div>
 
         <div id="wallpaper">
 
             <div id="header" role="banner">
                 <div class="container">
-                    <h1><a href="/">Cineworld Cinemas</a></h1>
+                    <a class="brand" href="/">Cineworld Cinemas</a>
 
                         <div class="account">
     <span class="icon-logo-mycineworld ">mycineworld</span>
@@ -74,7 +145,7 @@
                         <li>
                             <a href="/whatson">What's On</a>
                             <ul>
-                                <li><a href="/events">Bollywood &amp; Live Events</a></li>
+                                <li><a href="/events">Bollywood &amp; Event Cinema</a></li>
                                     <li><a href="/whatson/category/junior">Movies for Juniors</a></li>
                             </ul>
                         </li>
@@ -93,8 +164,12 @@
                                 <li><a href="/blog">Cineworld Blog</a></li>
                                 <li><a href="/competitions">Offers &amp; Competitions</a></li>
                                 
-                                    <li><a href="/baftascotland">BAFTA Scotland</a></li>
-                                    <li><a href="/take2">Take 2 Thursdays</a></li>
+                                    <li><a href="/bargain-tuesdays">Bargain Tuesdays</a></li>
+                                    <li><a href="/cineworld-foundation">Cineworld Foundation</a></li>
+                                    <li><a href="/summer-family-films-2014">Summer Family Films</a></li>
+                                    <li><a href="/mega-movies-2014">Mega Movies at Cineworld</a></li>
+                                    <li><a href="/take2">Take 2 Offer</a></li>
+                                    <li><a href="/baskin-robbins">Baskin Robbins at Cineworld</a></li>
                                     <li><a href="/starbucks">Starbucks at Cineworld</a></li>
                             </ul>
                         </li>
@@ -121,21 +196,21 @@
                     </ul>
             </div>
 
-            <div class="container" role="main">
+            <div class="container blockable" role="main">
                 
         <!-- [SL] Site content layout -->
         <div class="layout">
         <div id="content" >
-    <div class="section dark gradient clearfix ">
+    <div class="section dark gradient clearfix " >
                 <h1>See what's showing at your local Cineworld Cinema</h1>
     </div>
-    <div class="section light  clearfix ">
+    <div class="section light  clearfix " >
                 <h1 class="ribbon">Which Cineworld Cinema's film times would you like to see?</h1>
 
 
 <div class="row">
     <div class="span12">
-        <form class="validate auto-submit" id="form-choose" name="form-choose" method="post">
+        <form class="auto-submit" id="form-choose" name="form-choose" method="post">
 
             <label>
                 <span>Choose a cinema:</span>
@@ -172,7 +247,6 @@
 					<option value="88">Glasgow - IMAX at GSC</option>
 					<option value="27">Glasgow - Parkhead</option>
 					<option value="28">Glasgow - Renfrew Street</option>
-					<option value="29">Gloucester</option>
 					<option value="90">Gloucester Quays</option>
 					<option value="31">Harlow</option>
 					<option value="76">Haverhill</option>
@@ -214,9 +288,11 @@
 					<option value="57">Solihull</option>
 					<option value="58">Southampton</option>
 					<option value="59">St Helens</option>
+					<option value="91">St Neots</option>
 					<option value="61">Stevenage</option>
 					<option value="62">Stockport</option>
 					<option value="63">Swindon</option>
+					<option value="92">Telford</option>
 					<option value="64">Wakefield</option>
 					<option value="68">Weymouth</option>
 					<option value="77">Witney</option>
@@ -224,7 +300,9 @@
 					<option value="71">Yeovil</option>
     </select>
             </label>
+        </form>
 
+        <form class="validate" id="form-search" name="form-search" method="post">
             <label class="inline margin-right">
                 <span>Search by town or postcode:</span>
     <input type="text" id="location" name="location" value="" placeholder='Town or postcode'    />
@@ -299,7 +377,7 @@
 	
 
         <div id="footer" role="contentinfo">
-    <div class="section dark  clearfix ">
+    <div class="section dark  clearfix " >
 
                         <div class="row">
 
@@ -343,7 +421,7 @@
 
                                     <h3>Cineworld apps</h3>
                                     <ul>
-                                        <li><a href="http://itunes.apple.com/gb/app/cineworld/id377707014">iPhone app</a></li>
+                                        <li><a href="http://itunes.apple.com/gb/app/cineworld/id377707014?mt=8">iPhone app</a></li>
                                         <li><a href="https://play.google.com/store/apps/details?id=com.cineworld">Android app</a></li>
                                         <li><a href="http://itunes.apple.com/gb/app/cineworld-magazine/id508350271">iPad magazine</a></li>
                                     </ul>
@@ -354,7 +432,7 @@
 
                         <div class="row">
                             <div class="span12 smallprint small">
-                                <p>All rights reserved Cineworld Cinemas 2013 &copy;</p>
+                                <p>All rights reserved Cineworld Cinemas 2014 &copy;</p>
                             </div>
                         </div>
 
@@ -369,22 +447,6 @@
         <h3 data-field="title" class="default">This showtime is unavailable</h3>
         <hr class="thin" />
         <p data-field="explanation" class="default">Booking is unavailable for this showtime as it may have already started, finished or been sold out.</p>
-    </div>
-
-    <div class="notification cookie" style="display: none;">
-    <h1 class="">Cookies Notification</h1>
-            <div>
-        <p>This website uses cookies to provide you with a better experience.<br /><br />You can adjust your cookie settings at any time at the bottom of each page.&nbsp; If you do not adjust your settings, you are consenting to us issuing all cookies to you.<br /><br /></p>
-                <p>
-                    <a href="/cookies/settings">Change settings</a><br />
-                    <a href="/cookies/about" target="_blank">Find out more about Cookies</a>
-                </p>
-                <p>
-                    <a class="action primary">No, thanks</a>
-                </p>
-                
-                <p>This notification will be automatically dismissed in <span class="remaining">15</span> seconds, <a class="dismiss">dismiss this countdown</a>.</p>
-            </div>
     </div>
 
         <script type="text/javascript" src="/cw/assets/javascript/jquery.blockui.packed.js"></script>
@@ -407,12 +469,43 @@
         <script type="text/javascript" src="/cw/assets/javascript/initialise.packed.js"></script>
 
 
-        <!-- This comment replaces content that was removed due to user's cookie settings -->
+
+            <script type="text/javascript">
+                // WebTrends SmartSource Data Collector Tag v10.2.81
+                // Copyright (c) 2013 Webtrends Inc.  All rights reserved.
+                // Tag Builder Version: 4.1.0.49
+                // Created: 2013.03.09
+                window.webtrendsAsyncInit=function(){
+                    var dcs=new Webtrends.dcs().init({
+                        dcsid:"dcskzgl9m000000w4dyp4senq_3i2w",
+                        domain:"statse.webtrendslive.com",
+                        timezone:0,
+                        i18n:true,
+                        adimpressions:true,
+                        adsparam:"WT.ac",
+                        offsite:true,
+                        download:true,
+                        downloadtypes:"xls,doc,pdf,txt,csv,zip,docx,xlsx,rar,gzip",
+                        onsitedoms:"cineworld.co.uk",
+                        fpcdom:"cineworld.co.uk"
+                        }).track();
+                };
+                (function(){
+                    var s=document.createElement("script"); s.async=true; s.src="/cw/assets/javascript/webtrends.packed.js";
+                    var s2=document.getElementsByTagName("script")[0]; s2.parentNode.insertBefore(s,s2);
+                }());
+            </script>
+
+
+            <noscript>
+                <img alt="dcsimg" id="dcsimg" width="1" height="1" src="http://statse.webtrendslive.com/dcskzgl9m000000w4dyp4senq_3i2w/njs.gif?dcsuri=/nojavascript&amp;WT.js=No&amp;WT.tv=10.2.81&amp;dcssip=cineworld.co.uk&amp;" />
+            </noscript>
+
     <script type="text/javascript">
 //<![CDATA[
 (function() {
 var _analytics_scr = document.createElement('script');
-_analytics_scr.type = 'text/javascript'; _analytics_scr.async = true; _analytics_scr.src = '/_Incapsula_Resource?SWJIYLWA=2977d8d74f63d7f8fedbea018b7a1d05&ns=2';
+_analytics_scr.type = 'text/javascript'; _analytics_scr.async = true; _analytics_scr.src = '/_Incapsula_Resource?SWJIYLWA=2977d8d74f63d7f8fedbea018b7a1d05&ns=1';
 var _analytics_elem = document.getElementsByTagName('script')[0]; _analytics_elem.parentNode.insertBefore(_analytics_scr, _analytics_elem);
 })();
 // ]]>
