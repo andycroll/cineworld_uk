@@ -4,6 +4,10 @@ Bugfix
 
 - Cineworld changed their markup
 
+Under the hood
+
+- Travis gets Ruby 2.1.2
+
 ## 1.0.6 _28th Feb 2014_
 
 Bugfix
