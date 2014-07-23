@@ -4,6 +4,7 @@ Bugfix
 
 - Cineworld changed their markup
 
+- Build `WhatsonParser` to break into 'films with screenings'
 - `FilmWithScreenings` then uses `ScreeningParser` class to get individual screening info
 Under the hood
 
