@@ -4,6 +4,7 @@ Bugfix
 
 - Cineworld changed their markup
 
+- `FilmWithScreenings` then uses `ScreeningParser` class to get individual screening info
 Under the hood
 
 - Travis gets Ruby 2.1.2
