@@ -4,97 +4,58 @@ module CineworldUk
   module Internal
     # Parses a chunk of HTML to derive movie showing data
     class FilmWithScreeningsParser
+      FILM_NAME_CSS    = 'h3.h1 a[href*=whatson]'
+      PERFORMANCES_CSS = '.schedule .performances > li'
 
       # @param [String] film_html a chunk of html
       def initialize(film_html)
-        @nokogiri_html = Nokogiri::HTML(film_html)
+        @film_html = film_html.to_s
+      end
+
+      # The cinema id
+      # @return [String]
+      def cinema_id
+        name_doc.to_s.match(/cinema=(\d+)/)[1].to_i
       end
 
       # The film name
       # @return [String]
       def film_name
-        NameParser.new(original_name).standardize
+        name_doc.children[0].to_s
       end
 
-      # Showings
-      # @return [Hash]
-      # @example
-      #   {
-      #     "2D" => [Time.utc, Time.utc]
-      #   }
-      def showings
-        tz = TZInfo::Timezone.get('Europe/London')
-        @nokogiri_html.css('.schedule .performances > li').inject({}) do |result, li|
-          key = performance_variant(li)
-
-          if has_bookable_link_node?(li)
-            time_array = performance_date_array(li) + performance_time_array(li)
-            time = tz.local_to_utc(Time.utc(*time_array))
-            result.merge(key => (result[key] || []) << [time, booking_url(li)])
-          else
-            result
-          end
-        end
+      # attributes of all the screenings
+      # @return [Array<Hash>]
+      def to_a
+        performances_doc.map do |node|
+          next unless screening_parser_hash(node)
+          film_hash.merge(screening_parser_hash(node))
+        end.compact
       end
 
       private
 
-      def booking_url(node)
-        'http://www.cineworld.co.uk' + performance_link(node)['href']
+      def doc
+        @doc ||= Nokogiri::HTML(@film_html)
       end
 
-      def dbox?(node)
-        node.css('.tooltip-box .icon-service-dbox').count > 0
+      def film_hash
+        {
+          cinema_id: cinema_id,
+          film_name: film_name
+        }
       end
 
-      def dimension(node)
-        node.css('.tooltip-box .icon-service-twod, .tooltip-box .icon-service-thrd').text
+      def name_doc
+        @name_doc ||= doc.css(FILM_NAME_CSS)
       end
 
-      def has_bookable_link_node?(node)
-        performance_link(node) != nil
+      def performances_doc
+        @performances_doc ||= doc.css(PERFORMANCES_CSS)
       end
 
-      def imax?(node)
-        node.css('.tooltip-box .icon-service-imax').count > 0
-      end
-
-      def hfr?(node)
-        node.css('.tooltip-box .icon-service-hfr').count > 0
-      end
-
-      def original_name
-        @original_name ||= @nokogiri_html.css('.span5 h1 a,.span7 h1 a, .span7 h1').children[0].to_s
-      end
-
-      def performance_date_array(node)
-        if has_bookable_link_node?(node)
-          match = performance_link_text(node).match(/date\=(\d{4})(\d{2})(\d{2})/)
-          [match[1], match[2], match[3]]
-        end
-      end
-
-      def performance_link(node)
-        node.css('a.performance').first
-      end
-
-      def performance_link_string(node)
-        performance_link(node).to_s
-      end
-
-      def performance_link_text(node)
-        has_bookable_link_node?(node) ? performance_link_string(node) : nil
-      end
-
-      def performance_time_array(node)
-        if has_bookable_link_node?(node)
-          match = performance_link_text(node).match(/time\=(\d{2})\:(\d{2})/)
-          [match[1], match[2]]
-        end
-      end
-
-      def performance_variant(node)
-        dimension(node) + "#{ ' D-BOX' if dbox?(node) }#{ ' IMAX' if imax?(node) }#{ ' HFR' if hfr?(node) }"
+      def screening_parser_hash(node)
+        ScreeningParser.new(node).to_hash
       end
     end
   end
