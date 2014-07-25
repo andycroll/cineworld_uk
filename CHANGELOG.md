@@ -1,3 +1,5 @@
+## 2.0.2 _25th July 2014_
+
 Bugfix
 
 - bad behaviour for screening#variant

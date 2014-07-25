@@ -15,6 +15,6 @@ require_relative './cineworld_uk/cinema'
 require_relative './cineworld_uk/film'
 require_relative './cineworld_uk/screening'
 
-# cineworld uk gem
+# cineworld_uk gem
 module CineworldUk
 end
