@@ -139,7 +139,7 @@ describe CineworldUk::Screening do
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
         time:        Time.utc(2013, 9, 12, 11, 0),
-        variant:     'Kids'
+        variant:     ['Kids']
       }
     end
 

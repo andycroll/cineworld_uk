@@ -58,7 +58,7 @@ module CineworldUk
     # The kinds of screening
     # @return <Array[String]>
     def variant
-      @variant.split(' ').map(&:downcase).sort
+      @variant.map(&:downcase).sort
     end
 
     private
