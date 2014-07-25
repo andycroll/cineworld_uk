@@ -1,3 +1,9 @@
+## 2.0.1 _25th July 2014_
+
+Bugfix
+
+- httparty still required, oops
+
 ## 2.0.0 _25th July 2014_
 
 Bugfix
