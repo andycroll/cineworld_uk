@@ -20,7 +20,7 @@ module CineworldUk
       private
 
       def get(path)
-        HTTParty.get("http://www.cineworld.co.uk/#{path}").to_s
+        Net::HTTP.get(URI("http://www.cineworld.co.uk/#{path}"))
       end
     end
   end

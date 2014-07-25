@@ -17,6 +17,7 @@ Features
 
 Under the hood
 
+- Remove dependancy on HTTParty
 - Travis gets Ruby 2.1.2
 - General Rubocop improvements
 
