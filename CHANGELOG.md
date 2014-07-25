@@ -1,4 +1,4 @@
-## MASTER
+## 2.0.0 _25th July 2014_
 
 Bugfix
 
