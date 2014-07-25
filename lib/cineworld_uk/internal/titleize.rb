@@ -63,9 +63,12 @@ module CineworldUk
       # @param [String] title Film title
       # @return [Array<String>]
       #
-      #   "simple title"                     # => ["simple title"]
-      #   "more complicated: titling"        # => ["more complicated:", "titling"]
-      #   "even more: complicated - titling" # => ["even more:", "complicated -", "titling"]
+      #   Titleize.phrases("simple title")
+      #     #=> ["simple title"]
+      #   Titleize.phrases("more complicated: titling")
+      #     #=> ["more complicated:", "titling"]
+      #   Titleize.phrases("even more: complicated - titling")
+      #     #=> ["even more:", "complicated -", "titling"]
       def phrases(title)
         phrases = title.scan(/.+?(?:[-:.;?!] |$)/).map { |phrase| phrase.strip }
 

@@ -4,8 +4,10 @@ module CineworldUk
   module Internal
     # Parses a string to derive a standardized movie title
     class NameParser
+      # @return [String] the original name
       attr_reader :original_name
 
+      # @param [String] name original film name
       def initialize(name)
         @original_name = name
         @name = name

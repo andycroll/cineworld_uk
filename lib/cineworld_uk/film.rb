@@ -15,6 +15,9 @@ module CineworldUk
       @slug = name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
     end
 
+    # All currently listed films showing at a cinema
+    # @param [Integer] cinema_id id of the cinema on the website
+    # @return [Array<CineworldUk::Film>]
     def self.at(cinema_id)
       whatson_parser(cinema_id).films_with_screenings.map do |html|
         new(screenings_parser(html).film_name)
@@ -40,7 +43,7 @@ module CineworldUk
     # Generates hash of slug in order to allow two records of the same type and
     # id to work with something like:
     #
-    #   [ Film.new('ABC'), Film.new('DEF') ] & [ Film.new('DEF'), Film.new('GHI') ]
+    #   [Film.new('ABC'), Film.new('DEF')] & [Film.new('DEF'), Film.new('GHI')]
     #   #=> [ Film.new('DEF') ]
     #
     # @return [Integer] hash of slug

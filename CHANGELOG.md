@@ -14,6 +14,7 @@ Features
 - `FilmWithScreenings` then uses `ScreeningParser` class to get individual screening info
 - `ruby test/fixture_updator.rb` produces new fixtures from the live website
   - it will break a few tests when run and committed but most should be ok
+- documentation
 
 Under the hood
 

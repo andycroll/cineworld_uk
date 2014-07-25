@@ -4,8 +4,9 @@ module CineworldUk
   module Internal
     # Parses a chunk of HTML to derive movie showing data
     class WhatsonParser
-      # css selector for all film with screening chunks of html
+      # css selector for film html chunks
       FILM_CSS       = '#filter-reload > .span9 > .row:not(.schedule)'
+      # css selector for screenings html chunks
       SCREENINGS_CSS = '#filter-reload > .span9 > .schedule'
 
       # @param [Integer] cinema_id cineworld cinema id
@@ -13,6 +14,7 @@ module CineworldUk
         @cinema_id = cinema_id
       end
 
+      # break up the whats on page into individual chunks for each film
       # @return [Array<String>] html chunks for a film and it's screenings
       def films_with_screenings
         films_html.each_with_index.map do |html, i|

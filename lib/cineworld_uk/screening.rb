@@ -10,11 +10,14 @@ module CineworldUk
     # @return [String] the film name
     attr_reader :film_name
 
-    # @param [String] film_name the film name
-    # @param [String] cinema_name the cinema name
-    # @param [Time] time datetime of the screening (UTC preferred)
-    # @param [String] booking_url direct link to the booking page for screening
-    # @param [String] variant the type of showing (e.g. 3d/baby/live)
+    # @param [Hash] options options hash
+    # @option options [String] :booking_url (nil) booking url for the screening
+    # @option options [String] :cinema_name name of the cinema
+    # @option options [String] :cinema_id website id of the cinema
+    # @option options [String] :dimension ('2d') dimension of the screening
+    # @option options [String] :film_name name of the film
+    # @option options [Time] :time utc time of the screening
+    # @option options [Array<String>] :variant ([]) type of screening
     def initialize(options)
       @booking_url = options.fetch(:booking_url, nil)
       @cinema_name = options.fetch(:cinema_name)
@@ -22,9 +25,12 @@ module CineworldUk
       @dimension   = options.fetch(:dimension, '2d')
       @film_name   = options.fetch(:film_name)
       @time        = options.fetch(:time)
-      @variant     = options.fetch(:variant, '')
+      @variant     = options.fetch(:variant, [])
     end
 
+    # All currently listed films showing at a cinema
+    # @param [Integer] cinema_id id of the cinema on the website
+    # @return [Array<CineworldUk::Screening>]
     def self.at(cinema_id)
       whatson_parser(cinema_id).films_with_screenings.map do |html|
         create_for_single_film(html, cinema_id)

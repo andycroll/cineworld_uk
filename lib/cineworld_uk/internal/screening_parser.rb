@@ -4,17 +4,25 @@ module CineworldUk
   module Internal
     # parse a single performance
     class ScreeningParser
+      # regex for date in url
       DATE_REGEX = /date\=(\d{4})(\d{2})(\d{2})/
+      # regex for time in url
       TIME_REGEX = /time\=(\d{2})\:(\d{2})/
 
+      # css selector for dimension
       DIMENSION_CSS = '.icon-service-2d, .icon-service-3d'
+      # css selector for baby screening
       BABY_CSS      = '.icon-service-cb'
+      # css selector for d-box screening
       DBOX_CSS      = '.icon-service-dx'
+      # css selector for hfr screening
       HFR_CSS       = '.icon-service-hfr'
+      # css selector for imax screening
       IMAX_CSS      = '.icon-service-ix'
+      # css selector for kids screening
       KIDS_CSS      = '.icon-service-m4j'
 
-      # @param [String] html a chunk of html
+      # @param [String] html a chunk of html representing one screening
       def initialize(html)
         @html = html.to_s
       end
@@ -81,7 +89,9 @@ module CineworldUk
       end
 
       def date_array
-        @date_array ||= performance_link_html.match(DATE_REGEX) { [$1, $2, $3] }
+        @date_array ||= performance_link_html.match(DATE_REGEX) do |match|
+          [match[1], match[2], match[3]]
+        end
       end
 
       def dbox
@@ -109,7 +119,9 @@ module CineworldUk
       end
 
       def time_array
-        @time_array ||= performance_link_html.match(TIME_REGEX) { [$1, $2] }
+        @time_array ||= performance_link_html.match(TIME_REGEX) do |match|
+          [match[1], match[2]]
+        end
       end
 
       def timezone

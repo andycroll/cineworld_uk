@@ -4,7 +4,9 @@ module CineworldUk
   module Internal
     # Parses a chunk of HTML to derive movie showing data
     class FilmWithScreeningsParser
+      # css selector for film name
       FILM_NAME_CSS    = 'h3.h1 a[href*=whatson]'
+      # css selector for performances
       PERFORMANCES_CSS = '.schedule .performances > li'
 
       # @param [String] film_html a chunk of html
@@ -29,7 +31,7 @@ module CineworldUk
       def to_a
         performances_doc.map do |node|
           next unless screening_parser_hash(node)
-          film_hash.merge(screening_parser_hash(node))
+          screening_parser_hash(node).merge(film_hash)
         end.compact
       end
 
@@ -40,10 +42,7 @@ module CineworldUk
       end
 
       def film_hash
-        {
-          cinema_id: cinema_id,
-          film_name: film_name
-        }
+        @film_hash ||= { cinema_id: cinema_id, film_name: film_name }
       end
 
       def name_doc

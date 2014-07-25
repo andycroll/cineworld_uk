@@ -3,7 +3,7 @@ module CineworldUk
   class Cinema
     # @return [String] the brand of the cinema
     attr_reader :brand
-    # @return [Integer] the numeric id of the cinema on the Odeon website
+    # @return [Integer] the numeric id of the cinema on the Cineworld website
     attr_reader :id
     # @return [String] the name of the cinema
     attr_reader :name
@@ -27,7 +27,7 @@ module CineworldUk
     # @return [Array<CineworldUk::Cinema>]
     # @example
     #   CineworldUk::Cinema.all
-    #   #=> [<CineworldUk::Cinema brand="Cineworld" name="Brighton" slug="brighton" id=3 url="...">, <CineworldUk::Cinema brand="Cineworld" name="The O2, Greenwich" slug="the-o2-greenwich" url="...">, ...]
+    #   #=> [<CineworldUk::Cinema>, <CineworldUk::Cinema>, ...]
     def self.all
       cinemas_doc.css('#cinemaId option[value]').map do |option|
         new option['value'], option.text
@@ -35,24 +35,31 @@ module CineworldUk
     end
 
     # Find a single cinema
-    # @param [Integer, String] id the cinema id of the format 3/'3' as used on the cineworld.co.uk website
+    # @param [Integer, String] id the cinema id as used on the website
     # @return [CineworldUk::Cinema, nil]
     # @example
     #   CineworldUk::Cinema.find('3')
-    #   #=> <CineworldUk::Cinema brand="Cineworld" name="Brighton" slug="brighton" id=3 url="...">
+    #   #=> <CineworldUk::Cinema brand="Cineworld"
+    #                            name="Brighton"
+    #                            slug="brighton"
+    #                            id=3
+    #                            url="...">
     def self.find(id)
-      id = id.to_i
-      return nil unless id > 0
-
-      all.select { |cinema| cinema.id == id }[0]
+      all.select { |cinema| cinema.id == id.to_i }[0]
     end
 
     # Address of the cinema
     # @return [Hash] of different address parts
     # @example
-    #   cinema = CineworldUk::Cinema.find('Dukes_At_Komedia')
+    #   cinema = CineworldUk::Cinema.find(3)
     #   cinema.adr
-    #   #=> { street_address: '44-47 Gardner Street', extended_address: 'North Laine', locality: 'Brighton', postal_code: 'BN1 1UN', country_name: 'United Kingdom' }
+    #   #=> {
+    #         street_address: '44-47 Gardner Street',
+    #         extended_address: 'North Laine',
+    #         locality: 'Brighton',
+    #         postal_code: 'BN1 1UN',
+    #         country_name: 'United Kingdom'
+    #       }
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def adr
       {
@@ -82,11 +89,11 @@ module CineworldUk
     end
 
     # Films with showings scheduled at this cinema
-    # @return [Array<OdeonUk::Film>]
+    # @return [Array<CineworldUk::Film>]
     # @example
-    #   cinema = OdeonUk::Cinema.find('71')
+    #   cinema = CineworldUk::Cinema.find('71')
     #   cinema.films
-    #   #=> [<OdeonUk::Film name="Iron Man 3">, <OdeonUk::Film name="Star Trek Into Darkness">]
+    #   #=> [<CineworldUk::Film>, <CineworldUk::Film>, ...]
     def films
       Film.at(id)
     end
@@ -143,7 +150,7 @@ module CineworldUk
     # @example
     #   cinema = CineworldUk::Cinema.find(3)
     #   cinema.screenings
-    #   # => [<CineworldUk::Screening film_name="Iron Man 3" cinema_name="Brighton" when="..." variant="...">, <CineworldUk::Screening ...>]
+    #   # => [<CineworldUk::Screening>, <CineworldUk::Screening>, ...]
     def screenings
       Screening.at(id)
     end
