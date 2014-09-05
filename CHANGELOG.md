@@ -1,3 +1,9 @@
+## 2.0.4 _5th September 2014_
+
+Bugfix
+
+- fix the parsing
+
 ## 2.0.3 _5th September 2014_
 
 Bugfix
