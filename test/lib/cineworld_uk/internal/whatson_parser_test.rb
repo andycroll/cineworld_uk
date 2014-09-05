@@ -34,13 +34,13 @@ describe CineworldUk::Internal::WhatsonParser do
         subject.first.must_include('class="span4"') # big poster
         subject.first.must_include('class="span5"') # film info block
         subject.first.must_include('<h3 class="h1">') # title
-        subject.first.must_include('class="date row"') # showing rows
+        subject.first.must_include('class="row day"') # showing rows
 
         subject[1..-1].each do |html|
           html.must_include('class="span2"') # poster
           html.must_include('class="span7"') # film info block
           html.must_include('<h3 class="h1">') # title
-          html.must_include('class="date row"') # showing rows
+          html.must_include('class="row day"') # showing rows
         end
       end
     end

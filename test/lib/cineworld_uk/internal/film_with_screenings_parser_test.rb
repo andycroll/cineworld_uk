@@ -39,7 +39,7 @@ describe CineworldUk::Internal::FilmWithScreeningsParser do
 
       it 'returns the film name' do
         subject.must_be_instance_of(String)
-        subject.must_equal('Dawn of the Planet of the Apes')
+        subject.must_equal('The Boxtrolls')
       end
     end
 
@@ -48,7 +48,7 @@ describe CineworldUk::Internal::FilmWithScreeningsParser do
 
       it 'returns the film name' do
         subject.must_be_instance_of(String)
-        subject.must_equal('How To Train Your Dragon 2')
+        subject.must_equal('Sex Tape')
       end
     end
 
@@ -57,7 +57,7 @@ describe CineworldUk::Internal::FilmWithScreeningsParser do
 
       it 'returns the film name' do
         subject.must_be_instance_of(String)
-        subject.must_equal('The Royal Ballet - Manon')
+        subject.must_equal('The Vatican Museums')
       end
     end
   end

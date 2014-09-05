@@ -40,7 +40,6 @@
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/nivo.slider.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/nivo.slider.default.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/zebra.datepicker.packed.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop-typography.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-desktop.packed.css" media="all" />
         <link type="text/css" rel="stylesheet" href="/cw/assets/css/cineworld-print.packed.css" media="print" />
         <!--[if IE]>
@@ -82,7 +81,7 @@
 
 
 
-        <!-- cinwebprweb13.901e.sys.carrenza.net -->
+        <!-- cinwebprweb14.901e.sys.carrenza.net -->
 
     <!-- Start Visual Website Optimizer Asynchronous Code -->
     <script type='text/javascript'>
@@ -97,7 +96,7 @@
     <!-- End Visual Website Optimizer Asynchronous Code -->
     </head>
 
-    <body class="cineworld gb web browser cinema search">
+    <body class="cineworld gb multiple-cinema-site web browser cinema search">
         <div id="fb-root"></div>
 
     <div class="notification cookie" style="display: none;">
@@ -141,12 +140,16 @@
 
             <div class="navigation" role="navigation">
                     <ul>
-                        <li><a href="/">Home</a></li>
                         <li>
                             <a href="/whatson">What's On</a>
                             <ul>
-                                <li><a href="/events">Bollywood &amp; Event Cinema</a></li>
+                                <li><a href="/whatson?cinema=all">All Films Now Booking</a></li>
+                                <li><a href="/whatson/coming/?cinema=all&amp;date=all">Coming Soon</a></li>
+                                <li><a href="/whatson/future/?cinema=all&amp;date=all">Future Films</a></li>
+                                <li><a href="/whatson/ending/?cinema=all">Ending Soon</a></li>
                                     <li><a href="/whatson/category/junior">Movies for Juniors</a></li>
+                                    <li><a href="/whatson/category/bollywood">Bollywood and South Asian Cinema</a></li>
+                                <li><a href="/events">Theatre, Opera and Event Cinema</a></li>
                             </ul>
                         </li>
                         <li>
@@ -164,11 +167,9 @@
                                 <li><a href="/blog">Cineworld Blog</a></li>
                                 <li><a href="/competitions">Offers &amp; Competitions</a></li>
                                 
-                                    <li><a href="/bargain-tuesdays">Bargain Tuesdays</a></li>
                                     <li><a href="/cineworld-foundation">Cineworld Foundation</a></li>
-                                    <li><a href="/summer-family-films-2014">Summer Family Films</a></li>
-                                    <li><a href="/mega-movies-2014">Mega Movies at Cineworld</a></li>
-                                    <li><a href="/take2">Take 2 Offer</a></li>
+                                    <li><a href="/bargain-tuesdays">Bargain Tuesdays</a></li>
+                                    <li><a href="/take2">Take 2</a></li>
                                     <li><a href="/baskin-robbins">Baskin Robbins at Cineworld</a></li>
                                     <li><a href="/starbucks">Starbucks at Cineworld</a></li>
                             </ul>
@@ -182,12 +183,19 @@
                                 <li><a href="https://www.unlimitedcineworld.com/uk/pages/Login.aspx">Apply for Unlimited</a></li>
                             </ul>
                         </li>
-                        <li><a href="/giftcards">Gifts</a></li>
+                        <li>
+                                <a href="/giftcards">Gifts</a>
+                            <ul>
+                                <li><a href="/shop?category=giftcards">Order Gift Cards by Post</a></li>
+                                <li><a href="/shop?category=egiftcards">Order e-Gift Vouchers by Email</a></li>
+                                <li><a href="https://www.unlimitedcineworld.com/uk/pages/Login.aspx">Send Unlimited as a Gift</a></li>
+                            </ul>
+                        </li>
                         <li>
                             <form action="/search" method="get" class="search" role="search" data-ajax-action="/search/suggestions">
                                 <label class="no-margin inline">
                                     <span class="accessible-hide-html-self">Search</span>
-                                    <input accesskey="s" autocomplete="off" placeholder="Search" type="search" name="q" />
+                                    <input accesskey="s" autocomplete="off" placeholder="Search films and cinemas..." type="search" name="q" />
                                 </label>
                                 <ol class="results"></ol>
                                 <button type="submit">Search</button>
@@ -501,13 +509,5 @@
                 <img alt="dcsimg" id="dcsimg" width="1" height="1" src="http://statse.webtrendslive.com/dcskzgl9m000000w4dyp4senq_3i2w/njs.gif?dcsuri=/nojavascript&amp;WT.js=No&amp;WT.tv=10.2.81&amp;dcssip=cineworld.co.uk&amp;" />
             </noscript>
 
-    <script type="text/javascript">
-//<![CDATA[
-(function() {
-var _analytics_scr = document.createElement('script');
-_analytics_scr.type = 'text/javascript'; _analytics_scr.async = true; _analytics_scr.src = '/_Incapsula_Resource?SWJIYLWA=2977d8d74f63d7f8fedbea018b7a1d05&ns=1';
-var _analytics_elem = document.getElementsByTagName('script')[0]; _analytics_elem.parentNode.insertBefore(_analytics_scr, _analytics_elem);
-})();
-// ]]>
-</script></body>
+    </body>
 </html>

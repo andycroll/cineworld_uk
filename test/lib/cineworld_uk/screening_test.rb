@@ -26,7 +26,7 @@ describe CineworldUk::Screening do
 
     it 'returns correct number of screenings' do
       CineworldUk::Internal::Website.stub :new, website do
-        subject.count.must_equal 333
+        subject.count.must_equal 217
       end
     end
   end
