@@ -1,4 +1,6 @@
 # encoding: UTF-8
+require 'open-uri'
+
 module CineworldUk
   # Internal utility classes: Do not use
   # @api private
@@ -26,7 +28,7 @@ module CineworldUk
       private
 
       def get(path)
-        Net::HTTP.get(URI("http://www.cineworld.co.uk/#{path}"))
+        open("http://www.cineworld.co.uk/#{path}").read
       end
     end
   end
