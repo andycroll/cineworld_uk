@@ -1,3 +1,9 @@
+## 2.0.3 _5th September 2014_
+
+Bugfix
+
+- fix the Website class and use `open-uri`
+
 ## 2.0.2 _25th July 2014_
 
 Bugfix
