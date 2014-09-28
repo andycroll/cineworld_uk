@@ -75,7 +75,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns the address hash' do
@@ -96,7 +96,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
 
       before do
-        website.expect(:information, information_html('bristol'), [4])
+        website.expect(:cinema_information, information_html('bristol'), [4])
       end
 
       it 'returns the address hash' do
@@ -121,7 +121,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns nil' do
@@ -135,7 +135,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
 
       before do
-        website.expect(:information, information_html('bristol'), [4])
+        website.expect(:cinema_information, information_html('bristol'), [4])
       end
 
       it 'returns the second line' do
@@ -183,7 +183,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns the town/city' do
@@ -197,7 +197,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
 
       before do
-        website.expect(:information, information_html('bristol'), [4])
+        website.expect(:cinema_information, information_html('bristol'), [4])
       end
 
       it 'returns the town/city' do
@@ -215,7 +215,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns the post code' do
@@ -233,7 +233,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns the county' do
@@ -247,7 +247,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('4', 'Bristol') }
 
       before do
-        website.expect(:information, information_html('bristol'), [4])
+        website.expect(:cinema_information, information_html('bristol'), [4])
       end
 
       it 'returns nil' do
@@ -275,7 +275,7 @@ describe CineworldUk::Cinema do
       let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
 
       before do
-        website.expect(:information, information_html('brighton'), [3])
+        website.expect(:cinema_information, information_html('brighton'), [3])
       end
 
       it 'returns the street address' do

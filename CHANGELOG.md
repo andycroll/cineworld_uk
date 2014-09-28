@@ -1,3 +1,9 @@
+## HEAD
+
+Bugfix
+
+- fix cinema parsing call to website class
+
 ## 2.0.4 _5th September 2014_
 
 Bugfix

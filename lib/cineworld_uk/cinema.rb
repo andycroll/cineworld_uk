@@ -206,7 +206,8 @@ module CineworldUk
 
     def information_doc
       @information_doc ||= begin
-        Nokogiri::HTML(CineworldUk::Internal::Website.new.information(@id))
+        info = CineworldUk::Internal::Website.new.cinema_information(@id)
+        Nokogiri::HTML(info)
       end
     end
 
