@@ -1,4 +1,4 @@
-## HEAD
+## 2.0.5 _28th September 2014_
 
 Bugfix
 
