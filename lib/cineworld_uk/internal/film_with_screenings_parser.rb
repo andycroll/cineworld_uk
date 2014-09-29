@@ -14,12 +14,6 @@ module CineworldUk
         @film_html = film_html.to_s
       end
 
-      # The cinema id
-      # @return [String]
-      def cinema_id
-        name_doc.to_s.match(/cinema=(\d+)/)[1].to_i
-      end
-
       # The film name
       # @return [String]
       def film_name
@@ -42,7 +36,7 @@ module CineworldUk
       end
 
       def film_hash
-        @film_hash ||= { cinema_id: cinema_id, film_name: film_name }
+        @film_hash ||= { film_name: film_name }
       end
 
       def name_doc

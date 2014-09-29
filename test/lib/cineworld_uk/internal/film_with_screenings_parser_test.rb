@@ -3,34 +3,6 @@ require_relative '../../../test_helper'
 describe CineworldUk::Internal::FilmWithScreeningsParser do
   let(:described_class) { CineworldUk::Internal::FilmWithScreeningsParser }
 
-  describe '#cinema_id' do
-    subject { described_class.new(film_html).cinema_id }
-
-    describe 'passed film html from top of page' do
-      let(:film_html) { read_film_html('brighton/film_first') }
-
-      it 'returns the id' do
-        subject.must_equal(3)
-      end
-    end
-
-    describe 'passed second html from page' do
-      let(:film_html) { read_film_html('brighton/film_second') }
-
-      it 'returns the id' do
-        subject.must_equal(3)
-      end
-    end
-
-    describe 'passed last html from end of page' do
-      let(:film_html) { read_film_html('brighton/film_last') }
-
-      it 'returns the id' do
-        subject.must_equal(3)
-      end
-    end
-  end
-
   describe '#film_name' do
     subject { described_class.new(film_html).film_name }
 

@@ -63,13 +63,16 @@ module CineworldUk
 
     private
 
-    def self.cinema_name_hash(cinema_id)
-      { cinema_name: CineworldUk::Cinema.find(cinema_id).name }
+    def self.cinema_hash(cinema_id)
+      {
+        cinema_id: cinema_id,
+        cinema_name: CineworldUk::Cinema.find(cinema_id).name
+      }
     end
 
     def self.create_for_single_film(html, cinema_id)
       screenings_parser(html).to_a.map do |attributes|
-        new cinema_name_hash(cinema_id).merge(attributes)
+        new cinema_hash(cinema_id).merge(attributes)
       end
     end
 
