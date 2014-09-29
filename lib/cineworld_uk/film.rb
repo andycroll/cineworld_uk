@@ -21,7 +21,7 @@ module CineworldUk
     def self.at(cinema_id)
       whatson_parser(cinema_id).films_with_screenings.map do |html|
         new(screenings_parser(html).film_name)
-      end
+      end.uniq
     end
 
     # Allows sort on objects
