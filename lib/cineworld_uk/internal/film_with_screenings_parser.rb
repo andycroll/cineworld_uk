@@ -44,7 +44,7 @@ module CineworldUk
       end
 
       def film_name_text
-        film_link.empty? ? name_doc : film_link
+        film_link.empty? ? film_name_doc : film_link
       end
 
       def film_name_doc
