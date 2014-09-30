@@ -1,3 +1,13 @@
+## 2.1.0 _30th September 2014_
+
+Feature
+
+- Name Sanitization
+
+Bugfix
+
+- Films with no 'link' on the screenings page now parsed
+
 ## 2.0.5 _28th September 2014_
 
 Bugfix
