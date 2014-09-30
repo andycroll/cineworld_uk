@@ -1,3 +1,9 @@
+## 2.1.1 _30th September 2014_
+
+Bug fix
+
+- pilot error
+
 ## 2.1.0 _30th September 2014_
 
 Feature
