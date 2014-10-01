@@ -32,9 +32,9 @@ module CineworldUk
     # @param [Integer] cinema_id id of the cinema on the website
     # @return [Array<CineworldUk::Screening>]
     def self.at(cinema_id)
-      whatson_parser(cinema_id).films_with_screenings.map do |html|
+      whatson_parser(cinema_id).films_with_screenings.flat_map do |html|
         create_for_single_film(html, cinema_id)
-      end.flatten
+      end
     end
 
     # The date of the screening
