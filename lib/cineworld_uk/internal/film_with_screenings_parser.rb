@@ -23,6 +23,8 @@ module CineworldUk
       # attributes of all the screenings
       # @return [Array<Hash>]
       def to_a
+        return [] unless performances_doc
+
         performances_doc.map do |node|
           next unless screening_parser_hash(node)
           screening_parser_hash(node).merge(film_hash)
