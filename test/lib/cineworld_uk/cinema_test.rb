@@ -299,8 +299,4 @@ describe CineworldUk::Cinema do
   def information_html(filename)
     read_file("../../../fixtures/information/#{filename}.html")
   end
-
-  def parse(html)
-    Nokogiri::HTML(html)
-  end
 end
