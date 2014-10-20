@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 
-## Unreleased
+## 2.1.2 - 2014-10-20
 
 ### Added
 - better title sanitization
