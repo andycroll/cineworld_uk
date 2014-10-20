@@ -118,6 +118,14 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'SciScreen screening' do
+      let(:title) { 'SciScreen: Dallas Buyers Club' }
+
+      it 'removes prefix' do
+        subject.must_equal('Dallas Buyers Club')
+      end
+    end
+
     describe 'special screening' do
       let(:title) { 'Billy Elliot The Musical Live - Special Performance' }
 

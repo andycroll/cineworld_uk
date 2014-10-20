@@ -20,6 +20,7 @@ module CineworldUk
         /\ATake 2 -/,                   # take 2
         ' - Movies for Juniors',        # movies for juniors
         '(IMAX)',                       # IMAX
+        'SciScreen: ',                  # SciScreen
       ]
 
       # regexes and their replacements
