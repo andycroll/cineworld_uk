@@ -24,6 +24,7 @@ module CineworldUk
       # regexes and their replacements
       REPLACE = {
         /Bolshoi Ballet: (.*)/         => 'Bolshoi: ',
+        /ENO: (.*)/i                   => 'English National Opera: ',
         /Guardian Live - (.*)/         => 'The Guardian: ',
         /Met Opera - (.*)/i            => 'Met Opera: ',
         /NT Live: (.*)/                => 'National Theatre: ',

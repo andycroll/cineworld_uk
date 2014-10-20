@@ -54,6 +54,14 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'English National Opera screening' do
+      let(:title) { 'ENO: La Traviata ' }
+
+      it 'removes prefix' do
+        subject.must_equal('English National Opera: La Traviata')
+      end
+    end
+
     describe 'Met Opera screening' do
       let(:title) { 'MET Opera - Le Nozze Di Figaro' }
 
