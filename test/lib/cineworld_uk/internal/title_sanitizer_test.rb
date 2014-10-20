@@ -46,7 +46,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'Bolshoi screeening' do
+    describe 'Bolshoi screening' do
       let(:title) { 'Bolshoi Ballet: The Legend of Love' }
 
       it 'removes prefix' do
@@ -54,7 +54,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'Met Opera screeening' do
+    describe 'Met Opera screening' do
       let(:title) { 'MET Opera - Le Nozze Di Figaro' }
 
       it 'removes prefix' do
@@ -62,7 +62,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'NT Live screeening' do
+    describe 'NT Live screening' do
       let(:title) { 'NT Live Encore: Frankenstein (starring Benedict Cumberbatch)' }
 
       it 'removes prefix' do
@@ -70,7 +70,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'National Theatre screeening' do
+    describe 'National Theatre screening' do
       let(:title) { 'NT Live: Treasure Island' }
 
       it 'removes prefix' do
@@ -78,7 +78,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'National Theatre Encore screeening' do
+    describe 'National Theatre Encore screening' do
       let(:title) { 'NT Live: A Streetcar Named Desire (Young Vic) - Encore' }
 
       it 'removes prefix' do
@@ -86,7 +86,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'ROH screeening' do
+    describe 'ROH screening' do
       let(:title) { 'ROH - I Due Foscari' }
 
       it 'removes prefix' do
@@ -94,7 +94,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'RSC screeening' do
+    describe 'RSC screening' do
       let(:title) { "RSC Live: Love's Labour's Lost" }
 
       it 'removes prefix' do
@@ -102,7 +102,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'special screeening' do
+    describe 'special screening' do
       let(:title) { 'Billy Elliot The Musical Live - Special Performance' }
 
       it 'removes prefix' do
@@ -110,7 +110,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
-    describe 'Take 2 screeening' do
+    describe 'Take 2 screening' do
       let(:title) { 'Take 2 - Boyhood' }
 
       it 'removes prefix' do
