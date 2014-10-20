@@ -19,6 +19,7 @@ module CineworldUk
         '- Special Performance',        # special performance
         /\ATake 2 -/,                   # take 2
         ' - Movies for Juniors',        # movies for juniors
+        '(IMAX)',                       # IMAX
       ]
 
       # regexes and their replacements

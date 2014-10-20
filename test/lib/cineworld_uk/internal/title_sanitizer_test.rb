@@ -62,6 +62,14 @@ describe CineworldUk::Internal::TitleSanitizer do
       end
     end
 
+    describe 'with IMAX' do
+      let(:title) { '(IMAX) Fury' }
+
+      it 'removes prefix' do
+        subject.must_equal('Fury')
+      end
+    end
+
     describe 'Met Opera screening' do
       let(:title) { 'MET Opera - Le Nozze Di Figaro' }
 
