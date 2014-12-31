@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## HEAD
+
+### Fixed
+- better title sanitization of:
+  - movies for juniors
+  - additional languages: Punjabi, Turkish
+  - Q&A
 
 ## 2.1.2 - 2014-10-20
 
