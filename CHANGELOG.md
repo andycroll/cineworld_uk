@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## HEAD
+## 2.1.3 - 2014-12-31
 
 ### Fixed
 - better title sanitization of:
