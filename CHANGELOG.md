@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## HEAD
+
+### Added
+- title sanitation
+  - movies for juniors
+  - singalong
+
 ## 2.1.3 - 2014-12-31
 
 ### Fixed

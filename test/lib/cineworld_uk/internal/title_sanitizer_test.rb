@@ -141,5 +141,13 @@ describe CineworldUk::Internal::TitleSanitizer do
         subject.must_equal('Boyhood')
       end
     end
+
+    describe 'singalong and movies for juniors' do
+      let(:title) { 'Frozen Sing-Along - Movies For Juniors' }
+
+      it 'removes prefix' do
+        subject.must_equal('Frozen')
+      end
+    end
   end
 end

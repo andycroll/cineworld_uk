@@ -24,6 +24,8 @@ module CineworldUk
         '(IMAX)',                             # IMAX
         'SciScreen: ',                        # SciScreen
         ' - Live Q and A',                    # Live Q&A
+        /(\s+\-\s+)?MOVIES FOR JUNIORS/i,     # movies for juniors
+        /\bsing\-?a\-?long\b/i,               # singalong
       ]
 
       # regexes and their replacements
