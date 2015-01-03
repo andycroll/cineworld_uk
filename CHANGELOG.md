@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## HEAD
+## 2.1.4 - 2015-01-03
 
 ### Added
 - title sanitation
