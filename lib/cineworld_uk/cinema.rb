@@ -131,6 +131,7 @@ module CineworldUk
     #   #=> 'BN2 5UF'
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def postal_code
+      return unless last_adr_line_array[-2..-1]
       last_adr_line_array[-2..-1] * ' '
     end
 
@@ -185,7 +186,12 @@ module CineworldUk
     end
 
     def adr_parts
-      @parts ||= adr_content.split('<br>')[-2].split(',').map(&:strip)
+      @parts ||= begin
+        return [] unless adr_content
+        out = adr_content.split('<br>')[-2]
+        return [] unless out
+        out.split(',').map(&:strip)
+      end
     end
 
     def adr_in_london?
@@ -197,6 +203,7 @@ module CineworldUk
     end
 
     def last_adr_line_array
+      return [] unless adr_parts[-1]
       adr_parts[-1].split(' ')
     end
 
