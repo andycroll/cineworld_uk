@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.5 - 2015-02-18
+
+- [FIXED] more defensive against closing cinemas
+
 ## 2.1.4 - 2015-01-03
 
 ### Added
