@@ -20,7 +20,7 @@ module CineworldUk
       @id    = id.to_i
       @name  = name.gsub('London - ', '').gsub(' - ', ': ')
       @slug  = @name.downcase.gsub(/[^0-9a-z ]/, '').gsub(/\s+/, '-')
-      @url   = "http://www.cineworld.co.uk/cinemas/#{@id}/information"
+      @url   = "http://www.cineworld.co.uk/whatson?cinema=#{@id}"
     end
 
     # Return basic cinema information for all cinemas

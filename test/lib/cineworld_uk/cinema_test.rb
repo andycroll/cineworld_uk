@@ -286,6 +286,18 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#url' do
+    subject { cinema.url }
+
+    describe '(brighton)' do
+      let(:cinema) { CineworldUk::Cinema.new('3', 'Brighton') }
+
+      it 'returns the what on url' do
+        subject.must_equal 'http://www.cineworld.co.uk/whatson?cinema=3'
+      end
+    end
+  end
+
   private
 
   def read_file(filepath)
