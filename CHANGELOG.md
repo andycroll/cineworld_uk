@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.6 - 2015-05-06
+
+- [FIXED] whats on pge is the cinema url
+
 ## 2.1.5 - 2015-02-18
 
 - [FIXED] more defensive against closing cinemas
