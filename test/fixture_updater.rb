@@ -1,64 +1,51 @@
 require File.expand_path('../../lib/cineworld_uk.rb', __FILE__)
 
-def fixture(name)
-  File.expand_path("../fixtures/#{name}.html", __FILE__)
+def js_fixture(name)
+  File.expand_path("../fixtures/#{name}.json", __FILE__)
 end
 
-File.open(fixture('cinemas'), 'w') do |file|
-  puts '* Cinemas'
-  file.write CineworldUk::Internal::Website.new.cinemas
+# def fixture(name)
+#   File.expand_path("../fixtures/#{name}.html", __FILE__)
+# end
+
+api = CineworldUk::Internal::ApiResponse.new
+
+File.open(js_fixture('api/cinema-list'), 'w') do |file|
+  puts '* API Cinema List'
+  file.write api.cinema_list
 end
 
-# BRIGHTON
-
-File.open(fixture('information/brighton'), 'w') do |file|
-  puts '* Brighton Information'
-  file.write CineworldUk::Internal::Website.new.cinema_information(3)
+File.open(js_fixture('api/cinema-detail-3'), 'w') do |file|
+  puts '* API Cinema Detail Brighton'
+  file.write api.cinema_detail(3)
 end
 
-File.open(fixture('whatson/brighton'), 'w') do |file|
-  puts '* Brighton Whats On'
-  file.write CineworldUk::Internal::Website.new.whatson(3)
+File.open(js_fixture('api/cinema-detail-96'), 'w') do |file|
+  puts '* API Cinema Detail Birmingham NEC'
+  file.write api.cinema_detail(96)
 end
 
-parser = CineworldUk::Internal::WhatsonParser.new(3)
-
-File.open(fixture('whatson/brighton/film_first'), 'w') do |file|
-  puts '* Brighton Main Film'
-  file.write parser.films_with_screenings[0]
+File.open(js_fixture('api/cinema-detail-21'), 'w') do |file|
+  puts '* API Cinema Detail Edinburgh'
+  file.write api.cinema_detail(21)
 end
 
-File.open(fixture('whatson/brighton/film_second'), 'w') do |file|
-  puts '* Brighton Second Film'
-  file.write parser.films_with_screenings[1]
+File.open(js_fixture('api/cinema-detail-10'), 'w') do |file|
+  puts '* API Cinema Detail Chelsea'
+  file.write api.cinema_detail(10)
 end
 
-File.open(fixture('whatson/brighton/film_last'), 'w') do |file|
-  puts '* Brighton Last Film'
-  file.write parser.films_with_screenings[-1]
+File.open(js_fixture('api/film-list'), 'w') do |file|
+  puts '* API Film List'
+  file.write api.film_list
 end
 
-# BRISTOL
-
-File.open(fixture('information/bristol'), 'w') do |file|
-  puts '* Bristol Information'
-  file.write CineworldUk::Internal::Website.new.cinema_information(4)
+File.open(js_fixture('api/film-list-comingsoon'), 'w') do |file|
+  puts '* API Film List Coming Soon'
+  file.write api.film_list_comingsoon
 end
 
-# O2
-
-parser = CineworldUk::Internal::WhatsonParser.new(79)
-
-File.open(fixture('whatson/the-o2-greenwich/film_first'), 'w') do |file|
-  puts '* The O2 Greenwich Main Film'
-  file.write parser.films_with_screenings[0]
-end
-
-# GLASGOW IMAX
-
-parser = CineworldUk::Internal::WhatsonParser.new(88)
-
-File.open(fixture('whatson/glasgow-imax-at-gsc/film_first'), 'w') do |file|
-  puts '* Glasgow IMAX Main Film'
-  file.write parser.films_with_screenings[0]
+File.open(js_fixture('api/performances-tomorrow-3'), 'w') do |file|
+  puts '* API Performances in Brighton Tomorrow'
+  file.write api.performances(3, Date.today + 1)
 end
