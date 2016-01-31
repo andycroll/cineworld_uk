@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Use iOS api as a data source
+- Parse address from iOS api
 
 ## 2.1.6 - 2015-05-06
 
