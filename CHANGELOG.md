@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Use iOS api as a data source
 - Parse address from iOS api
+- Use the `cinebase` gem to fix an common API across all gems
 
 ## 2.1.6 - 2015-05-06
 

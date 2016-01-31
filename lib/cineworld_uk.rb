@@ -1,3 +1,4 @@
+require 'cinebase'
 require 'nokogiri'
 require 'tzinfo'
 require 'tzinfo/data'
