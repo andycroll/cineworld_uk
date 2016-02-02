@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Remove website as data source
 - Use iOS api as a data source: cinemas
+- Remove film concept
 - Parse address from iOS api
 - Use the `cinebase` gem to fix an common API across all gems
 
