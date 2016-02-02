@@ -50,7 +50,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Bolshoi Ballet: The Legend of Love' }
 
       it 'removes prefix' do
-        subject.must_equal('Bolshoi: The Legend of Love')
+        subject.must_equal('Bolshoi Ballet: The Legend of Love')
       end
     end
 
