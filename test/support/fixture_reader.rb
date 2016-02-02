@@ -13,6 +13,14 @@ module Support
       read_file("#{FIXTURE_PATH}/cinema-detail-#{num}.json")
     end
 
+    def dates_json(num)
+      read_file("#{FIXTURE_PATH}/dates-#{num}.json")
+    end
+
+    def fake_dates_tomorrow_json
+      { "dates": [tomorrow_s] }.to_json
+    end
+
     def film_list_comingsoon_json
       read_file("#{FIXTURE_PATH}/film-list-comingsoon.json")
     end
@@ -27,6 +35,10 @@ module Support
 
     def read_file(filepath)
       File.read(File.expand_path(filepath, __FILE__))
+    end
+
+    def tomorrow_s
+      (Date.today + 1).strftime('%Y%m%d')
     end
   end
 end

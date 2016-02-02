@@ -49,3 +49,8 @@ File.open(js_fixture('api/performances-tomorrow-3'), 'w') do |file|
   puts '* API Performances in Brighton Tomorrow'
   file.write api.performances(3, Date.today + 1)
 end
+
+File.open(js_fixture('api/dates-3'), 'w') do |file|
+  puts '* API Dates Brighton Tomorrow'
+  file.write api.dates(3)
+end

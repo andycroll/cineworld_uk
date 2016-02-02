@@ -8,6 +8,10 @@ module CineworldUk
         response('cinema/list', full: true)
       end
 
+      def dates(id)
+        response('dates', cinema: id)
+      end
+
       def cinema_detail(id)
         response('cinema/detail', cinema: id)
       end

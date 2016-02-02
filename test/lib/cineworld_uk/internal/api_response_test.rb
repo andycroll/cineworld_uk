@@ -29,6 +29,16 @@ describe CineworldUk::Internal::ApiResponse do
     end
   end
 
+  describe '#dates(cinema_id)' do
+    subject { described_class.new.dates(3) }
+
+    before { stub_get("dates?cinema=3&#{standard}", dates_json(3)) }
+
+    it 'returns a string' do
+      subject.class.must_equal String
+    end
+  end
+
   describe '#film_list' do
     subject { described_class.new.film_list }
 
@@ -56,7 +66,7 @@ describe CineworldUk::Internal::ApiResponse do
     subject { described_class.new.performances(3, Date.today + 1) }
 
     before do
-      stub_get("performances?cinema=3&date=20160201&#{standard}",
+      stub_get("performances?cinema=3&date=#{tomorrow_s}&#{standard}",
                performances_tomorrow_json(3))
     end
 
