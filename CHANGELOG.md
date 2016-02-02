@@ -3,20 +3,27 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Changed
+
+### Removed
 - Remove website as data source
-- Use iOS api as a data source: cinemas
 - Remove film concept
-- Parse address from iOS api
+
+### Added
+- Use iOS api as a data source: cinemas
+
+### Changed
+- Parse cinema address from iOS api
 - Use the `cinebase` gem to fix an common API across all gems
 
 ## 2.1.6 - 2015-05-06
 
-- [FIXED] whats on pge is the cinema url
+# Fixed
+- whats on page is the cinema url
 
 ## 2.1.5 - 2015-02-18
 
-- [FIXED] more defensive against closing cinemas
+# Fixed
+- more defensive against closing cinemas
 
 ## 2.1.4 - 2015-01-03
 
