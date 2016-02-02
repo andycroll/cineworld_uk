@@ -5,7 +5,7 @@ module CineworldUk
       module Api
         # Parses a string to derive address
         class CinemaAddress
-          # @param [String] text the address string
+          # @param [Integer] id the cinema id
           # @return [CineworldUk::Internal::Parser::Api::CinemaAddress]
           def initialize(id)
             @id = id
