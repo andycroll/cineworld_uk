@@ -136,15 +136,18 @@ module CineworldUk
 
     private
 
+    # @api private
     def self.api
       @api ||= CineworldUk::Internal::ApiResponse.new
     end
 
+    # @api private
     def self.cinema_list_json
       @cinema_list_json ||=
         JSON.parse(api.cinema_list)['cinemas']
     end
 
+    # @api private
     def self.id_names_hash
       @id_names_hash ||= cinema_list_json.each_with_object({}) do |hash, result|
         result[hash['id']] =

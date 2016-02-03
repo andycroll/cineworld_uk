@@ -11,8 +11,8 @@ module CineworldUk
             @id = id
           end
 
-          # @return [Hash] contains :street_address, :extended_address, :locality,
-          # :postal_code, :country
+          # @return [Hash] contains :street_address, :extended_address,
+          # :locality, :postal_code, :country
           # @note Uses the address naming from http://microformats.org/wiki/adr
           def to_hash
             {

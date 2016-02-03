@@ -2,28 +2,46 @@ require 'uri'
 require 'net/http'
 
 module CineworldUk
+  # @api private
   module Internal
+    # @api private
     class ApiResponse
+      # Basic cinema list of ids/names
+      # @return [String] JSON encoded
       def cinema_list
         response('cinema/list', full: true)
       end
 
+      # List of dates on which there are screening for this cinema id
+      # @param [Fixnum] id the id of the cinema
+      # @return [String] JSON encoded
       def dates(id)
         response('dates', cinema: id)
       end
 
+      # Detail about a specific cinema
+      # @param [Fixnum] id the id of the cinema
+      # @return [String] JSON encoded
       def cinema_detail(id)
         response('cinema/detail', cinema: id)
       end
 
+      # List of all currently showing films
+      # @return [String] JSON encoded
       def film_list
         response('film/list', full: true)
       end
 
+      # List of all upcoming films
+      # @return [String] JSON encoded
       def film_list_comingsoon
         response('film/list/comingsoon', full: true)
       end
 
+      # All screenings from a specific cinema on a specific date
+      # @param [Fixnum] cinema_id the id of the cinema
+      # @param [Date] date a single date in the future
+      # @return [String] JSON encoded
       def performances(cinema_id, date)
         response('performances', cinema: cinema_id,
                                  date: date.strftime('%Y%m%d'))
@@ -31,6 +49,8 @@ module CineworldUk
 
       private
 
+      # @api private
+      # mixin the default hash
       DEFAULTS = { key: 'ios', territory: 'GB' }
 
       def fetch(uri, limit = 10)
