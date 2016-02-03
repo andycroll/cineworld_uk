@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'webmock'
 
-  spec.add_runtime_dependency 'cinebase', '~> 1.1.0'
+  spec.add_runtime_dependency 'cinebase', '~> 2.0.0'
   spec.add_runtime_dependency 'nokogiri'
   spec.add_runtime_dependency 'tzinfo'
   spec.add_runtime_dependency 'tzinfo-data'
