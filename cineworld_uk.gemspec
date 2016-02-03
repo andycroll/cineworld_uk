@@ -24,5 +24,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock'
 
   spec.add_runtime_dependency 'cinebase', '~> 3.0.0'
-  spec.add_runtime_dependency 'nokogiri'
 end

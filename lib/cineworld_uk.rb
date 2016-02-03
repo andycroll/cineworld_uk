@@ -1,7 +1,6 @@
 require 'json'
 
 require 'cinebase'
-require 'nokogiri'
 
 require_relative './cineworld_uk/version'
 
