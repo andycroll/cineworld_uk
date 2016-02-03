@@ -1,7 +1,5 @@
 require 'cinebase'
 require 'nokogiri'
-require 'tzinfo'
-require 'tzinfo/data'
 
 require_relative './cineworld_uk/version'
 
