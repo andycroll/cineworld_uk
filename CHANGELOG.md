@@ -2,14 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## 3.0.0 - 2016-02-03
+
+The cinebase standardisation release.
 
 ### Removed
 - Remove website as data source
 - Remove film concept
 
 ### Added
-- Use iOS api as a data source: cinemas
+- Use iOS api as a data source
 
 ### Changed
 - Parse cinema address from iOS api
