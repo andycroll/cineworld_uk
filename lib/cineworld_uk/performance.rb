@@ -11,8 +11,6 @@ module CineworldUk
     #   @return [String] 2d or 3d
     # @!attribute [r] film_name
     #   @return [String] the film name
-    # @!attribute [r] starting_at
-    #   @return [Time] time of showing in UTC
 
     # @!method initialize(options)
     #   @param [Hash] options options hash
@@ -21,6 +19,7 @@ module CineworldUk
     #   @option options [String] :cinema_id website id of the cinema
     #   @option options [String] :dimension ('2d') dimension of the screening
     #   @option options [String] :film_name name of the film
+    #   @option options [Time] :starting_at listed start time of the performance
 
     # All currently listed films showing at a cinema
     # @param [Integer] cinema_id id of the cinema on the website
