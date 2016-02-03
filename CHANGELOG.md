@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Parse cinema address from iOS api
+- Screening becomes Performance in cinebase 2.0.0
+- Parse performances & films iOS API
 - Use the `cinebase` gem to fix an common API across all gems
 
 ## 2.1.6 - 2015-05-06

@@ -1,38 +1,45 @@
 require_relative '../../test_helper'
+require_relative '../../support/fixture_reader'
 
-describe CineworldUk::Screening do
-  let(:website) { Minitest::Mock.new }
+describe CineworldUk::Performance do
+  include Support::FixtureReader
 
-  before do
-    WebMock.disable_net_connect!
-  end
+  let(:described_class) { CineworldUk::Performance }
+  let(:api_response) { Minitest::Mock.new }
+
+  before { WebMock.disable_net_connect! }
 
   describe '.at(cinema_id)' do
-    subject { CineworldUk::Screening.at(3) }
+    subject { described_class.at(3) }
 
     before do
-      website.expect(:whatson, whatson_html('brighton'), [3])
-      website.expect(:cinemas, cinemas_html)
+      api_response.expect(:cinema_list, cinema_list_json)
+      api_response.expect(:film_list, film_list_json)
+      api_response.expect(:film_list_comingsoon, film_list_comingsoon_json)
+      api_response.expect(:dates, fake_dates_tomorrow_json, [3])
+      api_response.expect(:performances,
+                          performances_tomorrow_json(3),
+                          [3, Date.today + 1])
     end
 
-    it 'returns an array of screenings' do
-      CineworldUk::Internal::Website.stub :new, website do
+    it 'returns an array of performances' do
+      CineworldUk::Internal::ApiResponse.stub :new, api_response do
         subject.must_be_instance_of(Array)
-        subject.each do |screening|
-          screening.must_be_instance_of(CineworldUk::Screening)
+        subject.each do |performance|
+          performance.must_be_instance_of(described_class)
         end
       end
     end
 
-    it 'returns correct number of screenings' do
-      CineworldUk::Internal::Website.stub :new, website do
-        subject.count.must_equal 217
+    it 'returns at least a sensible number' do
+      CineworldUk::Internal::ApiResponse.stub :new, api_response do
+        subject.count.must_be :>, 5
       end
     end
   end
 
   describe '.new' do
-    subject { CineworldUk::Screening.new(options) }
+    subject { described_class.new(options) }
 
     describe 'simple' do
       let(:options) do
@@ -40,7 +47,7 @@ describe CineworldUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.utc(2013, 9, 12, 11, 0)
+          starting_at: Time.utc(2013, 9, 12, 11, 0)
         }
       end
 
@@ -64,11 +71,11 @@ describe CineworldUk::Screening do
         dimension:   '3d',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0)
+        starting_at: Time.utc(2013, 9, 12, 11, 0)
       }
     end
 
-    subject { CineworldUk::Screening.new(options).dimension }
+    subject { described_class.new(options).dimension }
 
     it 'returns 2d or 3d' do
       subject.must_be_instance_of(String)
@@ -76,8 +83,8 @@ describe CineworldUk::Screening do
     end
   end
 
-  describe '#showing_at' do
-    subject { CineworldUk::Screening.new(options).showing_at }
+  describe '#starting_at' do
+    subject { described_class.new(options).starting_at }
 
     describe 'with utc time' do
       let(:options) do
@@ -85,7 +92,7 @@ describe CineworldUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.utc(2013, 9, 12, 11, 0)
+          starting_at: Time.utc(2013, 9, 12, 11, 0)
         }
       end
 
@@ -101,13 +108,14 @@ describe CineworldUk::Screening do
           film_name:   'Iron Man 3',
           cinema_id:   3,
           cinema_name: 'Cineworld Brighton',
-          time:        Time.parse('2013-09-12 11:00')
+          starting_at: Time.new(2013, 9, 12, 11, 0)
         }
       end
 
       it 'returns UTC time' do
         subject.must_be_instance_of Time
         subject.must_equal Time.utc(2013, 9, 12, 10, 0)
+        subject.utc?.must_equal(true)
       end
     end
   end
@@ -118,11 +126,11 @@ describe CineworldUk::Screening do
         film_name:   'Iron Man 3',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0)
+        starting_at: Time.utc(2013, 9, 12, 11, 0)
       }
     end
 
-    subject { CineworldUk::Screening.new(options).showing_on }
+    subject { described_class.new(options).showing_on }
 
     it 'returns date of showing' do
       subject.must_be_instance_of(Date)
@@ -131,42 +139,22 @@ describe CineworldUk::Screening do
   end
 
   describe '#variant' do
-    subject { CineworldUk::Screening.new(options).variant }
+    subject { described_class.new(options).variant }
 
     let(:options) do
       {
         film_name:   'Iron Man 3',
         cinema_id:   3,
         cinema_name: 'Cineworld Brighton',
-        time:        Time.utc(2013, 9, 12, 11, 0),
+        starting_at: Time.utc(2013, 9, 12, 11, 0),
         variant:     ['Kids']
       }
     end
 
     it 'is an alphabetically ordered array of lower-cased strings' do
       subject.must_be_instance_of Array
-      subject.each do |tag|
-        tag.must_be_instance_of String
-      end
+      subject.each { |element| element.must_be_instance_of String }
       subject.must_equal %w(kids)
     end
-  end
-
-  private
-
-  def cinemas_html
-    read_file('../../../fixtures/cinemas.html')
-  end
-
-  def information_html(filename)
-    read_file("../../../fixtures/information/#{filename}.html")
-  end
-
-  def read_file(filepath)
-    File.read(File.expand_path(filepath, __FILE__))
-  end
-
-  def whatson_html(filename)
-    read_file("../../../fixtures/whatson/#{filename}.html")
   end
 end
