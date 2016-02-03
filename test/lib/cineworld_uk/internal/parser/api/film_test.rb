@@ -15,7 +15,7 @@ describe CineworldUk::Internal::Parser::Api::Film do
     end
 
     it 'is the film id from the data' do
-      subject.must_equal(data['id'])
+      subject.must_equal(data['edi'])
     end
   end
 

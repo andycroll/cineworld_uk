@@ -12,7 +12,7 @@ module CineworldUk
           # @return [ CineworldUk::Internal::Parser::Api::Film]
           def initialize(data)
             @data = data
-            @id = @data['id']
+            @id = @data['edi']
           end
 
           # Do you need your 3D glasses?
@@ -33,7 +33,7 @@ module CineworldUk
           def variant
             [
               @data['title'].match(/Autism Friendly/i) ? 'autism_friendly' : nil,
-              @data['format'].match(/IMAX/i) ? 'imax' : nil,
+              @data.fetch('format' || '').match(/IMAX/i) ? 'imax' : nil,
               @data['title'].match(/Movies for Juniors/i) ? 'kids' : nil,
               @data['title'].match(/Unlimited Screening/i) ? 'members' : nil,
               @data['title'].match(/Q (and|&) A/i) ? 'q&a' : nil
