@@ -7,6 +7,9 @@ describe CineworldUk::Internal::Parser::Api::Film do
   let(:described_class) { CineworldUk::Internal::Parser::Api::Film }
   let(:data) { random_film }
 
+  before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
+
   describe '#id' do
     subject { described_class.new(data).id }
 

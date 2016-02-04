@@ -8,6 +8,7 @@ describe CineworldUk::Performance do
   let(:api_response) { Minitest::Mock.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '.at(cinema_id)' do
     subject { described_class.at(3) }

@@ -8,6 +8,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
   let(:api_response) { Minitest::Mock.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '#to_hash' do
     subject { described_class.new(id).to_hash }

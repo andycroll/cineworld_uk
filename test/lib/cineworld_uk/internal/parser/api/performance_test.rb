@@ -8,6 +8,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
   let(:data) { random_performance }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '#booking_url' do
     subject { described_class.new(data).booking_url }

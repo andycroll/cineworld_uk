@@ -8,6 +8,7 @@ describe CineworldUk::Cinema do
   let(:api_response) { Minitest::Mock.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   describe '.all' do
     subject { described_class.all }

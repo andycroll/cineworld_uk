@@ -8,6 +8,7 @@ describe CineworldUk::Internal::Parser::Api::FilmLookup do
   let(:api_response) { Minitest::Mock.new }
 
   before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
 
   before do
     api_response.expect(:film_list, film_list_json)
