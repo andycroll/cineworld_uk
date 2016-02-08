@@ -3,6 +3,7 @@ module CineworldUk
   module Internal
     module Parser
       module Api
+        # A day of performances, a parser for a single API call
         class PerformancesByDay
           def initialize(cinema_id, date, film_lookup)
             @cinema_id = cinema_id
@@ -10,6 +11,9 @@ module CineworldUk
             @film_lookup = film_lookup
           end
 
+          # Details of performance from single day
+          # @return [Array<Hash>] :booking_url, :dimension, :film_name,
+          # :starting_at, :variant
           def to_a
             performances.map do |performance|
               film = @film_lookup[performance.film_id]
