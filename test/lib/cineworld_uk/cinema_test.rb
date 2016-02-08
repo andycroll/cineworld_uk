@@ -56,6 +56,31 @@ describe CineworldUk::Cinema do
     end
   end
 
+  describe '#address' do
+    subject { described_class.new(id).address }
+
+    before do
+      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+    end
+
+    describe 'Brighton (3)' do
+      let(:id) { 3 }
+
+      it 'returns the address hash' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.must_equal(
+            street_address: 'Brighton Marina Village',
+            extended_address: nil,
+            locality: 'Brighton',
+            region: nil,
+            postal_code: 'BN2 5UF',
+            country: 'United Kingdom'
+          )
+        end
+      end
+    end
+  end
+
   describe '#extended_address' do
     subject { described_class.new(id).extended_address }
 
