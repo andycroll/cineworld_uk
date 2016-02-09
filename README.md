@@ -2,10 +2,11 @@
 
 A simple gem to parse the [Cineworld UK](http://cineworld.co.uk) cinema times (using their iOS API) and spit out useful formatted info.
 
-[![Gem Version](https://badge.fury.io/rb/cineworld_uk.svg)](http://badge.fury.io/rb/cineworld_uk)
-[![Code Climate](https://codeclimate.com/github/andycroll/cineworld_uk.png)](https://codeclimate.com/github/andycroll/cineworld_uk)
-[![Build Status](https://travis-ci.org/andycroll/cineworld_uk.png?branch=master)](https://travis-ci.org/andycroll/cineworld_uk)
-[![Inline docs](http://inch-ci.org/github/andycroll/cineworld_uk.png)](http://inch-ci.org/github/andycroll/cineworld_uk)
+[![Gem Version](https://badge.fury.io/rb/cineworld_uk.svg)](https://badge.fury.io/rb/cineworld_uk)
+[![Code Climate](https://codeclimate.com/github/andycroll/cineworld_uk/badges/gpa.svg)](https://codeclimate.com/github/andycroll/cineworld_uk)
+[![Test Coverage](https://codeclimate.com/github/andycroll/cineworld_uk/badges/coverage.svg)](https://codeclimate.com/github/andycroll/cineworld_uk/coverage)
+[![Build Status](https://travis-ci.org/andycroll/cineworld_uk.svg?branch=master)](https://travis-ci.org/andycroll/cineworld_uk)
+[![Inline docs](http://inch-ci.org/github/andycroll/cineworld_uk.svg?branch=master)](http://inch-ci.org/github/andycroll/cineworld_uk)
 
 ## Installation
 
