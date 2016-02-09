@@ -134,18 +134,20 @@ module CineworldUk
       "http://www.cineworld.co.uk/cinemas/#{@id}/information"
     end
 
-    private
+    # private
 
     # @api private
     def self.api
       @api ||= CineworldUk::Internal::ApiResponse.new
     end
+    private_class_method :api
 
     # @api private
     def self.cinema_list_json
       @cinema_list_json ||=
         JSON.parse(api.cinema_list)['cinemas']
     end
+    private_class_method :cinema_list_json
 
     # @api private
     def self.id_names_hash
@@ -154,5 +156,6 @@ module CineworldUk
           hash['name'].gsub('London - ', '').gsub(' - ', ': ')
       end
     end
+    private_class_method :id_names_hash
   end
 end

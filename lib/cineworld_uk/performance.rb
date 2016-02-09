@@ -44,12 +44,13 @@ module CineworldUk
     #   The kinds of screening (IMAX, kids, baby, senior)
     #   @return <Array[String]>
 
-    private
+    # private
 
     # @api private
     def self.api
       @api ||= Internal::ApiResponse.new
     end
+    private_class_method :api
 
     # @api private
     def self.cinema_hash(cinema_id)
@@ -58,6 +59,7 @@ module CineworldUk
         cinema_name: CineworldUk::Cinema.new(cinema_id).name
       }
     end
+    private_class_method :cinema_hash
 
     # @api private
     def self.dates(cinema_id)
@@ -65,14 +67,17 @@ module CineworldUk
         Date.strptime(str, '%Y%m%d')
       end
     end
+    private_class_method :dates
 
     # @api private
     def self.films
       @films ||= Internal::Parser::Api::FilmLookup.new.to_hash
     end
+    private_class_method :films
 
     def self.performances_on(cinema_id, date)
       Internal::Parser::Api::PerformancesByDay.new(cinema_id, date, films).to_a
     end
+    private_class_method :performances_on
   end
 end
