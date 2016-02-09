@@ -1,4 +1,3 @@
-require 'uri'
 require 'net/http'
 
 module CineworldUk
