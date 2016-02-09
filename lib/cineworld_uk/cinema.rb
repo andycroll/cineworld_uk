@@ -17,6 +17,16 @@ module CineworldUk
       id_names_hash.map { |id, _| new id }
     end
 
+    # @api private
+    # called from instance methods
+    # @return [Hash<Integer => String>]
+    def self.id_names_hash
+      @id_names_hash ||= cinema_list_json.each_with_object({}) do |hash, result|
+        result[hash['id']] =
+          hash['name'].gsub('London - ', '').gsub(' - ', ': ')
+      end
+    end
+
     # @!method address
     #   Address of the cinema
     #   @return [Hash] of different address parts
@@ -148,14 +158,5 @@ module CineworldUk
         JSON.parse(api.cinema_list)['cinemas']
     end
     private_class_method :cinema_list_json
-
-    # @api private
-    def self.id_names_hash
-      @id_names_hash ||= cinema_list_json.each_with_object({}) do |hash, result|
-        result[hash['id']] =
-          hash['name'].gsub('London - ', '').gsub(' - ', ': ')
-      end
-    end
-    private_class_method :id_names_hash
   end
 end
