@@ -2,12 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## 3.0.2 - 2016-02-09
 
 ### Added
 - private class methods on `Performance` & `Cinema`
 - improved documentation
 
+### Changed
+- readme badges
+- code climate coverage
+- non-commercial license is AGPL
 
 ## 3.0.1 - 2016-02-03
 
