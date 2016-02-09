@@ -5,6 +5,7 @@ module CineworldUk
     #   @return [Integer] the numeric id of the cinema on the Cineworld website
 
     # @!method initialize(id)
+    #   Constructor
     #   @param [Integer, String] id cinema id
     #   @return [CineworldUk::Cinema]
 

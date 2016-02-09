@@ -6,6 +6,7 @@ module CineworldUk
     class TitleSanitizer < Cinebase::TitleSanitizer
 
       # @!method initialize(title)
+      #   Constructor
       #   @param [String] title a film title
       #   @return [CineworldUk::Internal::TitleSanitizer]
 

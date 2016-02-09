@@ -13,6 +13,7 @@ module CineworldUk
     #   @return [String] the film name
 
     # @!method initialize(options)
+    #   Constructor
     #   @param [Hash] options options hash
     #   @option options [String] :booking_url (nil) buying url for the screening
     #   @option options [String] :cinema_name name of the cinema
