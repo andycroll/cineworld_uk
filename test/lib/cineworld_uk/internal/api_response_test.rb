@@ -7,6 +7,9 @@ describe CineworldUk::Internal::ApiResponse do
   let(:described_class) { CineworldUk::Internal::ApiResponse }
   let(:standard) { 'key=ios&territory=GB' }
 
+  before { WebMock.disable_net_connect! }
+  after { WebMock.allow_net_connect! }
+
   describe '#cinema_list' do
     subject { described_class.new.cinema_list }
 
