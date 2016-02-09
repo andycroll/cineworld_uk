@@ -18,7 +18,7 @@ module CineworldUk
           # Do you need your 3D glasses?
           # @return [String] either '2d' or '3d'
           def dimension
-            @data['format'].match(/3D/i) ? '3d' : '2d'
+            @data['format'] =~ /3D/i ? '3d' : '2d'
           end
 
           # Sanitized film name
@@ -32,11 +32,11 @@ module CineworldUk
           # @return [Array<String>] or an empty array
           def variant
             [
-              @data['title'].match(/Autism Friendly/i) ? 'autism_friendly' : nil,
-              @data.fetch('format' || '').match(/IMAX/i) ? 'imax' : nil,
-              @data['title'].match(/Movies for Juniors/i) ? 'kids' : nil,
-              @data['title'].match(/Unlimited Screening/i) ? 'members' : nil,
-              @data['title'].match(/Q (and|&) A/i) ? 'q&a' : nil
+              @data['title'] =~ /Autism Friendly/i ? 'autism_friendly' : nil,
+              @data.fetch('format' || '') =~ /IMAX/i ? 'imax' : nil,
+              @data['title'] =~ /Movies for Juniors/i ? 'kids' : nil,
+              @data['title'] =~ /Unlimited Screening/i ? 'members' : nil,
+              @data['title'] =~ /Q (and|&) A/i ? 'q&a' : nil
             ].compact
           end
         end

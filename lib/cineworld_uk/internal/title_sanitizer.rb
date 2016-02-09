@@ -4,7 +4,6 @@ module CineworldUk
   module Internal
     # Sanitize and standardize film titles
     class TitleSanitizer < Cinebase::TitleSanitizer
-
       # @!method initialize(title)
       #   Constructor
       #   @param [String] title a film title
@@ -64,7 +63,6 @@ module CineworldUk
           /San Francisco Ballets (.*)/       => 'San Francisco Ballet: '
         }
       end
-
     end
   end
 end
