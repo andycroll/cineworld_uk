@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Cineworld cinema data}
   spec.summary       = %q{Parses cinema and showing data from the cineworld.co.uk website}
   spec.homepage      = "https://github.com/andycroll/cineworld_uk"
-  spec.license       = "MIT"
+  spec.licenses      = %w(AGPL MIT)
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
