@@ -1,6 +1,6 @@
 # Ruby interface for http://www.cineworld.co.uk
-# @version 3.0.2
+# @version 3.0.3
 module CineworldUk
   # Gem version
-  VERSION = '3.0.2'.freeze
+  VERSION = '3.0.3'.freeze
 end
