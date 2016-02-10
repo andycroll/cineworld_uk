@@ -11,7 +11,7 @@ describe CineworldUk::Performance do
   after { WebMock.allow_net_connect! }
 
   describe '.at(cinema_id)' do
-    subject { described_class.at(3) }
+    subject { described_class.at(cinema_id) }
 
     before do
       api_response.expect(:cinema_list, cinema_list_json)
@@ -23,18 +23,41 @@ describe CineworldUk::Performance do
                           [3, Date.today + 1])
     end
 
-    it 'returns an array of performances' do
-      CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.must_be_instance_of(Array)
-        subject.each do |performance|
-          performance.must_be_instance_of(described_class)
+    describe 'called with integer' do
+      let(:cinema_id) { 3 }
+
+      it 'returns an array of performances' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.must_be_instance_of(Array)
+          subject.each do |performance|
+            performance.must_be_instance_of(described_class)
+          end
+        end
+      end
+
+      it 'returns at least a sensible number' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.count.must_be :>, 5
         end
       end
     end
 
-    it 'returns at least a sensible number' do
-      CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.count.must_be :>, 5
+    describe 'called with string' do
+      let(:cinema_id) { '3' }
+
+      it 'returns an array of performances' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.must_be_instance_of(Array)
+          subject.each do |performance|
+            performance.must_be_instance_of(described_class)
+          end
+        end
+      end
+
+      it 'returns at least a sensible number' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.count.must_be :>, 5
+        end
       end
     end
   end

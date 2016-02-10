@@ -26,6 +26,7 @@ module CineworldUk
     # @param [Integer] cinema_id id of the cinema on the website
     # @return [Array<CineworldUk::Screening>]
     def self.at(cinema_id)
+      cinema_id = cinema_id.to_i
       dates(cinema_id).flat_map do |date|
         performances_on(cinema_id, date).flat_map do |p|
           new cinema_hash(cinema_id).merge(p)

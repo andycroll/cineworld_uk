@@ -114,6 +114,16 @@ describe CineworldUk::Cinema do
       end
     end
 
+    describe 'simple name (Brighton) called with String' do
+      let(:id) { '3' }
+
+      it 'returns the brand in the name' do
+        CineworldUk::Internal::ApiResponse.stub :new, api_response do
+          subject.must_equal 'Cineworld Brighton'
+        end
+      end
+    end
+
     describe 'complex name (Glasgow IMAX)' do
       let(:id) { 88 }
 

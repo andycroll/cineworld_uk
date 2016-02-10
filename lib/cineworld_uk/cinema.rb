@@ -4,10 +4,12 @@ module CineworldUk
     # @!attribute [r] id
     #   @return [Integer] the numeric id of the cinema on the Cineworld website
 
-    # @!method initialize(id)
-    #   Constructor
-    #   @param [Integer, String] id cinema id
-    #   @return [CineworldUk::Cinema]
+    # Constructor
+    # @param [Integer, String] id cinema id
+    # @return [CineworldUk::Cinema]
+    def initialize(id)
+      @id = id.to_i
+    end
 
     # Return basic cinema information for all cinemas
     # @return [Array<CineworldUk::Cinema>]
