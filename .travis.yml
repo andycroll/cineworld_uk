@@ -1,7 +1,10 @@
 language: ruby
 rvm:
-  - 2.2.4
-  - 2.3.0
+- 2.2.4
+- 2.3.0
 addons:
   code_climate:
     repo_token: 52f46a80ce5154b027b4ee2f37d8abd7f428e1615a7bdbdfd5d35efd81586c34
+notifications:
+  slack:
+    secure: Cz8KU8SOjTgtMhU7F9JrlkoxNfvy/gon7rSzcIbMvQZKHwttmaMHrZlX0a+vrKlcVcLMGNzEJFNChNNrnhso4yYPhUwfF8XXbwvC7IwFwOQjx7Nw9GTRP6wZLsLPYg0zcOLlEZBBG3LNfy20D+PnT9/DiuxLcwr7Rb0/ClhHUnE=
