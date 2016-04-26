@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## HEAD
+## 3.0.4 - 2016-04-26
 
 ### Fixed
 - Unforgiving use of #fetch in film for API
