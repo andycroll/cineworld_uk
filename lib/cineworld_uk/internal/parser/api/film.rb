@@ -33,7 +33,7 @@ module CineworldUk
           def variant
             [
               @data['title'] =~ /Autism Friendly/i ? 'autism_friendly' : nil,
-              @data.fetch('format' || '') =~ /IMAX/i ? 'imax' : nil,
+              @data.fetch('format', '') =~ /IMAX/i ? 'imax' : nil,
               @data['title'] =~ /Movies for Juniors/i ? 'kids' : nil,
               @data['title'] =~ /Unlimited Screening/i ? 'members' : nil,
               @data['title'] =~ /Q (and|&) A/i ? 'q&a' : nil
