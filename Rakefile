@@ -13,6 +13,7 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+desc 'console'
 # http://erniemiller.org/2014/02/05/7-lines-every-gems-rakefile-should-have/
 task :console do
   require 'irb'
@@ -22,6 +23,7 @@ task :console do
   IRB.start
 end
 
+desc 'Recreate test fixtures'
 task :fixtures do
   require 'cineworld_uk'
 
