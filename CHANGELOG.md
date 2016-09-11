@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.0 - 2016-09-11
+
+### Fixed
+- Use of www2 domain, set to HTTPS and www
+
+### Added
+- Tests against live server, using `rake live`
+
 ## 3.0.4 - 2016-04-26
 
 ### Fixed
