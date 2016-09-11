@@ -81,7 +81,7 @@ describe CineworldUk::Internal::ApiResponse do
   private
 
   def stub_get(site_path, response_body)
-    url      = "http://www2.cineworld.co.uk/api/#{site_path}"
+    url      = "https://www.cineworld.co.uk/api/#{site_path}"
     response = { status: 200, body: response_body, headers: {} }
     stub_request(:get, url).to_return(response)
   end

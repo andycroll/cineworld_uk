@@ -63,9 +63,9 @@ module CineworldUk
       end
 
       def response(path, hash)
-        uri = URI::HTTP.build(host:  'www2.cineworld.co.uk',
-                              path:  "/api/#{path}",
-                              query: URI.encode_www_form(hash.merge(DEFAULTS)))
+        uri = URI::HTTPS.build(host:  'www.cineworld.co.uk',
+                               path:  "/api/#{path}",
+                               query: URI.encode_www_form(hash.merge(DEFAULTS)))
         fetch(uri)
       end
     end

@@ -26,7 +26,7 @@ describe CineworldUk::Cinema do
 
     it 'returns the correctly sized array' do
       CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.size.must_equal(88)
+        subject.size.must_equal(96)
       end
     end
   end

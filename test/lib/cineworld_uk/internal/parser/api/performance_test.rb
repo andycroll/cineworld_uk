@@ -14,7 +14,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).booking_url }
 
     it 'should be a url on the cineworld website' do
-      subject.must_match(%r{cineworld.co.uk/booking\?})
+      subject.must_match(%r{cineworld.co.uk/booking/\d+/\d+})
     end
   end
 
