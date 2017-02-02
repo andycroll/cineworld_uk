@@ -2,6 +2,7 @@
 
 A simple gem to parse the [Cineworld UK](http://cineworld.co.uk) cinema times (using their iOS API) and spit out useful formatted info.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/185fb726d5a140928535244e3e0f436e)](https://www.codacy.com/app/andycroll/cineworld_uk?utm_source=github.com&utm_medium=referral&utm_content=andycroll/cineworld_uk&utm_campaign=badger)
 [![Gem Version](https://badge.fury.io/rb/cineworld_uk.svg)](https://badge.fury.io/rb/cineworld_uk)
 [![Code Climate](https://codeclimate.com/github/andycroll/cineworld_uk/badges/gpa.svg)](https://codeclimate.com/github/andycroll/cineworld_uk)
 [![Test Coverage](https://codeclimate.com/github/andycroll/cineworld_uk/badges/coverage.svg)](https://codeclimate.com/github/andycroll/cineworld_uk/coverage)
