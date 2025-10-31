@@ -14,7 +14,7 @@ describe CineworldUk::Internal::Parser::Api::Film do
     subject { described_class.new(data).id }
 
     it 'is an integer' do
-      subject.must_be_instance_of(Fixnum)
+      subject.must_be_instance_of(Integer)
     end
 
     it 'is the film id from the data' do

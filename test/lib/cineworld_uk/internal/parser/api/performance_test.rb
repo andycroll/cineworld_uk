@@ -22,7 +22,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).film_id }
 
     it 'should be a six digit integer' do
-      subject.must_be_instance_of(Fixnum)
+      subject.must_be_instance_of(Integer)
       subject.must_be :>, 10_000
     end
   end

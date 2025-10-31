@@ -22,7 +22,7 @@ describe CineworldUk::Internal::Parser::Api::FilmLookup do
       CineworldUk::Internal::ApiResponse.stub :new, api_response do
         subject.must_be_instance_of(Hash)
         subject.each do |key, value|
-          key.must_be_instance_of(Fixnum)
+          key.must_be_instance_of(Integer)
           value.must_be_instance_of(CineworldUk::Internal::Parser::Api::Film)
         end
       end
