@@ -13,31 +13,26 @@ module CineworldUk
 
           # @return [String] direct booking url
           def booking_url
-            "http://www.cineworld.co.uk#{@data['url']}"
+            @data['bookingLink']
           end
 
           # @return [Integer] id for film lookup
           def film_id
-            @data['film']
+            @data['filmId']
           end
 
           # @return [DateTime] in local time
           def starting_at
-            Time.strptime(time_str, '%Y%m%d %H:%S')
+            Time.parse(@data['eventDateTime'])
           end
 
           # @return [Array<String>] includes audio described & subtitled
           def variant
+            attrs = @data['attributeIds'] || []
             [
-              @data['ad'] ? 'audio_described' : nil,
-              @data['subtitled'] ? 'subtitled' : nil
+              attrs.include?('audio-described') ? 'audio_described' : nil,
+              attrs.include?('subbed') ? 'subtitled' : nil
             ].compact
-          end
-
-          private
-
-          def time_str
-            "#{@data['date']} #{@data['time']}"
           end
         end
       end

@@ -14,16 +14,15 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).booking_url }
 
     it 'should be a url on the cineworld website' do
-      subject.must_match(%r{cineworld.co.uk/booking/\d+/\d+})
+      subject.must_match(%r{cineworld.co.uk})
     end
   end
 
   describe '#film_id' do
     subject { described_class.new(data).film_id }
 
-    it 'should be a six digit integer' do
-      subject.must_be_instance_of(Integer)
-      subject.must_be :>, 10_000
+    it 'should be a string' do
+      subject.must_be_instance_of(String)
     end
   end
 
@@ -38,16 +37,16 @@ describe CineworldUk::Internal::Parser::Api::Performance do
   describe '#variant' do
     subject { described_class.new(data).variant }
 
-    describe 'has "ad" => true' do
-      let(:data) { random_performance.merge('ad' => true) }
+    describe 'has "audio-described" in attributeIds' do
+      let(:data) { random_performance.merge('attributeIds' => ['audio-described']) }
 
       it 'includes "audio_described"' do
         subject.must_include('audio_described')
       end
     end
 
-    describe 'has "ss" => true' do
-      let(:data) { random_performance.merge('subtitled' => true) }
+    describe 'has "subbed" in attributeIds' do
+      let(:data) { random_performance.merge('attributeIds' => ['subbed']) }
 
       it 'includes "subtitled"' do
         subject.must_include('subtitled')
@@ -58,6 +57,6 @@ describe CineworldUk::Internal::Parser::Api::Performance do
   private
 
   def random_performance
-    JSON.parse(performances_tomorrow_json(3))['performances'].sample
+    JSON.parse(performances_tomorrow_json(14))['body']['events'].sample
   end
 end

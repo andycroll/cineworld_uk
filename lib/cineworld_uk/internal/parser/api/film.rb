@@ -12,31 +12,33 @@ module CineworldUk
           # @return [ CineworldUk::Internal::Parser::Api::Film]
           def initialize(data)
             @data = data
-            @id = @data['edi']
+            @id = @data['id']
           end
 
           # Do you need your 3D glasses?
           # @return [String] either '2d' or '3d'
           def dimension
-            @data['format'] =~ /3D/i ? '3d' : '2d'
+            @data['attributeIds']&.include?('3d') ? '3d' : '2d'
           end
 
           # Sanitized film name
           # @return [String]
           def name
-            TitleSanitizer.new(@data['originalTitle'] || '').sanitized
+            title = @data['name'] || ''
+            TitleSanitizer.new(title).sanitized
           end
 
           # List of strings representing different kinds of performance, such
           # as autism, kids, imax, members or q&a
           # @return [Array<String>] or an empty array
           def variant
+            attrs = @data['attributeIds'] || []
             [
-              @data['title'] =~ /Autism Friendly/i ? 'autism_friendly' : nil,
-              @data.fetch('format', '') =~ /IMAX/i ? 'imax' : nil,
-              @data['title'] =~ /Movies for Juniors/i ? 'kids' : nil,
-              @data['title'] =~ /Unlimited Screening/i ? 'members' : nil,
-              @data['title'] =~ /Q (and|&) A/i ? 'q&a' : nil
+              attrs.include?('autism-friendly') ? 'autism_friendly' : nil,
+              attrs.include?('imax') ? 'imax' : nil,
+              attrs.include?('junior') ? 'kids' : nil,
+              attrs.include?('unlimited-screening') ? 'members' : nil,
+              attrs.include?('qa') ? 'q&a' : nil
             ].compact
           end
         end
