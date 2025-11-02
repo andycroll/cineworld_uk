@@ -15,16 +15,14 @@ describe CineworldUk::Performance do
 
     before do
       api_response.expect(:cinema_list, cinema_list_json)
-      api_response.expect(:film_list, film_list_json)
-      api_response.expect(:film_list_comingsoon, film_list_comingsoon_json)
-      api_response.expect(:dates, fake_dates_tomorrow_json, [3])
-      api_response.expect(:performances,
-                          performances_tomorrow_json(3),
-                          [3, Date.today + 1])
+      4.times { api_response.expect(:dates, fake_dates_tomorrow_json, [14]) }
+      4.times { api_response.expect(:performances,
+                          performances_tomorrow_json(14),
+                          [14, Date.today + 1]) }
     end
 
     describe 'called with integer' do
-      let(:cinema_id) { 3 }
+      let(:cinema_id) { 14 }
 
       it 'returns an array of performances' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -43,7 +41,7 @@ describe CineworldUk::Performance do
     end
 
     describe 'called with string' do
-      let(:cinema_id) { '3' }
+      let(:cinema_id) { '14' }
 
       it 'returns an array of performances' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do

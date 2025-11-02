@@ -13,12 +13,12 @@ describe CineworldUk::Internal::Parser::Api::Film do
   describe '#id' do
     subject { described_class.new(data).id }
 
-    it 'is an integer' do
-      subject.must_be_instance_of(Integer)
+    it 'is a string' do
+      subject.must_be_instance_of(String)
     end
 
     it 'is the film id from the data' do
-      subject.must_equal(data['edi'])
+      subject.must_equal(data['id'])
     end
   end
 
@@ -33,32 +33,32 @@ describe CineworldUk::Internal::Parser::Api::Film do
       subject.must_match(/[23]d/)
     end
 
-    describe 'hash["format"] is "2D"' do
-      let(:data) { random_film.merge('format' => '2D') }
+    describe 'attributeIds includes "2d"' do
+      let(:data) { random_film.merge('attributeIds' => ['2d']) }
 
       it 'is 2d' do
         subject.must_equal('2d')
       end
     end
 
-    describe 'hash["format"] is "3D"' do
-      let(:data) { random_film.merge('format' => '3D') }
+    describe 'attributeIds includes "3d"' do
+      let(:data) { random_film.merge('attributeIds' => ['3d']) }
 
       it 'is 3d' do
         subject.must_equal('3d')
       end
     end
 
-    describe 'hash["format"] is "IMAX"' do
-      let(:data) { random_film.merge('format' => 'IMAX') }
+    describe 'attributeIds with imax but not 3d' do
+      let(:data) { random_film.merge('attributeIds' => ['imax', '2d']) }
 
       it 'is 2d' do
         subject.must_equal('2d')
       end
     end
 
-    describe 'hash["format"] is "IMAX3D"' do
-      let(:data) { random_film.merge('format' => 'IMAX3D') }
+    describe 'attributeIds with imax and 3d' do
+      let(:data) { random_film.merge('attributeIds' => ['imax', '3d']) }
 
       it 'is 3d' do
         subject.must_equal('3d')
@@ -73,19 +73,18 @@ describe CineworldUk::Internal::Parser::Api::Film do
       subject.must_be_instance_of(String)
     end
 
-    describe 'hash["originalTitle"] is different' do
+    describe 'film name' do
       let(:data) do
-        random_film.merge('originalTitle' => 'Original Title',
-                          'title' => 'Title')
+        random_film.merge('name' => 'Test Film Name')
       end
 
-      it 'is the original title' do
-        subject.must_equal('Original Title')
+      it 'is the film name' do
+        subject.must_equal('Test Film Name')
       end
     end
 
-    describe 'original title is unsanitized' do
-      let(:data) { random_film.merge('originalTitle' => 'ROH: Something') }
+    describe 'film name is unsanitized' do
+      let(:data) { random_film.merge('name' => 'ROH: Something') }
 
       it 'is sanitized' do
         subject.must_equal('Royal Opera House: Something')
@@ -102,9 +101,9 @@ describe CineworldUk::Internal::Parser::Api::Film do
       subject.sort.must_equal(subject)
     end
 
-    describe 'hash["title"] includes "Movies For Juniors"' do
+    describe 'attributeIds includes "junior"' do
       let(:data) do
-        random_film.merge('title' => 'Movies For Juniors - Something')
+        random_film.merge('attributeIds' => ['junior'])
       end
 
       it 'includes "kids"' do
@@ -112,9 +111,9 @@ describe CineworldUk::Internal::Parser::Api::Film do
       end
     end
 
-    describe 'hash["format"] is "IMAX3D"' do
+    describe 'attributeIds includes "imax"' do
       let(:data) do
-        random_film.merge('title' => 'nothing', 'format' => 'IMAX3D')
+        random_film.merge('attributeIds' => ['imax', '3d'])
       end
 
       it 'includes "imax"' do
@@ -122,19 +121,9 @@ describe CineworldUk::Internal::Parser::Api::Film do
       end
     end
 
-    describe 'hash["format"] is "IMAX"' do
+    describe 'attributeIds includes "unlimited-screening"' do
       let(:data) do
-        random_film.merge('format' => 'IMAX')
-      end
-
-      it 'includes "imax"' do
-        subject.must_include('imax')
-      end
-    end
-
-    describe 'hash["title"] includes "Unlimited Screening"' do
-      let(:data) do
-        random_film.merge('title' => 'Something Unlimited Screening')
+        random_film.merge('attributeIds' => ['unlimited-screening'])
       end
 
       it 'includes "members"' do
@@ -142,9 +131,9 @@ describe CineworldUk::Internal::Parser::Api::Film do
       end
     end
 
-    describe 'hash["title"] includes "with Live Q And A"' do
+    describe 'attributeIds includes "qa"' do
       let(:data) do
-        random_film.merge('title' => 'Something With Live Q And A')
+        random_film.merge('attributeIds' => ['qa'])
       end
 
       it 'includes "q&a"' do
@@ -154,8 +143,7 @@ describe CineworldUk::Internal::Parser::Api::Film do
 
     describe 'combination' do
       let(:data) do
-        random_film.merge('format' => 'IMAX',
-                          'title' => 'Something Unlimited Screening')
+        random_film.merge('attributeIds' => ['imax', 'unlimited-screening'])
       end
 
       it 'includes "members"' do
@@ -167,6 +155,6 @@ describe CineworldUk::Internal::Parser::Api::Film do
   private
 
   def random_film
-    JSON.parse(film_list_json)['films'].sample
+    JSON.parse(performances_tomorrow_json(14))['body']['films'].sample
   end
 end

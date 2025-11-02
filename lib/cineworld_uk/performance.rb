@@ -65,21 +65,47 @@ module CineworldUk
 
     # @api private
     def self.dates(cinema_id)
-      @dates ||= JSON.parse(api.dates(cinema_id))['dates'].map do |str|
-        Date.strptime(str, '%Y%m%d')
+      @dates ||= JSON.parse(api.dates(cinema_id))['body']['dates'].map do |str|
+        Date.strptime(str, '%Y-%m-%d')
       end
     end
     private_class_method :dates
 
     # @api private
-    def self.films
-      @films ||= Internal::Parser::Api::FilmLookup.new.to_hash
-    end
-    private_class_method :films
-
     def self.performances_on(cinema_id, date)
-      Internal::Parser::Api::PerformancesByDay.new(cinema_id, date, films).to_a
+      response = JSON.parse(api.performances(cinema_id, date))
+      films_hash = build_films_hash(response['body']['films'])
+      events = response['body']['events']
+
+      events.map do |event_data|
+        performance = Internal::Parser::Api::Performance.new(event_data)
+        film = films_hash[performance.film_id]
+
+        {
+          booking_url: performance.booking_url,
+          dimension: film.dimension,
+          film_name: film.name,
+          starting_at: utc(performance.starting_at),
+          variant: (performance.variant + film.variant).sort
+        }
+      end
     end
     private_class_method :performances_on
+
+    # @api private
+    def self.build_films_hash(films_array)
+      films_array.each_with_object({}) do |film_data, hash|
+        film = Internal::Parser::Api::Film.new(film_data)
+        hash[film_data['id']] = film
+      end
+    end
+    private_class_method :build_films_hash
+
+    # @api private
+    def self.utc(time)
+      return time if time.utc?
+      TZInfo::Timezone.get('Europe/London').local_to_utc(time)
+    end
+    private_class_method :utc
   end
 end
