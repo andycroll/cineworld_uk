@@ -26,7 +26,7 @@ describe CineworldUk::Cinema do
 
     it 'returns the correctly sized array' do
       CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.size.must_equal(96)
+        subject.size.must_equal(87)
       end
     end
   end
@@ -35,11 +35,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).adr }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -60,11 +60,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).address }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -85,11 +85,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).extended_address }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -105,7 +105,7 @@ describe CineworldUk::Cinema do
     before { api_response.expect(:cinema_list, cinema_list_json) }
 
     describe 'simple name (Brighton)' do
-      let(:id) { 3 }
+      let(:id) { 14 }
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -115,7 +115,7 @@ describe CineworldUk::Cinema do
     end
 
     describe 'simple name (Brighton) called with String' do
-      let(:id) { '3' }
+      let(:id) { '14' }
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -124,12 +124,12 @@ describe CineworldUk::Cinema do
       end
     end
 
-    describe 'complex name (Glasgow IMAX)' do
+    describe 'complex name (Glasgow Silverburn)' do
       let(:id) { 88 }
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Cineworld Glasgow: IMAX at GSC'
+          subject.must_equal 'Cineworld Glasgow: Silverburn'
         end
       end
     end
@@ -139,11 +139,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).locality }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the town/city' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -152,12 +152,12 @@ describe CineworldUk::Cinema do
       end
     end
 
-    describe 'London - 10 (Chelsea)' do
-      let(:id) { 10 }
+    describe 'London - Leicester Square (103)' do
+      let(:id) { 103 }
 
       it 'returns borough of London' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Chelsea'
+          subject.must_equal 'London'
         end
       end
     end
@@ -167,11 +167,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).postal_code }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the post code' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -185,11 +185,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).region }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'no region - Brighton (3)' do
-      let(:id) { 3 }
+    describe 'no region - Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the empty string is none exists' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -198,8 +198,8 @@ describe CineworldUk::Cinema do
       end
     end
 
-    describe 'London - Chelsea (10)' do
-      let(:id) { 10 }
+    describe 'London - Leicester Square (103)' do
+      let(:id) { 103 }
 
       it 'returns "London"' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -213,11 +213,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).street_address }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the first line of the Address' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -231,11 +231,11 @@ describe CineworldUk::Cinema do
     subject { described_class.new(id).url }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
-    describe 'Brighton (3)' do
-      let(:id) { 3 }
+    describe 'Brighton (14)' do
+      let(:id) { 14 }
 
       it 'returns the url' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do

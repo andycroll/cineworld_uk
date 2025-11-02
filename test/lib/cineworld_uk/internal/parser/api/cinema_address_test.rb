@@ -14,11 +14,11 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
     subject { described_class.new(id).to_hash }
 
     before do
-      api_response.expect(:cinema_detail, cinema_detail_json(id), [id])
+      api_response.expect(:cinema_list, cinema_list_json)
     end
 
     describe 'passed simple (Brighton)' do
-      let(:id) { 3 }
+      let(:id) { 14 }
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -33,7 +33,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
     end
 
     describe 'passed three line (NEC)' do
-      let(:id) { 96 }
+      let(:id) { 90 }
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -48,7 +48,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
     end
 
     describe 'passed three line (Edinburgh)' do
-      let(:id) { 21 }
+      let(:id) { 37 }
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
@@ -62,16 +62,16 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
       end
     end
 
-    describe 'passed three line (Chelsea)' do
-      let(:id) { 10 }
+    describe 'passed two line (Leicester Square)' do
+      let(:id) { 103 }
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(street_address:   '279 Kings Road',
+          subject.must_equal(street_address:   '5-6 Leicester Square',
                              extended_address: nil,
-                             locality:         'Chelsea',
+                             locality:         'London',
                              region:           'London',
-                             postal_code:      'SW3 5EW',
+                             postal_code:      'WC2H 7NA',
                              country:          'United Kingdom')
         end
       end

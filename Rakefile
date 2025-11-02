@@ -14,7 +14,7 @@ Rake::TestTask.new do |t|
 end
 
 Rake::TestTask.new do |t|
-  t.libs << 'lib/picturehouse_uk'
+  t.libs << 'lib/cineworld_uk'
   t.name = :live
   t.test_files = FileList[
     'test/live/*_test.rb'
@@ -47,44 +47,14 @@ task :fixtures do
     file.write api.cinema_list
   end
 
-  File.open(js_fixture('api/cinema-detail-3'), 'w') do |file|
-    puts '* API Cinema Detail Brighton'
-    file.write api.cinema_detail(3)
-  end
-
-  File.open(js_fixture('api/cinema-detail-96'), 'w') do |file|
-    puts '* API Cinema Detail Birmingham NEC'
-    file.write api.cinema_detail(96)
-  end
-
-  File.open(js_fixture('api/cinema-detail-21'), 'w') do |file|
-    puts '* API Cinema Detail Edinburgh'
-    file.write api.cinema_detail(21)
-  end
-
-  File.open(js_fixture('api/cinema-detail-10'), 'w') do |file|
-    puts '* API Cinema Detail Chelsea'
-    file.write api.cinema_detail(10)
-  end
-
-  File.open(js_fixture('api/film-list'), 'w') do |file|
-    puts '* API Film List'
-    file.write api.film_list
-  end
-
-  File.open(js_fixture('api/film-list-comingsoon'), 'w') do |file|
-    puts '* API Film List Coming Soon'
-    file.write api.film_list_comingsoon
-  end
-
-  File.open(js_fixture('api/performances-tomorrow-3'), 'w') do |file|
+  File.open(js_fixture('api/performances-tomorrow-14'), 'w') do |file|
     puts '* API Performances in Brighton Tomorrow'
-    file.write api.performances(3, Date.today + 1)
+    file.write api.performances(14, Date.today + 1)
   end
 
-  File.open(js_fixture('api/dates-3'), 'w') do |file|
+  File.open(js_fixture('api/dates-14'), 'w') do |file|
     puts '* API Dates Brighton Tomorrow'
-    file.write api.dates(3)
+    file.write api.dates(14)
   end
 end
 

@@ -25,8 +25,9 @@ module CineworldUk
     # @return [Hash<Integer => String>]
     def self.id_names_hash
       @id_names_hash ||= cinema_list_json.each_with_object({}) do |hash, result|
-        result[hash['id']] =
-          hash['name'].gsub('London - ', '').gsub(' - ', ': ')
+        name = hash['displayName']
+        id_key = hash['id'].to_i
+        result[id_key] = name.gsub('London - ', '').gsub(' - ', ': ') if name
       end
     end
 
@@ -158,7 +159,7 @@ module CineworldUk
     # @api private
     def self.cinema_list_json
       @cinema_list_json ||=
-        JSON.parse(api.cinema_list)['cinemas']
+        JSON.parse(api.cinema_list)['body']['cinemas']
     end
     private_class_method :cinema_list_json
   end

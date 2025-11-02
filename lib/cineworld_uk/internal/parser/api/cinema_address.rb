@@ -27,52 +27,50 @@ module CineworldUk
 
           private
 
-          def adr_array
-            @adr_array ||=
-              cinema_detail_hash['address'].split(',').map(&:strip).compact
+          def address_info
+            @address_info ||= cinema_hash['addressInfo'] || {}
           end
 
-          def cinema_detail_hash
-            @cinema_detail_hash ||= JSON.parse(cinema_detail_response)['cinema']
+          def cinema_hash
+            @cinema_hash ||= begin
+              cinemas = JSON.parse(cinema_list_response)['body']['cinemas']
+              formatted_id = @id.to_s.rjust(3, '0')
+              cinemas.find { |c| c['id'] == formatted_id } || {}
+            end
           end
 
-          def cinema_detail_response
-            @cinema_detail_response ||=
-              CineworldUk::Internal::ApiResponse.new.cinema_detail(@id)
-          end
-
-          def ext_array
-            @ext_array ||= adr_array[1..-1]
+          def cinema_list_response
+            @cinema_list_response ||=
+              CineworldUk::Internal::ApiResponse.new.cinema_list
           end
 
           def extended_address
-            return nil if ext_array.count == 1
-            london? ? nil : ext_array[0]
-          end
+            addr2 = address_info['address2']
+            addr3 = address_info['address3']
 
-          def final
-            @final ||= ext_array.last
+            return nil if london?
+            addr2 || addr3
           end
 
           def locality
-            return ext_array[0] if ext_array.count == 1
-            london? ? ext_array[0] : ext_array[1]
+            address_info['city']
           end
 
           def london?
-            final == 'London'
+            address_info['city'] == 'London' ||
+            cinema_hash['displayName']&.start_with?('London')
           end
 
           def postal_code
-            cinema_detail_hash['postcode']
+            address_info['postalCode']
           end
 
           def region
-            'London' if london?
+            address_info['state'] || ('London' if london?)
           end
 
           def street_address
-            adr_array[0]
+            address_info['address1']
           end
         end
       end
