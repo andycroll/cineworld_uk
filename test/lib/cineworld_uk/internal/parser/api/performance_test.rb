@@ -14,7 +14,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).booking_url }
 
     it 'should be a url on the cineworld website' do
-      subject.must_match(%r{cineworld.co.uk})
+      _(subject).must_match(%r{cineworld.co.uk})
     end
   end
 
@@ -22,7 +22,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).film_id }
 
     it 'should be a string' do
-      subject.must_be_instance_of(String)
+      _(subject).must_be_instance_of(String)
     end
   end
 
@@ -30,7 +30,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
     subject { described_class.new(data).starting_at }
 
     it 'should be a time' do
-      subject.must_be_instance_of(Time)
+      _(subject).must_be_instance_of(Time)
     end
   end
 
@@ -41,7 +41,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
       let(:data) { random_performance.merge('attributeIds' => ['audio-described']) }
 
       it 'includes "audio_described"' do
-        subject.must_include('audio_described')
+        _(subject).must_include('audio_described')
       end
     end
 
@@ -49,7 +49,7 @@ describe CineworldUk::Internal::Parser::Api::Performance do
       let(:data) { random_performance.merge('attributeIds' => ['subbed']) }
 
       it 'includes "subtitled"' do
-        subject.must_include('subtitled')
+        _(subject).must_include('subtitled')
       end
     end
   end

@@ -26,16 +26,16 @@ describe CineworldUk::Performance do
 
       it 'returns an array of performances' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_be_instance_of(Array)
+          _(subject).must_be_instance_of(Array)
           subject.each do |performance|
-            performance.must_be_instance_of(described_class)
+            _(performance).must_be_instance_of(described_class)
           end
         end
       end
 
       it 'returns at least a sensible number' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.count.must_be :>, 5
+          _(subject.count).must_be :>, 5
         end
       end
     end
@@ -45,16 +45,16 @@ describe CineworldUk::Performance do
 
       it 'returns an array of performances' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_be_instance_of(Array)
+          _(subject).must_be_instance_of(Array)
           subject.each do |performance|
-            performance.must_be_instance_of(described_class)
+            _(performance).must_be_instance_of(described_class)
           end
         end
       end
 
       it 'returns at least a sensible number' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.count.must_be :>, 5
+          _(subject.count).must_be :>, 5
         end
       end
     end
@@ -74,14 +74,14 @@ describe CineworldUk::Performance do
       end
 
       it 'sets cinema name and film name' do
-        subject.film_name.must_equal 'Iron Man 3'
-        subject.cinema_name.must_equal 'Cineworld Brighton'
+        _(subject.film_name).must_equal 'Iron Man 3'
+        _(subject.cinema_name).must_equal 'Cineworld Brighton'
       end
 
       it 'booking url, dimension & varient are set to defaults' do
-        subject.booking_url.must_equal nil
-        subject.dimension.must_equal '2d'
-        subject.variant.must_equal []
+        _(subject.booking_url).must_be_nil
+        _(subject.dimension).must_equal '2d'
+        _(subject.variant).must_equal []
       end
     end
   end
@@ -100,8 +100,8 @@ describe CineworldUk::Performance do
     subject { described_class.new(options).dimension }
 
     it 'returns 2d or 3d' do
-      subject.must_be_instance_of(String)
-      subject.must_equal '3d'
+      _(subject).must_be_instance_of(String)
+      _(subject).must_equal '3d'
     end
   end
 
@@ -119,8 +119,8 @@ describe CineworldUk::Performance do
       end
 
       it 'returns UTC time' do
-        subject.must_be_instance_of Time
-        subject.must_equal Time.utc(2013, 9, 12, 11, 0)
+        _(subject).must_be_instance_of Time
+        _(subject).must_equal Time.utc(2013, 9, 12, 11, 0)
       end
     end
 
@@ -135,9 +135,9 @@ describe CineworldUk::Performance do
       end
 
       it 'returns UTC time' do
-        subject.must_be_instance_of Time
-        subject.must_equal Time.utc(2013, 9, 12, 10, 0)
-        subject.utc?.must_equal(true)
+        _(subject).must_be_instance_of Time
+        _(subject).must_equal Time.utc(2013, 9, 12, 10, 0)
+        _(subject.utc?).must_equal(true)
       end
     end
   end
@@ -155,8 +155,8 @@ describe CineworldUk::Performance do
     subject { described_class.new(options).showing_on }
 
     it 'returns date of showing' do
-      subject.must_be_instance_of(Date)
-      subject.must_equal Date.new(2013, 9, 12)
+      _(subject).must_be_instance_of(Date)
+      _(subject).must_equal Date.new(2013, 9, 12)
     end
   end
 
@@ -174,9 +174,9 @@ describe CineworldUk::Performance do
     end
 
     it 'is an alphabetically ordered array of lower-cased strings' do
-      subject.must_be_instance_of Array
-      subject.each { |element| element.must_be_instance_of String }
-      subject.must_equal %w(kids)
+      _(subject).must_be_instance_of Array
+      subject.each { |element| _(element).must_be_instance_of String }
+      _(subject).must_equal %w(kids)
     end
   end
 end

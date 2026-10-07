@@ -12,15 +12,16 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/andycroll/cineworld_uk'
   spec.licenses      = %w(AGPL MIT)
 
-  spec.files         = `git ls-files`.split($RS)
+  spec.files         = `git ls-files`.split("\n")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '>= 2.0'
+  spec.add_development_dependency 'minitest-mock'
   spec.add_development_dependency 'minitest-reporters'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'simplecov', '< 1'
   spec.add_development_dependency 'webmock'
 
   spec.add_runtime_dependency 'cinebase', '~> 5.0'

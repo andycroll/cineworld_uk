@@ -17,7 +17,7 @@ describe CineworldUk::Internal::ApiResponse do
     before { stub_get("cinemas/with-event/until/#{until_date}?#{standard}", cinema_list_json) }
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 
@@ -27,7 +27,7 @@ describe CineworldUk::Internal::ApiResponse do
     before { stub_get("dates/in-cinema/014/until/#{until_date}?#{standard}", dates_json(14)) }
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 
@@ -41,7 +41,7 @@ describe CineworldUk::Internal::ApiResponse do
     end
 
     it 'returns a string' do
-      subject.class.must_equal String
+      _(subject.class).must_equal String
     end
   end
 

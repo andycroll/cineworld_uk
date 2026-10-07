@@ -10,7 +10,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 2D' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -18,7 +18,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Iron Man 3 3d' }
 
       it 'removes dimension' do
-        subject.must_equal('Iron Man 3')
+        _(subject).must_equal('Iron Man 3')
       end
     end
 
@@ -26,7 +26,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Bang Bang! (Hindi)' }
 
       it 'removes language' do
-        subject.must_equal('Bang Bang!')
+        _(subject).must_equal('Bang Bang!')
       end
     end
 
@@ -34,7 +34,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Nightcrawler - Unlimited Screening' }
 
       it 'removes prefix' do
-        subject.must_equal('Nightcrawler')
+        _(subject).must_equal('Nightcrawler')
       end
     end
 
@@ -42,7 +42,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Autism Friendly Screening: Dolphin Tale 2' }
 
       it 'removes prefix' do
-        subject.must_equal('Dolphin Tale 2')
+        _(subject).must_equal('Dolphin Tale 2')
       end
     end
 
@@ -50,7 +50,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Bolshoi Ballet: The Legend of Love' }
 
       it 'removes prefix' do
-        subject.must_equal('Bolshoi Ballet: The Legend of Love')
+        _(subject).must_equal('Bolshoi Ballet: The Legend of Love')
       end
     end
 
@@ -58,7 +58,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'ENO: La Traviata ' }
 
       it 'removes prefix' do
-        subject.must_equal('English National Opera: La Traviata')
+        _(subject).must_equal('English National Opera: La Traviata')
       end
     end
 
@@ -66,7 +66,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { '(IMAX) Fury' }
 
       it 'removes prefix' do
-        subject.must_equal('Fury')
+        _(subject).must_equal('Fury')
       end
     end
 
@@ -74,7 +74,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'MET Opera - Le Nozze Di Figaro' }
 
       it 'removes prefix' do
-        subject.must_equal('Met Opera: Le Nozze Di Figaro')
+        _(subject).must_equal('Met Opera: Le Nozze Di Figaro')
       end
     end
 
@@ -82,7 +82,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'NT Live Encore: Frankenstein (starring Benedict Cumberbatch)' }
 
       it 'removes prefix' do
-        subject.must_equal('National Theatre: Frankenstein (starring Benedict Cumberbatch)')
+        _(subject).must_equal('National Theatre: Frankenstein (starring Benedict Cumberbatch)')
       end
     end
 
@@ -90,7 +90,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'NT Live: Treasure Island' }
 
       it 'removes prefix' do
-        subject.must_equal('National Theatre: Treasure Island')
+        _(subject).must_equal('National Theatre: Treasure Island')
       end
     end
 
@@ -98,7 +98,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'NT Live: A Streetcar Named Desire (Young Vic) - Encore' }
 
       it 'removes prefix' do
-        subject.must_equal('National Theatre: A Streetcar Named Desire (Young Vic)')
+        _(subject).must_equal('National Theatre: A Streetcar Named Desire (Young Vic)')
       end
     end
 
@@ -106,7 +106,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'ROH - I Due Foscari' }
 
       it 'removes prefix' do
-        subject.must_equal('Royal Opera House: I Due Foscari')
+        _(subject).must_equal('Royal Opera House: I Due Foscari')
       end
     end
 
@@ -114,7 +114,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { "RSC Live: Love's Labour's Lost" }
 
       it 'removes prefix' do
-        subject.must_equal("Royal Shakespeare Company: Love's Labour's Lost")
+        _(subject).must_equal("Royal Shakespeare Company: Love's Labour's Lost")
       end
     end
 
@@ -122,7 +122,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'SciScreen: Dallas Buyers Club' }
 
       it 'removes prefix' do
-        subject.must_equal('Dallas Buyers Club')
+        _(subject).must_equal('Dallas Buyers Club')
       end
     end
 
@@ -130,7 +130,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Billy Elliot The Musical Live - Special Performance' }
 
       it 'removes prefix' do
-        subject.must_equal('Billy Elliot The Musical Live')
+        _(subject).must_equal('Billy Elliot The Musical Live')
       end
     end
 
@@ -138,7 +138,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Take 2 - Boyhood' }
 
       it 'removes prefix' do
-        subject.must_equal('Boyhood')
+        _(subject).must_equal('Boyhood')
       end
     end
 
@@ -146,7 +146,7 @@ describe CineworldUk::Internal::TitleSanitizer do
       let(:title) { 'Frozen Sing-Along - Movies For Juniors' }
 
       it 'removes prefix' do
-        subject.must_equal('Frozen')
+        _(subject).must_equal('Frozen')
       end
     end
   end

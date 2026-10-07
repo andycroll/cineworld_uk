@@ -14,19 +14,19 @@ describe CineworldUk::Cinema do
     subject { described_class.all }
 
     it 'returns an Array of CineworldUK::Cinemas' do
-      subject.must_be_instance_of(Array)
+      _(subject).must_be_instance_of(Array)
       subject.each do |value|
-        value.must_be_instance_of(CineworldUk::Cinema)
+        _(value).must_be_instance_of(CineworldUk::Cinema)
       end
     end
 
     it 'returns the correctly sized array' do
-      subject.size.must_be :>, 18
+      _(subject.size).must_be :>, 18
     end
 
     it 'returns the right cinemas' do
-      subject.first.name.must_equal 'Aberdeen: Queens Links'
-      subject.last.name.must_equal 'Yeovil'
+      _(subject.first.name).must_equal 'Aberdeen: Queens Links'
+      _(subject.last.name).must_equal 'Yeovil'
     end
   end
 end
@@ -38,14 +38,14 @@ describe CineworldUk::Performance do
     subject { described_class.at(3) }
 
     it 'returns an array of screenings' do
-      subject.must_be_instance_of(Array)
+      _(subject).must_be_instance_of(Array)
       subject.each do |performance|
-        performance.must_be_instance_of(CineworldUk::Performance)
+        _(performance).must_be_instance_of(CineworldUk::Performance)
       end
     end
 
     it 'returns correct number of screenings' do
-      subject.count.must_be :>, 10
+      _(subject.count).must_be :>, 10
     end
   end
 end

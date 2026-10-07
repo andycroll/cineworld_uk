@@ -22,7 +22,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(street_address:   'Brighton Marina Village',
+          _(subject).must_equal(street_address:   'Brighton Marina Village',
                              extended_address: nil,
                              locality:         'Brighton',
                              region:           nil,
@@ -37,7 +37,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(street_address:   'Resorts World',
+          _(subject).must_equal(street_address:   'Resorts World',
                              extended_address: 'Pendigo Way',
                              locality:         'Birmingham',
                              region:           nil,
@@ -52,7 +52,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(street_address:   'Fountain Park',
+          _(subject).must_equal(street_address:   'Fountain Park',
                              extended_address: '130/3 Dundee Street',
                              locality:         'Edinburgh',
                              region:           nil,
@@ -67,7 +67,7 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
 
       it 'returns address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(street_address:   '5-6 Leicester Square',
+          _(subject).must_equal(street_address:   '5-6 Leicester Square',
                              extended_address: nil,
                              locality:         'London',
                              region:           'London',
@@ -81,8 +81,8 @@ describe CineworldUk::Internal::Parser::Api::CinemaAddress do
     #   let(:id) { 0 }
     #
     #   it 'returns hash of nils' do
-    #     subject.must_be_instance_of(Hash)
-    #     subject.must_equal(street_address:   nil,
+    #     _(subject).must_be_instance_of(Hash)
+    #     _(subject).must_equal(street_address:   nil,
     #                        extended_address: nil,
     #                        locality:         "not an address",
     #                        region:           nil,

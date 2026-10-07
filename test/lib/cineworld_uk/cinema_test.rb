@@ -17,16 +17,16 @@ describe CineworldUk::Cinema do
 
     it 'returns an Array of CineworldUK::Cinemas' do
       CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.must_be_instance_of(Array)
+        _(subject).must_be_instance_of(Array)
         subject.each do |value|
-          value.must_be_instance_of(CineworldUk::Cinema)
+          _(value).must_be_instance_of(CineworldUk::Cinema)
         end
       end
     end
 
     it 'returns the correctly sized array' do
       CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        subject.size.must_equal(87)
+        _(subject.size).must_equal(87)
       end
     end
   end
@@ -43,7 +43,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(
+          _(subject).must_equal(
             street_address: 'Brighton Marina Village',
             extended_address: nil,
             locality: 'Brighton',
@@ -68,7 +68,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(
+          _(subject).must_equal(
             street_address: 'Brighton Marina Village',
             extended_address: nil,
             locality: 'Brighton',
@@ -93,7 +93,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the address hash' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal('')
+          _(subject).must_equal('')
         end
       end
     end
@@ -109,7 +109,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Cineworld Brighton'
+          _(subject).must_equal 'Cineworld Brighton'
         end
       end
     end
@@ -119,7 +119,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Cineworld Brighton'
+          _(subject).must_equal 'Cineworld Brighton'
         end
       end
     end
@@ -129,7 +129,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the brand in the name' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Cineworld Glasgow: Silverburn'
+          _(subject).must_equal 'Cineworld Glasgow: Silverburn'
         end
       end
     end
@@ -147,7 +147,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the town/city' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Brighton'
+          _(subject).must_equal 'Brighton'
         end
       end
     end
@@ -157,7 +157,7 @@ describe CineworldUk::Cinema do
 
       it 'returns borough of London' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'London'
+          _(subject).must_equal 'London'
         end
       end
     end
@@ -175,7 +175,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the post code' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'BN2 5UF'
+          _(subject).must_equal 'BN2 5UF'
         end
       end
     end
@@ -193,7 +193,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the empty string is none exists' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal ''
+          _(subject).must_equal ''
         end
       end
     end
@@ -203,7 +203,7 @@ describe CineworldUk::Cinema do
 
       it 'returns "London"' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'London'
+          _(subject).must_equal 'London'
         end
       end
     end
@@ -221,7 +221,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the first line of the Address' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal 'Brighton Marina Village'
+          _(subject).must_equal 'Brighton Marina Village'
         end
       end
     end
@@ -239,7 +239,7 @@ describe CineworldUk::Cinema do
 
       it 'returns the url' do
         CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          subject.must_equal(
+          _(subject).must_equal(
             "http://www.cineworld.co.uk/cinemas/#{id}/information"
           )
         end
