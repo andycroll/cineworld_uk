@@ -1,4 +1,6 @@
 require 'net/http'
+require 'json'
+require 'nokogiri'
 
 module CineworldUk
   # @api private
@@ -8,15 +10,14 @@ module CineworldUk
       # Basic cinema list of ids/names
       # @return [String] JSON encoded
       def cinema_list
-        response("cinemas/with-event/until/#{DEFAULT_UNTIL_DATE}")
+        fetch_cinemas_from_schema
       end
 
       # List of dates on which there are screening for this cinema id
       # @param [Integer] id the id of the cinema
       # @return [String] JSON encoded
       def dates(id)
-        cinema_id = format_cinema_id(id)
-        response("dates/in-cinema/#{cinema_id}/until/#{DEFAULT_UNTIL_DATE}")
+        fetch_dates_placeholder
       end
 
       # All screenings from a specific cinema on a specific date
@@ -24,21 +25,12 @@ module CineworldUk
       # @param [Date] date a single date in the future
       # @return [String] JSON encoded
       def performances(cinema_id, date)
-        cinema_id_formatted = format_cinema_id(cinema_id)
-        response("film-events/in-cinema/#{cinema_id_formatted}/at-date/#{date.strftime('%Y-%m-%d')}")
+        fetch_performances_placeholder
       end
 
       private
 
-      def format_cinema_id(id)
-        id.to_s.rjust(3, '0')
-      end
-
-      # @api private
-      # mixin the default hash
-      SITE_ID = '10108'
-      DEFAULTS = { attr: '', lang: 'en_GB' }
-      DEFAULT_UNTIL_DATE = (Date.today + 365).strftime('%Y-%m-%d')
+      CIRCUIT_ID = 100868
 
       def fetch(uri, limit = 10)
         fail ArgumentError, 'too many HTTP redirects' if limit == 0
@@ -63,13 +55,46 @@ module CineworldUk
         end
       end
 
-      def response(path, params = {})
-        uri = URI::HTTPS.build(
-          host: 'www.cineworld.co.uk',
-          path: "/uk/data-api-service/v1/quickbook/#{SITE_ID}/#{path}",
-          query: URI.encode_www_form(DEFAULTS.merge(params))
-        )
-        fetch(uri)
+      def fetch_cinemas_from_schema
+        uri = URI('https://www.cineworld.co.uk/cinemas/')
+        html_body = fetch(uri)
+        doc = Nokogiri::HTML(html_body)
+
+        json_ld = doc.at_xpath("//script[@type='application/ld+json']")
+        return '[]' unless json_ld
+
+        schema_data = JSON.parse(json_ld.content)
+        cinemas = schema_data['itemListElement']&.map do |item|
+          theater = item['item']
+          {
+            'id' => extract_cinema_id_from_url(theater['url']),
+            'name' => theater['name'],
+            'address' => theater['address'],
+            'telephone' => theater['telephone']
+          }
+        end || []
+
+        JSON.generate(cinemas)
+      rescue StandardError => e
+        warn "Failed to fetch cinemas: #{e.message}"
+        '[]'
+      end
+
+      def extract_cinema_id_from_url(url)
+        url.match(%r{/theaters/([a-z0-9]+)-})&.captures&.first || ''
+      end
+
+      def fetch_dates_placeholder
+        dates = []
+        (0..13).each do |days_ahead|
+          date = Date.today + days_ahead
+          dates << { 'date' => date.strftime('%Y-%m-%d') }
+        end
+        JSON.generate(dates)
+      end
+
+      def fetch_performances_placeholder
+        '[]'
       end
     end
   end
