@@ -1,4 +1,0 @@
-# Minitest describe blocks group tests rather than executable application logic.
-Metrics/BlockLength:
-  Exclude:
-    - 'test/**/*'

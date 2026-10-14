@@ -1,7 +1,9 @@
 # frozen_string_literal: true
+
 require_relative "../../../test_helper"
 
-describe "Vista retrieval" do
+# This block groups independent Minitest cases, not application logic.
+describe "Vista retrieval" do # rubocop:disable Metrics/BlockLength
   before do
     CineworldUk.token = "test-guest-token"
     [CineworldUk::Cinema, CineworldUk::Performance].each do |klass|

@@ -35,7 +35,7 @@ module CineworldUk
           def cinema_hash
             @cinema_hash ||= begin
               cinemas = @cinemas ||
-                JSON.parse(cinema_list_response)["body"]["cinemas"]
+                        JSON.parse(cinema_list_response)["body"]["cinemas"]
               formatted_id = @id.to_s.rjust(3, '0')
               cinemas.find { |c| c['id'] == formatted_id } || {}
             end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "net/http"
 require "json"
 require "date"
@@ -8,7 +9,7 @@ module CineworldUk
   module Internal
     # Adapts Vista responses to the parsers' cinema/film/event vocabulary.
     class ApiResponse
-      BASE_URL = "https://digital-api.cineworld.co.uk/ocapi/v1/".freeze
+      BASE_URL = "https://digital-api.cineworld.co.uk/ocapi/v1/"
       ATTRIBUTES = {
         "3D" => "3d", "IMAX" => "imax", "AD" => "audio-described",
         "Subtitled" => "subbed", "Subtitles" => "subbed",
