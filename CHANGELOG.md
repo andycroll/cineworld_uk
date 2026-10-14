@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.0 - Unreleased
+
+### Changed
+- Retrieve cinemas and performances from the Vista API instead of the retired iOS API.
+- Require a caller-supplied guest JWT through `CineworldUk.token`; token acquisition and renewal remain the caller's responsibility.
+- `Performance.at` accepts inclusive `from:` and `to:` business dates, defaulting to today in London and the following 13 days rather than discovering all screening dates.
+- Use one request per cinema per requested day, reusing related film, cinema and attribute data. Share cached cinema data with address lookups.
+- Convert advertised session times to UTC using Vista's explicit offsets and preserve session-specific formats.
+
+### Added
+- `CineworldUk::AuthenticationError` for missing tokens and HTTP 401 responses.
+- Orb setup for the pinned Ruby version and gem dependencies.
+
 ## 3.1.0 - 2016-09-11
 
 ### Fixed
