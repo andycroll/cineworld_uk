@@ -1,98 +1,94 @@
 require_relative '../../../test_helper'
-require_relative '../../../support/fixture_reader'
 
-describe CineworldUk::Internal::ApiResponse do
-  include Support::FixtureReader
-
-  let(:described_class) { CineworldUk::Internal::ApiResponse }
-
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '#cinema_list' do
-    subject { described_class.new.cinema_list }
-
-    before do
-      schema_html = <<~HTML
-        <html>
-          <head></head>
-          <body>
-            <script type="application/ld+json">
-              {
-                "@context": "https://schema.org",
-                "@type": "ItemList",
-                "numberOfItems": 2,
-                "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item": {
-                      "@type": "MovieTheater",
-                      "name": "Brighton",
-                      "url": "https://www.cineworld.co.uk/theaters/x079b-cineworld-cinema-brighton",
-                      "address": {"streetAddress": "Marina Village", "addressLocality": "Brighton"},
-                      "telephone": "01273123123"
-                    }
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item": {
-                      "@type": "MovieTheater",
-                      "name": "Glasgow",
-                      "url": "https://www.cineworld.co.uk/theaters/x06tn-cineworld-cinema-glasgow",
-                      "address": {"streetAddress": "Quay Street", "addressLocality": "Glasgow"},
-                      "telephone": "01413339999"
-                    }
-                  }
-                ]
-              }
-            </script>
-          </body>
-        </html>
-      HTML
-      stub_request(:get, 'https://www.cineworld.co.uk/cinemas/').to_return(
-        status: 200,
-        body: schema_html
-      )
+describe 'Vista retrieval' do
+  before do
+    CineworldUk.token = 'test-guest-token'
+    [CineworldUk::Cinema, CineworldUk::Performance].each do |klass|
+      klass.instance_variables.each { |name| klass.remove_instance_variable(name) }
     end
+    @capture = JSON.parse(File.read(File.expand_path('../../../fixtures/api/vista-showtimes-brighton.json', __dir__)))
+    @base = 'https://digital-api.cineworld.co.uk/ocapi/v1/'
+    stub_request(:get, @base + 'sites').with(headers: {
+      'Authorization' => 'Bearer test-guest-token', 'Connect-Region-Code' => 'GB'
+    }).to_return(body: JSON.generate('sites' => @capture.fetch('relatedData').fetch('sites')))
+  end
 
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
-
-    it 'contains cinema data' do
-      data = JSON.parse(subject)
-      _(data).must_be_instance_of Array
-      _(data.length).must_equal 2
-      _(data.first['name']).must_equal 'Brighton'
+  after do
+    CineworldUk.token = nil
+    [CineworldUk::Cinema, CineworldUk::Performance].each do |klass|
+      klass.instance_variables.each { |name| klass.remove_instance_variable(name) }
     end
   end
 
-  describe '#dates(cinema_id)' do
-    subject { described_class.new.dates(14) }
-
-    it 'returns a string' do
-      _(subject.class).must_equal String
-    end
-
-    it 'returns array of dates' do
-      data = JSON.parse(subject)
-      _(data).must_be_instance_of Array
-      _(data.length).must_be :>, 5
-    end
+  def stub_day(day, body)
+    stub_request(:get, @base + "showtimes/by-business-date/#{day}").with(
+      query: { 'siteIds' => '014' },
+      headers: { 'Authorization' => 'Bearer test-guest-token', 'Connect-Region-Code' => 'GB' }
+    ).to_return(body: JSON.generate(body))
   end
 
-  describe '#performances(cinema_id, date)' do
-    subject { described_class.new.performances(14, Date.today + 1) }
+  it 'retrieves cinemas and advertised session times from Vista' do
+    stub_day('2026-10-14', @capture)
+    cinema = CineworldUk::Cinema.all.first
+    _(cinema.id).must_equal 14
+    _(cinema.name).must_equal 'Brighton'
+    _(cinema.postal_code).must_equal 'BN2 5UF'
+    _(cinema.street_address).must_equal 'Brighton Marina Village'
+    assert_requested :get, @base + 'sites', times: 1
+    performances = CineworldUk::Performance.at(14, from: Date.new(2026, 10, 14), to: Date.new(2026, 10, 14))
+    _(performances.size).must_equal 17
+    first = performances.first
+    _(first.film_name).must_equal 'Other Mommy'
+    _(first.starting_at).must_equal Time.utc(2026, 10, 14, 14, 40)
+    _(first.booking_url).must_equal 'https://web.cineworld.co.uk/order/showtimes/014-165507/seats'
+    _(first.variant).must_include 'audio_described'
+    _(first.dimension).must_equal '2d'
+    assert_requested :get, @base + 'sites', times: 1
+    assert_requested :get, @base + 'showtimes/by-business-date/2026-10-14', query: { 'siteIds' => '014' }, times: 1
+  end
 
-    it 'returns a string' do
-      _(subject.class).must_equal String
+  it 'keeps format session-specific and includes the last requested day' do
+    @capture['showtimes'] = [@capture['showtimes'].first, Marshal.load(Marshal.dump(@capture['showtimes'].first))]
+    @capture['showtimes'][1]['id'] = '014-second'
+    @capture['showtimes'][1]['requires3dGlasses'] = true
+    @capture['showtimes'][1]['schedule']['startsAt'] = '2026-10-25T16:40:00+00:00'
+    stub_day('2026-10-24', { 'showtimes' => [], 'relatedData' => { 'films' => [], 'attributes' => [], 'sites' => [] } })
+    stub_day('2026-10-25', @capture)
+    results = CineworldUk::Performance.at('014', from: Date.new(2026, 10, 24), to: Date.new(2026, 10, 25))
+    _(results.map(&:dimension)).must_equal ['2d', '3d']
+    _(results.last.starting_at).must_equal Time.utc(2026, 10, 25, 16, 40)
+    _(results.first.cinema_name).must_equal 'Brighton'
+    assert_not_requested :get, @base + 'sites'
+  end
+
+  it 'rejects missing and rejected tokens without exposing credentials' do
+    CineworldUk.token = nil
+    assert_raises(CineworldUk::AuthenticationError) { CineworldUk::Cinema.all }
+    CineworldUk.token = 'expired-secret'
+    stub_request(:get, @base + 'sites').to_return(status: 401, body: 'expired-secret')
+    error = assert_raises(CineworldUk::AuthenticationError) { CineworldUk::Cinema.all }
+    refute_includes error.message, 'expired-secret'
+    CineworldUk.token = 'replacement'
+    stub_request(:get, @base + 'sites').with(headers: { 'Authorization' => 'Bearer replacement' }).to_return(body: '{"sites":[]}')
+    _(CineworldUk::Cinema.all).must_equal []
+  end
+
+  it 'defaults to fourteen days from the requested start and rejects reversed ranges' do
+    day = Date.new(2026, 10, 14)
+    (day..day + 13).each do |date|
+      stub_day(date.iso8601, { 'showtimes' => [], 'relatedData' => { 'films' => [], 'attributes' => [], 'sites' => [] } })
     end
+    _(CineworldUk::Performance.at(14, from: day)).must_equal []
+    assert_requested :get, %r{showtimes/by-business-date/}, times: 14
+    assert_raises(ArgumentError) { CineworldUk::Performance.at(14, from: day, to: day - 1) }
+    assert_not_requested :get, @base + 'sites'
+  end
 
-    it 'returns array' do
-      data = JSON.parse(subject)
-      _(data).must_be_instance_of Array
+  it 'does not follow redirects or hide forbidden responses' do
+    [302, 403].each do |status|
+      stub_request(:get, @base + 'sites').to_return(status: status, headers: { 'Location' => 'https://example.com/' })
+      error = assert_raises(RuntimeError) { CineworldUk::Cinema.all }
+      assert_includes error.message, status.to_s
     end
   end
 end

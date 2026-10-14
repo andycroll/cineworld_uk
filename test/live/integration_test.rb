@@ -6,6 +6,7 @@ Minitest::Reporters.use! [
 ]
 
 require File.expand_path('../../../lib/cineworld_uk.rb', __FILE__)
+CineworldUk.token = ENV.fetch('CINEWORLD_TOKEN')
 
 describe CineworldUk::Cinema do
   let(:described_class) { CineworldUk::Cinema }
@@ -25,8 +26,7 @@ describe CineworldUk::Cinema do
     end
 
     it 'returns the right cinemas' do
-      _(subject.first.name).must_equal 'Aberdeen: Queens Links'
-      _(subject.last.name).must_equal 'Yeovil'
+      _(subject.find { |cinema| cinema.id == 14 }.name).must_equal 'Brighton'
     end
   end
 end
@@ -35,7 +35,7 @@ describe CineworldUk::Performance do
   let(:described_class) { CineworldUk::Performance }
 
   describe '.at(cinema_id)' do
-    subject { described_class.at(3) }
+    subject { described_class.at(14, from: Date.today + 1, to: Date.today + 1) }
 
     it 'returns an array of screenings' do
       _(subject).must_be_instance_of(Array)

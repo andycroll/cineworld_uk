@@ -7,8 +7,9 @@ module CineworldUk
         class CinemaAddress
           # @param [Integer] id the cinema id
           # @return [CineworldUk::Internal::Parser::Api::CinemaAddress]
-          def initialize(id)
+          def initialize(id, cinemas = nil)
             @id = id
+            @cinemas = cinemas
           end
 
           # @return [Hash] contains :street_address, :extended_address,
@@ -33,7 +34,7 @@ module CineworldUk
 
           def cinema_hash
             @cinema_hash ||= begin
-              cinemas = JSON.parse(cinema_list_response)['body']['cinemas']
+              cinemas = @cinemas || JSON.parse(cinema_list_response)['body']['cinemas']
               formatted_id = @id.to_s.rjust(3, '0')
               cinemas.find { |c| c['id'] == formatted_id } || {}
             end
