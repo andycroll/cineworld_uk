@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+echo 'Checking native gem build prerequisites'
+missing=()
+for package in ca-certificates curl build-essential pkg-config libyaml-dev libssl-dev zlib1g-dev; do
+  if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q 'install ok installed'; then
+    missing+=("$package")
+  fi
+done
+if ((${#missing[@]})); then
+  sudo apt-get update -qq
+  sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+fi
+
+export PATH="$HOME/.local/bin:$PATH"
+if ! command -v mise >/dev/null; then
+  echo 'Installing mise'
+  curl --fail --silent --show-error --location https://mise.run | sh
+fi
+
+ruby_version="$(tr -d '[:space:]' < .ruby-version)"
+echo "Installing Ruby $ruby_version"
+MISE_RUBY_COMPILE=false mise install "ruby@$ruby_version"
+
+# Make the pinned Ruby available to later Amp commands in login shells.
+if [[ ! -f "$HOME/.bash_profile" ]]; then
+  printf '[ ! -f "$HOME/.profile" ] || . "$HOME/.profile"\n' > "$HOME/.bash_profile"
+fi
+marker="# Cineworld orb Ruby environment: $repo_root"
+if ! grep -Fqx "$marker" "$HOME/.bash_profile"; then
+  cat >> "$HOME/.bash_profile" <<EOF
+
+$marker
+case "\$PWD" in
+  "$repo_root"|"$repo_root"/*)
+    export PATH="\$HOME/.local/share/mise/shims:\$HOME/.local/bin:\$PATH"
+    export MISE_IDIOMATIC_VERSION_FILE_ENABLE_TOOLS=ruby
+    ;;
+esac
+EOF
+fi
+
+echo 'Installing gem dependencies (no Cineworld token required)'
+mise exec "ruby@$ruby_version" -- bundle config set --local path "$HOME/.cache/cineworld_uk/bundle"
+mise exec "ruby@$ruby_version" -- bundle check || mise exec "ruby@$ruby_version" -- bundle install --jobs 4 --retry 3
+mise reshim
+mise exec "ruby@$ruby_version" -- ruby --version
