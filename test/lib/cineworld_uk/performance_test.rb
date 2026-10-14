@@ -11,7 +11,9 @@ describe CineworldUk::Performance do
   after { WebMock.allow_net_connect! }
 
   describe '.at(cinema_id)' do
-    subject { described_class.at(cinema_id, from: Date.today + 1, to: Date.today + 1) }
+    subject do
+      described_class.at(cinema_id, from: Date.today + 1, to: Date.today + 1)
+    end
 
     before do
       api_response.expect(:cinema_list, cinema_list_json)

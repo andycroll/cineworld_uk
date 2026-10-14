@@ -6,7 +6,7 @@ Minitest::Reporters.use! [
 ]
 
 require File.expand_path('../../../lib/cineworld_uk.rb', __FILE__)
-CineworldUk.token = ENV.fetch('CINEWORLD_TOKEN')
+CineworldUk.token = ENV.fetch("CINEWORLD_TOKEN")
 
 describe CineworldUk::Cinema do
   let(:described_class) { CineworldUk::Cinema }
@@ -26,7 +26,7 @@ describe CineworldUk::Cinema do
     end
 
     it 'returns the right cinemas' do
-      _(subject.find { |cinema| cinema.id == 14 }.name).must_equal 'Brighton'
+      _(subject.detect { |cinema| cinema.id == 14 }.name).must_equal "Brighton"
     end
   end
 end

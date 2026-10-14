@@ -35,7 +35,7 @@ end
 desc 'Recreate test fixtures'
 task :fixtures do
   require 'cineworld_uk'
-  CineworldUk.token = ENV.fetch('CINEWORLD_TOKEN')
+  CineworldUk.token = ENV.fetch("CINEWORLD_TOKEN")
 
   def js_fixture(name)
     File.expand_path("../test/fixtures/#{name}.json", __FILE__)

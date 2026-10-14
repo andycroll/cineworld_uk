@@ -50,7 +50,9 @@ module CineworldUk
     #       }
     # @note Uses the standard method naming as at http://microformats.org/wiki/adr
     def adr
-      CineworldUk::Internal::Parser::Api::CinemaAddress.new(@id, self.class.send(:cinema_list_json)).to_hash
+      CineworldUk::Internal::Parser::Api::CinemaAddress.new(
+        @id, self.class.send(:cinema_list_json)
+      ).to_hash
     end
 
     # Brand of the cinema

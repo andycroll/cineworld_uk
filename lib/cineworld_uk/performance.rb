@@ -27,9 +27,13 @@ module CineworldUk
     # @param [Date] from first date (defaults to today in London)
     # @param [Date] to last date (defaults to 13 days after from)
     # @return [Array<CineworldUk::Performance>]
-    def self.at(cinema_id, from: TZInfo::Timezone.get('Europe/London').now.to_date, to: from + 13)
+    def self.at(
+      cinema_id,
+      from: TZInfo::Timezone.get("Europe/London").now.to_date,
+      to: from + 13
+    )
       cinema_id = cinema_id.to_i
-      raise ArgumentError, 'to must not precede from' if to < from
+      raise ArgumentError, "to must not precede from" if to < from
 
       (from..to).flat_map do |date|
         performances_on(cinema_id, date).flat_map do |p|
@@ -69,7 +73,8 @@ module CineworldUk
         film = films_hash[performance.film_id]
 
         {
-          cinema_name: response['body']['cinemaName'] || CineworldUk::Cinema.new(cinema_id).name,
+          cinema_name: response["body"]["cinemaName"] ||
+            CineworldUk::Cinema.new(cinema_id).name,
           booking_url: performance.booking_url,
           dimension: film.dimension,
           film_name: film.name,
