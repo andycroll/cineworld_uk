@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative "../../../test_helper"
 
 describe "Vista retrieval" do
@@ -71,13 +72,13 @@ describe "Vista retrieval" do
     @capture["showtimes"][1]["schedule"]["startsAt"] =
       "2026-10-25T16:40:00+00:00"
     stub_day("2026-10-24",
-             { "showtimes" => [],
-               "relatedData" => { "films" => [], "attributes" => [],
-                                  "sites" => [] } })
+             "showtimes" => [],
+             "relatedData" => { "films" => [], "attributes" => [],
+                                "sites" => [] })
     stub_day("2026-10-25", @capture)
     results = CineworldUk::Performance.at("014", from: Date.new(2026, 10, 24),
                                                  to: Date.new(2026, 10, 25))
-    _(results.map(&:dimension)).must_equal ["2d", "3d"]
+    _(results.map(&:dimension)).must_equal %w[2d 3d]
     _(results.last.starting_at).must_equal Time.utc(2026, 10, 25, 16, 40)
     _(results.first.cinema_name).must_equal "Brighton"
     assert_not_requested :get, @base + "sites"
@@ -104,9 +105,9 @@ describe "Vista retrieval" do
     day = Date.new(2026, 10, 14)
     (day..day + 13).each do |date|
       stub_day(date.iso8601,
-               { "showtimes" => [],
-                 "relatedData" => { "films" => [], "attributes" => [],
-                                    "sites" => [] } })
+               "showtimes" => [],
+               "relatedData" => { "films" => [], "attributes" => [],
+                                  "sites" => [] })
     end
     _(CineworldUk::Performance.at(14, from: day)).must_equal []
     assert_requested :get, %r{showtimes/by-business-date/}, times: 14
