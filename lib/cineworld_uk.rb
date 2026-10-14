@@ -16,4 +16,10 @@ require_relative './cineworld_uk/performance'
 
 # cineworld_uk gem
 module CineworldUk
+  class AuthenticationError < StandardError; end
+
+  # A raw guest JWT, without the "Bearer " prefix. Never persisted by the gem.
+  class << self
+    attr_accessor :token
+  end
 end

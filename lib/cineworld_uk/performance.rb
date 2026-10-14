@@ -22,14 +22,22 @@ module CineworldUk
     #   @option options [String] :film_name name of the film
     #   @option options [Time] :starting_at listed start time of the performance
 
-    # All currently listed films showing at a cinema
+    # Performances within an inclusive range of cinema business dates.
     # @param [Integer] cinema_id id of the cinema on the website
-    # @return [Array<CineworldUk::Screening>]
-    def self.at(cinema_id)
+    # @param [Date] from first date (defaults to today in London)
+    # @param [Date] to last date (defaults to 13 days after from)
+    # @return [Array<CineworldUk::Performance>]
+    def self.at(
+      cinema_id,
+      from: TZInfo::Timezone.get("Europe/London").now.to_date,
+      to: from + 13
+    )
       cinema_id = cinema_id.to_i
-      dates(cinema_id).flat_map do |date|
+      raise ArgumentError, "to must not precede from" if to < from
+
+      (from..to).flat_map do |date|
         performances_on(cinema_id, date).flat_map do |p|
-          new cinema_hash(cinema_id).merge(p)
+          new({ cinema_id: cinema_id }.merge(p))
         end
       end
     end
@@ -55,23 +63,6 @@ module CineworldUk
     private_class_method :api
 
     # @api private
-    def self.cinema_hash(cinema_id)
-      {
-        cinema_id: cinema_id,
-        cinema_name: CineworldUk::Cinema.new(cinema_id).name
-      }
-    end
-    private_class_method :cinema_hash
-
-    # @api private
-    def self.dates(cinema_id)
-      @dates ||= JSON.parse(api.dates(cinema_id))['body']['dates'].map do |str|
-        Date.strptime(str, '%Y-%m-%d')
-      end
-    end
-    private_class_method :dates
-
-    # @api private
     def self.performances_on(cinema_id, date)
       response = JSON.parse(api.performances(cinema_id, date))
       films_hash = build_films_hash(response['body']['films'])
@@ -82,6 +73,8 @@ module CineworldUk
         film = films_hash[performance.film_id]
 
         {
+          cinema_name: response["body"]["cinemaName"] ||
+            CineworldUk::Cinema.new(cinema_id).name,
           booking_url: performance.booking_url,
           dimension: film.dimension,
           film_name: film.name,

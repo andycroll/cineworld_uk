@@ -1,100 +1,115 @@
-require 'net/http'
-require 'json'
-require 'nokogiri'
+# frozen_string_literal: true
+
+require "net/http"
+require "json"
+require "date"
+require "time"
 
 module CineworldUk
-  # @api private
   module Internal
-    # @api private
+    # Adapts Vista responses to the parsers' cinema/film/event vocabulary.
     class ApiResponse
-      # Basic cinema list of ids/names
-      # @return [String] JSON encoded
+      BASE_URL = "https://digital-api.cineworld.co.uk/ocapi/v1/"
+      ATTRIBUTES = {
+        "3D" => "3d", "IMAX" => "imax", "AD" => "audio-described",
+        "Subtitled" => "subbed", "Subtitles" => "subbed",
+        "Autism Friendly" => "autism-friendly",
+        "Movies for Juniors" => "junior",
+        "Unlimited Screening" => "unlimited-screening", "Q&A" => "qa"
+      }.freeze
+
       def cinema_list
-        fetch_cinemas_from_schema
+        cinemas = fetch("sites").fetch("sites").map do |site|
+          address = site.fetch("contactDetails", {}).fetch("addressV2", {})
+          {
+            "id" => site.fetch("id"),
+            "displayName" => site.fetch("name").fetch("text"),
+            "addressInfo" => {
+              "address1" => address.dig("line1", "text"),
+              "city" => address.dig("line2", "text"),
+              "state" => address.dig("line3", "text"),
+              "postalCode" => address.dig("line4", "text")
+            }
+          }
+        end
+        JSON.generate("body" => { "cinemas" => cinemas })
       end
 
-      # List of dates on which there are screening for this cinema id
-      # @param [Integer] id the id of the cinema
-      # @return [String] JSON encoded
-      def dates(id)
-        fetch_dates_placeholder
-      end
-
-      # All screenings from a specific cinema on a specific date
-      # @param [Integer] cinema_id the id of the cinema
-      # @param [Date] date a single date in the future
-      # @return [String] JSON encoded
       def performances(cinema_id, date)
-        fetch_performances_placeholder
+        site_id = cinema_id.to_s.rjust(3, "0")
+        response = fetch("showtimes/by-business-date/#{date.iso8601}",
+                         "siteIds" => site_id)
+        related = response.fetch("relatedData")
+        films = related.fetch("films").to_h { |film| [film.fetch("id"), film] }
+        attributes = related.fetch("attributes").to_h do |attr|
+          [attr.fetch("id"), attr]
+        end
+        normalized_films = []
+        events = response.fetch("showtimes").map do |showtime|
+          film = films.fetch(showtime.fetch("filmId"))
+          attrs = showtime.fetch("attributeIds", []).filter_map do |id|
+            attribute = attributes.fetch(id)
+            ATTRIBUTES[attribute.dig("shortName", "text")] ||
+              ATTRIBUTES[attribute.dig("name", "text")]
+          end
+          attrs << "3d" if showtime["requires3dGlasses"]
+          # Formats belong to a session, not to the film as a whole.
+          id = showtime.fetch("id")
+          normalized_films << {
+            "id" => id,
+            "name" => film.fetch("title").fetch("text"),
+            "attributeIds" => attrs
+          }
+          starts_at = showtime.fetch("schedule").fetch("startsAt")
+          {
+            "filmId" => id, "attributeIds" => attrs,
+            "eventDateTime" => Time.iso8601(starts_at).utc.iso8601,
+            "bookingLink" =>
+              "https://web.cineworld.co.uk/order/showtimes/#{id}/seats"
+          }
+        end
+        site = related.fetch("sites").detect do |item|
+          item.fetch("id") == site_id
+        end
+        JSON.generate(
+          "body" => {
+            "films" => normalized_films, "events" => events,
+            "cinemaName" => site&.dig("name", "text")
+          }
+        )
       end
 
       private
 
-      CIRCUIT_ID = 100868
-
-      def fetch(uri, limit = 10)
-        fail ArgumentError, 'too many HTTP redirects' if limit == 0
-
-        uri = URI(uri)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-
-        store = OpenSSL::X509::Store.new
-        store.set_default_paths
-        http.cert_store = store
-
+      def fetch(path, query = {})
+        token = CineworldUk.token
+        if !token.is_a?(String) || token.strip.empty?
+          raise AuthenticationError,
+                "Set CineworldUk.token to a current guest JWT " \
+                "before fetching data"
+        end
+        uri = URI(BASE_URL + path)
+        uri.query = URI.encode_www_form(query) unless query.empty?
         request = Net::HTTP::Get.new(uri)
-        response = http.request(request)
-
+        request["Authorization"] = "Bearer #{token}"
+        request["Connect-Region-Code"] = "GB"
+        request["Accept"] = "application/json"
+        response = Net::HTTP.start(
+          uri.host, uri.port, use_ssl: true, open_timeout: 10, read_timeout: 30
+        ) do |http|
+          http.request(request)
+        end
         case response
-        when Net::HTTPSuccess then response.body
-        when Net::HTTPRedirection then fetch(response['location'], limit - 1)
+        when Net::HTTPSuccess
+          JSON.parse(response.body)
+        when Net::HTTPUnauthorized
+          raise AuthenticationError,
+                "Vista rejected the guest token; " \
+                "supply a fresh token with CineworldUk.token="
         else
-          fail "HTTP Error #{response.code}: #{response.message}"
+          # Omit response bodies and never redirect credentials to another host.
+          raise "Vista HTTP error #{response.code}"
         end
-      end
-
-      def fetch_cinemas_from_schema
-        uri = URI('https://www.cineworld.co.uk/cinemas/')
-        html_body = fetch(uri)
-        doc = Nokogiri::HTML(html_body)
-
-        json_ld = doc.at_xpath("//script[@type='application/ld+json']")
-        return '[]' unless json_ld
-
-        schema_data = JSON.parse(json_ld.content)
-        cinemas = schema_data['itemListElement']&.map do |item|
-          theater = item['item']
-          {
-            'id' => extract_cinema_id_from_url(theater['url']),
-            'name' => theater['name'],
-            'address' => theater['address'],
-            'telephone' => theater['telephone']
-          }
-        end || []
-
-        JSON.generate(cinemas)
-      rescue StandardError => e
-        warn "Failed to fetch cinemas: #{e.message}"
-        '[]'
-      end
-
-      def extract_cinema_id_from_url(url)
-        url.match(%r{/theaters/([a-z0-9]+)-})&.captures&.first || ''
-      end
-
-      def fetch_dates_placeholder
-        dates = []
-        (0..13).each do |days_ahead|
-          date = Date.today + days_ahead
-          dates << { 'date' => date.strftime('%Y-%m-%d') }
-        end
-        JSON.generate(dates)
-      end
-
-      def fetch_performances_placeholder
-        '[]'
       end
     end
   end

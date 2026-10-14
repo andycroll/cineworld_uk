@@ -35,6 +35,7 @@ end
 desc 'Recreate test fixtures'
 task :fixtures do
   require 'cineworld_uk'
+  CineworldUk.token = ENV.fetch("CINEWORLD_TOKEN")
 
   def js_fixture(name)
     File.expand_path("../test/fixtures/#{name}.json", __FILE__)
@@ -52,10 +53,6 @@ task :fixtures do
     file.write api.performances(14, Date.today + 1)
   end
 
-  File.open(js_fixture('api/dates-14'), 'w') do |file|
-    puts '* API Dates Brighton Tomorrow'
-    file.write api.dates(14)
-  end
 end
 
 task :default => :test
