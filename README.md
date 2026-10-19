@@ -27,22 +27,70 @@ Performance titles are sanitized as much as possible, removing 'screening type' 
 
 ### Authentication
 
-Configure a current guest JWT before retrieving data (without the `Bearer ` prefix):
+Acquire a guest JWT explicitly before retrieving data:
 
 ```ruby
 require 'cineworld_uk'
 
+CineworldUk.acquire_token!
+CineworldUk::Cinema.all
+```
+
+This shells out to **`curl-impersonate`**, not ordinary system `curl`, using its
+Chrome 150 TLS/HTTP profile. No Python, Chrome, JavaScript execution or browser
+cookies are needed. Platform-specific gem packages include the pinned
+`curl-impersonate` 2.2.3 executable and its upstream licence notices. RubyGems
+and Bundler automatically select the matching package for:
+
+- glibc Linux: x86-64 and ARM64 (`x86_64-linux-gnu`, `aarch64-linux-gnu`)
+- macOS: Intel and Apple Silicon (`x86_64-darwin`, `arm64-darwin`)
+
+The executable runs directly from the installed gem. There are no separate
+installation commands, PATH changes, or runtime downloads on these platforms.
+
+When installing from Git, forcing the source (`ruby`) gem, or using another
+platform (including Alpine/musl and Windows), install a compatible
+[curl-impersonate release](https://github.com/lexiforest/curl-impersonate/releases/tag/v2.2.3)
+with `--impersonate chrome150` support yourself. For an x86-64 Linux checkout:
+
+```sh
+mkdir -p "$HOME/.local/bin"
+curl -fL https://github.com/lexiforest/curl-impersonate/releases/download/v2.2.3/curl-impersonate-v2.2.3.x86_64-linux-gnu.tar.gz \
+  | tar -xz -C "$HOME/.local/bin" curl-impersonate
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Other platforms have separate assets on the release page. You can also specify
+the executable path:
+
+```ruby
+CineworldUk.acquire_token!(curl: '/opt/curl-impersonate/curl-impersonate')
+```
+
+The method returns the token and sets `CineworldUk.token` in memory. It reads
+`__NEXT_DATA__.props.pageProps.environment.gasToken` from the ticketing site's
+root page, even when the page displays a 404. It checks the declared expiry,
+but decoding the JWT does not verify its signature. A blocked page, expired or
+missing token, missing executable, or failed command raises
+`CineworldUk::AuthenticationError` and leaves any previous token unchanged.
+Requests time out after 30 seconds. Certificate verification remains enabled;
+redirects are not followed, and subprocess arguments are passed without a shell.
+Cloudflare may still block requests on other networks or after website changes.
+
+Alternatively, supply your own current guest JWT without the `Bearer ` prefix;
+this requires no external executable:
+
+```ruby
 CineworldUk.token = ENV.fetch('CINEWORLD_TOKEN')
 ```
 
 The gem sends `Authorization: Bearer ...` and `Connect-Region-Code: GB` to
-`digital-api.cineworld.co.uk`. It does not acquire or refresh tokens, copy browser
-cookies, or bypass Cloudflare. The ticketing website supplies its guest token in
-`__NEXT_DATA__.props.pageProps.environment.gasToken`; access to that page may
-require an interactive browser.
+`digital-api.cineworld.co.uk`. Normal API calls never acquire or renew a token
+automatically.
 
 Missing tokens and HTTP 401 responses raise `CineworldUk::AuthenticationError`.
-Set `CineworldUk.token` again with a fresh token before retrying. Other HTTP
+Call `CineworldUk.acquire_token!` again, or set `CineworldUk.token` with a fresh
+token, before retrying. Tokens are never persisted by the gem. Other HTTP
 failures raise an error rather than returning an empty schedule. Redirects are
 not followed, so credentials are not forwarded to another host.
 
@@ -144,6 +192,27 @@ performance.cinema_name
 performance.cinema_id
 #=> 14
 ```
+
+## Building release packages
+
+```sh
+bundle exec rake build         # Portable source gem; external curl-impersonate required
+bundle exec rake package:all   # Four platform gems with bundled executables
+```
+
+To build and check just one platform on a matching host:
+
+```sh
+bundle exec rake 'package:native[x86_64-linux-gnu]'
+CINEWORLD_PACKAGE=pkg/cineworld_uk-4.1.0-x86_64-linux-gnu.gem bundle exec ruby test/package_test.rb
+```
+
+Native packaging downloads pinned upstream archives at **build time**, verifies
+their SHA-256 digests, and includes the executable, licence files and source
+provenance. Archives and built gems stay in ignored `pkg/`, not Git. CI builds
+and installation-tests each platform on its corresponding runner and saves the
+gems as workflow artifacts; it does not publish them. Publish the source and
+platform gems together for automatic platform selection to work for users.
 
 ## Contributing
 
