@@ -2,6 +2,7 @@
 require "bundler/gem_tasks"
 
 require 'rake/testtask'
+load File.expand_path('tasks/package.rake', __dir__)
 
 Rake::TestTask.new do |t|
   t.libs << 'lib/cineworld_uk'

@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.1.0 - 2026-10-15
+
+### Added
+- Explicit guest token acquisition and renewal with `CineworldUk.acquire_token!`, using the standalone `curl-impersonate` CLI without Python or a browser.
+- Platform-specific gems bundle curl-impersonate 2.2.3 for x86-64/ARM64 glibc Linux and macOS, with pinned archive checksums, upstream notices, and native package CI checks. No separate executable installation is needed on these platforms.
+- Optional executable path for token acquisition. Existing caller-supplied tokens continue to work without the CLI.
+- Expiry checks and authentication errors for unavailable commands, blocked pages, and missing or invalid page tokens; failed acquisition preserves the previous token.
+
 ## 4.0.0 - 2026-10-15
 
 ### Changed
