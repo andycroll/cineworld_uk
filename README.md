@@ -229,7 +229,7 @@ To build and check just one platform on a matching host:
 
 ```sh
 bundle exec rake 'package:native[x86_64-linux-gnu]'
-CINEWORLD_PACKAGE=pkg/cineworld_uk-4.3.0-x86_64-linux-gnu.gem bundle exec ruby test/package_test.rb
+CINEWORLD_PACKAGE=pkg/cineworld_uk-4.3.1-x86_64-linux-gnu.gem bundle exec ruby test/package_test.rb
 ```
 
 Native packaging downloads pinned upstream archives at **build time**, verifies

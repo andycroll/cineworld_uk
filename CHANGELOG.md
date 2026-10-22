@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.3.1 - 2026-10-22
+
+### Fixed
+- Publish the platform gems that bundle curl-impersonate. 4.3.0 shipped only the source gem. No code changes.
+
 ## 4.3.0 - 2026-10-22
 
 ### Added
