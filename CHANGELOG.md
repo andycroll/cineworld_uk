@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.3.2 - 2026-10-22
+
+### Changed
+- Reuse one Vista client, and so one kept-alive connection, per thread instead of opening a TLS connection for every request. Requires cinebase 5.5. A cinema day now takes about 0.19s rather than 0.37s.
+
 ## 4.3.1 - 2026-10-22
 
 ### Fixed
