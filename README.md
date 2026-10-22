@@ -239,6 +239,11 @@ and installation-tests each platform on its corresponding runner and saves the
 gems as workflow artifacts; it does not publish them. Publish the source and
 platform gems together for automatic platform selection to work for users.
 
+To release, bump the version, merge, then run the **Release Gem** workflow in
+GitHub Actions. It builds the source and four platform gems, publishes them
+through RubyGems trusted publishing (no MFA code needed) and tags the release.
+Versions already on RubyGems are skipped, so a failed run can be rerun.
+
 ## Contributing
 
 1. Fork it
