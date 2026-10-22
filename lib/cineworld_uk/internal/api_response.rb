@@ -86,8 +86,17 @@ module CineworldUk
       private
 
       def fetch(path, query = {})
-        Cinebase::Vista::Client.new(base_url: BASE_URL, region_code: "GB",
-                                    token: CineworldUk.token).get(path, query)
+        client.get(path, query)
+      end
+
+      # One client keeps one connection open, so reuse it until the token changes.
+      def client
+        token = CineworldUk.token
+        if @client.nil? || @client_token != token
+          @client_token = token
+          @client = Cinebase::Vista::Client.new(base_url: BASE_URL, region_code: "GB", token: token)
+        end
+        @client
       end
     end
   end

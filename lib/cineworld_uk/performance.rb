@@ -56,9 +56,13 @@ module CineworldUk
 
     # private
 
+    API = :cineworld_uk_performance_api
+
     # @api private
+    # One API, and so one kept-alive connection, per thread: job runners
+    # import several cinemas at once.
     def self.api
-      @api ||= Internal::ApiResponse.new
+      Thread.current[API] ||= Internal::ApiResponse.new
     end
     private_class_method :api
 

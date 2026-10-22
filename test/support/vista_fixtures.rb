@@ -53,6 +53,7 @@ module Support
       [CineworldUk::Cinema, CineworldUk::Performance].each do |klass|
         klass.instance_variables.each { |name| klass.remove_instance_variable(name) }
       end
+      Thread.current[CineworldUk::Performance::API] = nil if defined?(CineworldUk::Performance::API)
     end
   end
 end
