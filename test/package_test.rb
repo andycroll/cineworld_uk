@@ -7,8 +7,8 @@ require "open3"
 require "base64"
 require "json"
 
-describe "Platform package" do
-  before do
+class PlatformPackageTest < Minitest::Test
+  def setup
     @directory = Dir.mktmpdir("cineworld-package-test")
     @spec = Gem::Installer.at(
       ENV.fetch("CINEWORLD_PACKAGE"), install_dir: @directory, ignore_dependencies: true
@@ -17,11 +17,11 @@ describe "Platform package" do
     @binary = File.join(@vendor, "bin", "curl-impersonate")
   end
 
-  after do
+  def teardown
     FileUtils.remove_entry(@directory)
   end
 
-  it "installs a runnable executable with upstream notices and provenance" do
+  def test_installs_runnable_executable_with_notices_and_provenance
     assert File.executable?(@binary)
     output, status = Open3.capture2(@binary, "--version")
     assert status.success?
@@ -30,7 +30,7 @@ describe "Platform package" do
     assert_includes File.read(File.join(@vendor, "SOURCE")), "2.2.3"
   end
 
-  it "acquires a token using the gem-local executable without any curl on PATH" do
+  def test_acquires_token_with_gem_local_executable_and_no_curl_on_path
     payload = Base64.urlsafe_encode64(JSON.generate("exp" => Time.now.to_i + 3600), padding: false)
     token = "header.#{payload}.signature"
     data = { "props" => { "pageProps" => { "environment" => { "gasToken" => token } } } }
@@ -40,10 +40,17 @@ describe "Platform package" do
     output, error, status = Open3.capture3(
       { "PATH" => @directory, "RUBYOPT" => nil, "BUNDLER_SETUP" => nil,
         "GEM_PATH" => Gem.path.join(File::PATH_SEPARATOR) }, RbConfig.ruby,
-      "-I#{File.join(@spec.full_gem_path, 'lib')}", "-rcineworld_uk",
+      "-I#{File.join(@spec.full_gem_path, 'lib')}", *cinebase_load_path, "-rcineworld_uk",
       "-e", "print CineworldUk.acquire_token!"
     )
     assert status.success?, error
-    _(output).must_equal token
+    assert_equal token, output
+  end
+
+  private
+
+  # The package is installed without dependencies, so load the bundle's cinebase.
+  def cinebase_load_path
+    Gem.loaded_specs.fetch("cinebase").full_require_paths.map { |path| "-I#{path}" }
   end
 end

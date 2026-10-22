@@ -21,6 +21,12 @@ module CineworldUk
             @data['attributeIds']&.include?('3d') ? '3d' : '2d'
           end
 
+          # @param [Integer] year edition when the title gives none
+          # @return [Cinebase::Festival, nil]
+          def festival(year)
+            Cinebase::Festival.from_title(@data['name'] || '', year: year)
+          end
+
           # Sanitized film name
           # @return [String]
           def name

@@ -18,13 +18,6 @@ module CineworldUk
       # Strings and regex to be removed
       def remove
         [
-          /\s+[23]d/i,                          # dimension
-          /\(Hindi\)/i,                         # Indian Language
-          /\(Malayalam\)/i,                     # Indian Language
-          /\(Punjabi\)/i,                       # Indian Language
-          /\(Tamil\)/i,                         # Indian Language
-          /\(Cantonese\)/i,                     # Chinese
-          /\(Turkish\)/i,                       # Foreign Language
           %r(-? \d{1,2}/\d{1,2}/\d{2,4}),       # date
           /\n/,                                 # newlines
           /\- Encore/,                          # encore
@@ -38,9 +31,8 @@ module CineworldUk
           'SciScreen: ',                        # SciScreen
           /\s(-\s)*(With)*\sLive Q And A/i,     # Live Q&A
           /(\s+\-\s+)?MOVIES FOR JUNIORS/i,     # movies for juniors
-          /\bsing\-?a\-?long\b/i,               # singalong
           %r{\s20\d{2}[\/-]20\d{2} Season\b}
-        ]
+        ] + COMMON_REMOVE
       end
 
       # Regexes and their replacements
@@ -61,7 +53,7 @@ module CineworldUk
           /ROH The Royal Ballet\s*[:-] (.*)/ => 'The Royal Ballet: ',
           /Royal Ballet Live\s*[:-] (.*)/    => 'The Royal Ballet: ',
           /San Francisco Ballets (.*)/       => 'San Francisco Ballet: '
-        }
+        }.merge(COMMON_REPLACE)
       end
     end
   end

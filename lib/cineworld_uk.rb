@@ -1,6 +1,7 @@
 require 'json'
 
 require 'cinebase'
+require 'cinebase/vista'
 
 require_relative './cineworld_uk/version'
 
@@ -17,7 +18,7 @@ require_relative './cineworld_uk/performance'
 
 # cineworld_uk gem
 module CineworldUk
-  class AuthenticationError < StandardError; end
+  AuthenticationError = Cinebase::Vista::AuthenticationError
 
   # A raw guest JWT, without the "Bearer " prefix. Never persisted by the gem.
   class << self

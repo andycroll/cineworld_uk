@@ -1,153 +1,102 @@
 require_relative '../../../test_helper'
 
-describe CineworldUk::Internal::TitleSanitizer do
-  let(:described_class) { CineworldUk::Internal::TitleSanitizer }
+class CineworldUk::Internal::TitleSanitizerTest < Minitest::Test
+  def test_removes_2d
+    assert_sanitized 'Iron Man 3', 'Iron Man 3 2D'
+  end
 
-  describe '#sanitized' do
-    subject { described_class.new(title).sanitized }
+  def test_removes_3d
+    assert_sanitized 'Iron Man 3', 'Iron Man 3 3d'
+  end
 
-    describe 'with 2d in title' do
-      let(:title) { 'Iron Man 3 2D' }
+  def test_removes_language
+    assert_sanitized 'Bang Bang!', 'Bang Bang! (Hindi)'
+    assert_sanitized 'Deadline', 'Deadline (Mandarin)'
+  end
 
-      it 'removes dimension' do
-        _(subject).must_equal('Iron Man 3')
-      end
-    end
+  def test_removes_dub_version
+    assert_sanitized 'Kung Fu Soccer', 'Kung Fu Soccer (Dubbed)'
+  end
 
-    describe 'with 3d in title' do
-      let(:title) { 'Iron Man 3 3d' }
+  def test_removes_unlimited_screening
+    assert_sanitized 'Nightcrawler', 'Nightcrawler - Unlimited Screening'
+  end
 
-      it 'removes dimension' do
-        _(subject).must_equal('Iron Man 3')
-      end
-    end
+  def test_removes_autism_prefix
+    assert_sanitized 'Dolphin Tale 2', 'Autism Friendly Screening: Dolphin Tale 2'
+  end
 
-    describe 'in hindi' do
-      let(:title) { 'Bang Bang! (Hindi)' }
+  def test_keeps_bolshoi_ballet
+    assert_sanitized 'Bolshoi Ballet: The Legend of Love', 'Bolshoi Ballet: The Legend of Love'
+  end
 
-      it 'removes language' do
-        _(subject).must_equal('Bang Bang!')
-      end
-    end
+  def test_eno
+    assert_sanitized 'English National Opera: La Traviata', 'ENO: La Traviata '
+  end
 
-    describe 'Unlimited Screening' do
-      let(:title) { 'Nightcrawler - Unlimited Screening' }
+  def test_removes_imax_prefix
+    assert_sanitized 'Fury', '(IMAX) Fury'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('Nightcrawler')
-      end
-    end
+  def test_met_opera
+    assert_sanitized 'Met Opera: Le Nozze Di Figaro', 'MET Opera - Le Nozze Di Figaro'
+  end
 
-    describe 'Austism screening' do
-      let(:title) { 'Autism Friendly Screening: Dolphin Tale 2' }
+  def test_nt_live_encore
+    assert_sanitized 'National Theatre: Frankenstein (starring Benedict Cumberbatch)',
+                     'NT Live Encore: Frankenstein (starring Benedict Cumberbatch)'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('Dolphin Tale 2')
-      end
-    end
+  def test_nt_live
+    assert_sanitized 'National Theatre: Treasure Island', 'NT Live: Treasure Island'
+  end
 
-    describe 'Bolshoi screening' do
-      let(:title) { 'Bolshoi Ballet: The Legend of Love' }
+  def test_nt_live_with_encore_suffix
+    assert_sanitized 'National Theatre: A Streetcar Named Desire (Young Vic)',
+                     'NT Live: A Streetcar Named Desire (Young Vic) - Encore'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('Bolshoi Ballet: The Legend of Love')
-      end
-    end
+  def test_roh
+    assert_sanitized 'Royal Opera House: I Due Foscari', 'ROH - I Due Foscari'
+  end
 
-    describe 'English National Opera screening' do
-      let(:title) { 'ENO: La Traviata ' }
+  def test_rbo_season
+    assert_sanitized 'Royal Ballet and Opera: Manon', 'RBO Cinema Season 2026-27: Manon'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('English National Opera: La Traviata')
-      end
-    end
+  def test_rsc
+    assert_sanitized "Royal Shakespeare Company: Love's Labour's Lost",
+                     "RSC Live: Love's Labour's Lost"
+  end
 
-    describe 'with IMAX' do
-      let(:title) { '(IMAX) Fury' }
+  def test_removes_sciscreen
+    assert_sanitized 'Dallas Buyers Club', 'SciScreen: Dallas Buyers Club'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('Fury')
-      end
-    end
+  def test_removes_special_performance
+    assert_sanitized 'Billy Elliot The Musical Live',
+                     'Billy Elliot The Musical Live - Special Performance'
+  end
 
-    describe 'Met Opera screening' do
-      let(:title) { 'MET Opera - Le Nozze Di Figaro' }
+  def test_removes_take_2
+    assert_sanitized 'Boyhood', 'Take 2 - Boyhood'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('Met Opera: Le Nozze Di Figaro')
-      end
-    end
+  def test_removes_singalong_and_movies_for_juniors
+    assert_sanitized 'Frozen', 'Frozen Sing-Along - Movies For Juniors'
+  end
 
-    describe 'NT Live screening' do
-      let(:title) { 'NT Live Encore: Frankenstein (starring Benedict Cumberbatch)' }
+  def test_keeps_sing_along_within_title
+    assert_sanitized 'Bebefinn Sing-Along Movie', 'Bebefinn Sing-Along Movie'
+  end
 
-      it 'removes prefix' do
-        _(subject).must_equal('National Theatre: Frankenstein (starring Benedict Cumberbatch)')
-      end
-    end
+  def test_removes_festival_prefix
+    assert_sanitized 'Scum Of The Earth', 'Cine-Excess 2026: Scum Of The Earth'
+  end
 
-    describe 'National Theatre screening' do
-      let(:title) { 'NT Live: Treasure Island' }
+  private
 
-      it 'removes prefix' do
-        _(subject).must_equal('National Theatre: Treasure Island')
-      end
-    end
-
-    describe 'National Theatre Encore screening' do
-      let(:title) { 'NT Live: A Streetcar Named Desire (Young Vic) - Encore' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('National Theatre: A Streetcar Named Desire (Young Vic)')
-      end
-    end
-
-    describe 'ROH screening' do
-      let(:title) { 'ROH - I Due Foscari' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('Royal Opera House: I Due Foscari')
-      end
-    end
-
-    describe 'RSC screening' do
-      let(:title) { "RSC Live: Love's Labour's Lost" }
-
-      it 'removes prefix' do
-        _(subject).must_equal("Royal Shakespeare Company: Love's Labour's Lost")
-      end
-    end
-
-    describe 'SciScreen screening' do
-      let(:title) { 'SciScreen: Dallas Buyers Club' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('Dallas Buyers Club')
-      end
-    end
-
-    describe 'special screening' do
-      let(:title) { 'Billy Elliot The Musical Live - Special Performance' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('Billy Elliot The Musical Live')
-      end
-    end
-
-    describe 'Take 2 screening' do
-      let(:title) { 'Take 2 - Boyhood' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('Boyhood')
-      end
-    end
-
-    describe 'singalong and movies for juniors' do
-      let(:title) { 'Frozen Sing-Along - Movies For Juniors' }
-
-      it 'removes prefix' do
-        _(subject).must_equal('Frozen')
-      end
-    end
+  def assert_sanitized(expected, title)
+    assert_equal expected, CineworldUk::Internal::TitleSanitizer.new(title).sanitized
   end
 end

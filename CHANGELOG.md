@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.2.0 - 2026-10-22
+
+### Added
+- `Performance#language` from Vista language attributes such as `Tamil`, `Performance#subtitled?`, and `Performance#festival`, a `Cinebase::Festival` with `name` and `year`.
+- Live API shape tests that check real responses without storing them.
+
+### Changed
+- Require cinebase 5.2. The Vista client, guest token retrieval and platform packaging task now come from `cinebase/vista`; behaviour, errors and pinned curl-impersonate digests are unchanged.
+- `CineworldUk::AuthenticationError` is now `Cinebase::Vista::AuthenticationError`, so existing `rescue` clauses keep working.
+- Film titles also use cinebase's common rules: dub and subtitle versions, more language versions, anniversaries, Q&A add-ons and festival prefixes are removed.
+- Tests use plain `Minitest::Test` classes, with hand-written fixtures in place of recorded API responses.
+
+### Fixed
+- `Sing-Along` inside a real title, such as `Bebefinn Sing-Along Movie`, is no longer removed.
+
+### Removed
+- The `fixtures` rake task, which saved API responses into the repository.
+
 ## 4.1.0 - 2026-10-15
 
 ### Added

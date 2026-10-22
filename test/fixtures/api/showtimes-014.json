@@ -1,0 +1,67 @@
+{
+  "businessDate": "2026-10-24",
+  "showtimes": [
+    {
+      "id": "014-1001",
+      "filmId": "FILM-1",
+      "schedule": { "startsAt": "2026-10-24T09:00:00+01:00" },
+      "attributeIds": ["A-2D", "A-AD"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "014-1002",
+      "filmId": "FILM-1",
+      "schedule": { "startsAt": "2026-10-24T14:30:00+01:00" },
+      "attributeIds": ["A-IMAX"],
+      "requires3dGlasses": true
+    },
+    {
+      "id": "014-1003",
+      "filmId": "FILM-2",
+      "schedule": { "startsAt": "2026-10-24T18:00:00+01:00" },
+      "attributeIds": ["A-TAMIL", "A-ST"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "014-1004",
+      "filmId": "FILM-3",
+      "schedule": { "startsAt": "2026-10-24T10:00:00+01:00" },
+      "attributeIds": ["A-M4J"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "014-1005",
+      "filmId": "FILM-4",
+      "schedule": { "startsAt": "2026-10-24T20:15:00+01:00" },
+      "attributeIds": ["A-AC"],
+      "requires3dGlasses": false
+    },
+    {
+      "id": "014-1006",
+      "filmId": "FILM-1",
+      "schedule": { "startsAt": "2026-10-25T00:15:00+01:00" },
+      "attributeIds": [],
+      "requires3dGlasses": false
+    }
+  ],
+  "relatedData": {
+    "films": [
+      { "id": "FILM-1", "title": { "text": "The Example Film" } },
+      { "id": "FILM-2", "title": { "text": "Imaginary Picture (Tamil)" } },
+      { "id": "FILM-3", "title": { "text": "Pretend Pups - Movies For Juniors" } },
+      { "id": "FILM-4", "title": { "text": "Cine-Excess 2026: Scum Of The Earth" } }
+    ],
+    "attributes": [
+      { "id": "A-2D", "shortName": { "text": "2D" }, "name": { "text": "2D Film" } },
+      { "id": "A-AD", "shortName": { "text": "AD" }, "name": { "text": "Audio Described" } },
+      { "id": "A-IMAX", "shortName": { "text": "IMAX" }, "name": { "text": "IMAX Film" } },
+      { "id": "A-TAMIL", "shortName": { "text": "Tamil" }, "name": { "text": "Tamil" } },
+      { "id": "A-ST", "shortName": { "text": "ST" }, "name": { "text": "Subtitled" } },
+      { "id": "A-M4J", "shortName": { "text": "M4J" }, "name": { "text": "Movies for Juniors" } },
+      { "id": "A-AC", "shortName": { "text": "AC" }, "name": { "text": "Event Cinema" } }
+    ],
+    "sites": [
+      { "id": "014", "name": { "text": "Brighton" } }
+    ]
+  }
+}

@@ -1,62 +1,44 @@
 require_relative '../../../../../test_helper'
-require_relative '../../../../../support/fixture_reader'
 
-describe CineworldUk::Internal::Parser::Api::Performance do
-  include Support::FixtureReader
-
-  let(:described_class) { CineworldUk::Internal::Parser::Api::Performance }
-  let(:data) { random_performance }
-
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '#booking_url' do
-    subject { described_class.new(data).booking_url }
-
-    it 'should be a url on the cineworld website' do
-      _(subject).must_match(%r{cineworld.co.uk})
-    end
+class CineworldUk::Internal::Parser::Api::PerformanceTest < Minitest::Test
+  def test_booking_url
+    assert_equal 'https://web.cineworld.co.uk/order/showtimes/014-1001/seats',
+                 performance.booking_url
   end
 
-  describe '#film_id' do
-    subject { described_class.new(data).film_id }
-
-    it 'should be a string' do
-      _(subject).must_be_instance_of(String)
-    end
+  def test_film_id
+    assert_equal '014-1001', performance.film_id
   end
 
-  describe '#starting_at' do
-    subject { described_class.new(data).starting_at }
-
-    it 'should be a time' do
-      _(subject).must_be_instance_of(Time)
-    end
+  def test_starting_at
+    assert_equal Time.utc(2026, 10, 24, 8, 0), performance.starting_at
   end
 
-  describe '#variant' do
-    subject { described_class.new(data).variant }
+  def test_language
+    assert_equal 'Tamil', performance('language' => 'Tamil').language
+  end
 
-    describe 'has "audio-described" in attributeIds' do
-      let(:data) { random_performance.merge('attributeIds' => ['audio-described']) }
+  def test_language_defaults_to_nil
+    assert_nil performance.language
+  end
 
-      it 'includes "audio_described"' do
-        _(subject).must_include('audio_described')
-      end
-    end
+  def test_variant_audio_described
+    assert_includes performance('attributeIds' => ['audio-described']).variant, 'audio_described'
+  end
 
-    describe 'has "subbed" in attributeIds' do
-      let(:data) { random_performance.merge('attributeIds' => ['subbed']) }
-
-      it 'includes "subtitled"' do
-        _(subject).must_include('subtitled')
-      end
-    end
+  def test_variant_subtitled
+    assert_includes performance('attributeIds' => ['subbed']).variant, 'subtitled'
   end
 
   private
 
-  def random_performance
-    JSON.parse(performances_tomorrow_json(14))['body']['events'].sample
+  def performance(overrides = {})
+    data = {
+      'filmId' => '014-1001',
+      'attributeIds' => [],
+      'eventDateTime' => '2026-10-24T08:00:00Z',
+      'bookingLink' => 'https://web.cineworld.co.uk/order/showtimes/014-1001/seats'
+    }
+    CineworldUk::Internal::Parser::Api::Performance.new(data.merge(overrides))
   end
 end

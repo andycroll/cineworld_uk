@@ -10,3 +10,6 @@ Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_opti
 require 'webmock/minitest'
 
 require File.expand_path('../../lib/cineworld_uk.rb', __FILE__)
+
+require_relative 'support/api_shapes'
+require_relative 'support/vista_fixtures'

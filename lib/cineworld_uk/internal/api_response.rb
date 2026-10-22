@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "net/http"
 require "json"
 require "date"
 require "time"
@@ -17,6 +16,7 @@ module CineworldUk
         "Movies for Juniors" => "junior",
         "Unlimited Screening" => "unlimited-screening", "Q&A" => "qa"
       }.freeze
+      LANGUAGES = Cinebase::TitleSanitizer::LANGUAGES
 
       def cinema_list
         cinemas = fetch("sites").fetch("sites").map do |site|
@@ -53,6 +53,9 @@ module CineworldUk
               ATTRIBUTES[attribute.dig("name", "text")]
           end
           attrs << "3d" if showtime["requires3dGlasses"]
+          language = showtime.fetch("attributeIds", []).filter_map do |id|
+            attributes.fetch(id).dig("shortName", "text")
+          end.find { |name| LANGUAGES.include?(name) }
           # Formats belong to a session, not to the film as a whole.
           id = showtime.fetch("id")
           normalized_films << {
@@ -62,7 +65,7 @@ module CineworldUk
           }
           starts_at = showtime.fetch("schedule").fetch("startsAt")
           {
-            "filmId" => id, "attributeIds" => attrs,
+            "filmId" => id, "attributeIds" => attrs, "language" => language,
             "eventDateTime" => Time.iso8601(starts_at).utc.iso8601,
             "bookingLink" =>
               "https://web.cineworld.co.uk/order/showtimes/#{id}/seats"
@@ -82,34 +85,8 @@ module CineworldUk
       private
 
       def fetch(path, query = {})
-        token = CineworldUk.token
-        if !token.is_a?(String) || token.strip.empty?
-          raise AuthenticationError,
-                "Set CineworldUk.token to a current guest JWT " \
-                "before fetching data"
-        end
-        uri = URI(BASE_URL + path)
-        uri.query = URI.encode_www_form(query) unless query.empty?
-        request = Net::HTTP::Get.new(uri)
-        request["Authorization"] = "Bearer #{token}"
-        request["Connect-Region-Code"] = "GB"
-        request["Accept"] = "application/json"
-        response = Net::HTTP.start(
-          uri.host, uri.port, use_ssl: true, open_timeout: 10, read_timeout: 30
-        ) do |http|
-          http.request(request)
-        end
-        case response
-        when Net::HTTPSuccess
-          JSON.parse(response.body)
-        when Net::HTTPUnauthorized
-          raise AuthenticationError,
-                "Vista rejected the guest token; " \
-                "supply a fresh token with CineworldUk.token="
-        else
-          # Omit response bodies and never redirect credentials to another host.
-          raise "Vista HTTP error #{response.code}"
-        end
+        Cinebase::Vista::Client.new(base_url: BASE_URL, region_code: "GB",
+                                    token: CineworldUk.token).get(path, query)
       end
     end
   end

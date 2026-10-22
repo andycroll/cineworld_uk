@@ -1,183 +1,156 @@
 require_relative '../../test_helper'
-require_relative '../../support/fixture_reader'
 
-describe CineworldUk::Performance do
-  include Support::FixtureReader
+class CineworldUk::PerformanceTest < Minitest::Test
+  include Support::VistaFixtures
 
-  let(:described_class) { CineworldUk::Performance }
-  let(:api_response) { Minitest::Mock.new }
+  DATE = Date.new(2026, 10, 24)
 
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '.at(cinema_id)' do
-    subject do
-      described_class.at(cinema_id, from: Date.today + 1, to: Date.today + 1)
-    end
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-      4.times { api_response.expect(:performances,
-                          performances_tomorrow_json(14),
-                          [14, Date.today + 1]) }
-    end
-
-    describe 'called with integer' do
-      let(:cinema_id) { 14 }
-
-      it 'returns an array of performances' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_be_instance_of(Array)
-          subject.each do |performance|
-            _(performance).must_be_instance_of(described_class)
-          end
-        end
-      end
-
-      it 'returns at least a sensible number' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject.count).must_be :>, 5
-        end
-      end
-    end
-
-    describe 'called with string' do
-      let(:cinema_id) { '14' }
-
-      it 'returns an array of performances' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_be_instance_of(Array)
-          subject.each do |performance|
-            _(performance).must_be_instance_of(described_class)
-          end
-        end
-      end
-
-      it 'returns at least a sensible number' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject.count).must_be :>, 5
-        end
-      end
-    end
+  def setup
+    setup_vista
   end
 
-  describe '.new' do
-    subject { described_class.new(options) }
-
-    describe 'simple' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.utc(2013, 9, 12, 11, 0)
-        }
-      end
-
-      it 'sets cinema name and film name' do
-        _(subject.film_name).must_equal 'Iron Man 3'
-        _(subject.cinema_name).must_equal 'Cineworld Brighton'
-      end
-
-      it 'booking url, dimension & varient are set to defaults' do
-        _(subject.booking_url).must_be_nil
-        _(subject.dimension).must_equal '2d'
-        _(subject.variant).must_equal []
-      end
-    end
+  def teardown
+    teardown_vista
+    super
   end
 
-  describe '#dimension' do
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        dimension:   '3d',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0)
-      }
-    end
+  def test_at_returns_performances
+    performances = performances_on_date
 
-    subject { described_class.new(options).dimension }
-
-    it 'returns 2d or 3d' do
-      _(subject).must_be_instance_of(String)
-      _(subject).must_equal '3d'
-    end
+    assert(performances.all? { |p| p.instance_of?(CineworldUk::Performance) })
+    assert_equal 6, performances.count
   end
 
-  describe '#starting_at' do
-    subject { described_class.new(options).starting_at }
+  def test_at_accepts_string_id
+    stub_showtimes(DATE)
 
-    describe 'with utc time' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.utc(2013, 9, 12, 11, 0)
-        }
-      end
-
-      it 'returns UTC time' do
-        _(subject).must_be_instance_of Time
-        _(subject).must_equal Time.utc(2013, 9, 12, 11, 0)
-      end
-    end
-
-    describe 'with non-utc time' do
-      let(:options) do
-        {
-          film_name:   'Iron Man 3',
-          cinema_id:   3,
-          cinema_name: 'Cineworld Brighton',
-          starting_at: Time.new(2013, 9, 12, 11, 0)
-        }
-      end
-
-      it 'returns UTC time' do
-        _(subject).must_be_instance_of Time
-        _(subject).must_equal Time.utc(2013, 9, 12, 10, 0)
-        _(subject.utc?).must_equal(true)
-      end
-    end
+    assert_equal 6, CineworldUk::Performance.at('014', from: DATE, to: DATE).count
   end
 
-  describe '#showing_on' do
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0)
-      }
-    end
+  def test_at_parses_first_performance
+    performance = performances_on_date.first
 
-    subject { described_class.new(options).showing_on }
-
-    it 'returns date of showing' do
-      _(subject).must_be_instance_of(Date)
-      _(subject).must_equal Date.new(2013, 9, 12)
-    end
+    assert_equal 14, performance.cinema_id
+    assert_equal 'Brighton', performance.cinema_name
+    assert_equal 'The Example Film', performance.film_name
+    assert_equal Time.utc(2026, 10, 24, 8, 0), performance.starting_at
+    assert_equal '2d', performance.dimension
+    assert_equal %w(audio_described), performance.variant
+    assert_equal 'https://web.cineworld.co.uk/order/showtimes/014-1001/seats',
+                 performance.booking_url
   end
 
-  describe '#variant' do
-    subject { described_class.new(options).variant }
+  def test_at_keeps_format_per_session
+    performances = performances_on_date
 
-    let(:options) do
-      {
-        film_name:   'Iron Man 3',
-        cinema_id:   3,
-        cinema_name: 'Cineworld Brighton',
-        starting_at: Time.utc(2013, 9, 12, 11, 0),
-        variant:     ['Kids']
-      }
-    end
+    assert_equal '3d', performances[1].dimension
+    assert_equal %w(imax), performances[1].variant
+    assert_equal '2d', performances.last.dimension
+  end
 
-    it 'is an alphabetically ordered array of lower-cased strings' do
-      _(subject).must_be_instance_of Array
-      subject.each { |element| _(element).must_be_instance_of String }
-      _(subject).must_equal %w(kids)
-    end
+  def test_at_returns_language_and_subtitles
+    performance = performances_on_date[2]
+
+    assert_equal 'Imaginary Picture', performance.film_name
+    assert_equal 'Tamil', performance.language
+    assert performance.subtitled?
+  end
+
+  def test_at_marks_movies_for_juniors_as_kids
+    performance = performances_on_date[3]
+
+    assert_equal 'Pretend Pups', performance.film_name
+    assert_equal %w(kids), performance.variant
+  end
+
+  def test_at_moves_festival_from_title
+    performance = performances_on_date[4]
+
+    assert_equal 'Scum Of The Earth', performance.film_name
+    assert_equal Cinebase::Festival.new(name: 'Cine-Excess', year: 2026), performance.festival
+  end
+
+  def test_at_keeps_after_midnight_on_next_utc_day
+    assert_equal Time.utc(2026, 10, 24, 23, 15), performances_on_date.last.starting_at
+  end
+
+  def test_at_includes_last_requested_day_without_fetching_sites
+    stub_showtimes(DATE, empty_showtimes_json)
+    stub_showtimes(DATE + 1)
+
+    performances = CineworldUk::Performance.at(14, from: DATE, to: DATE + 1)
+
+    assert_equal 6, performances.count
+    assert_not_requested :get, "#{BASE_URL}sites"
+  end
+
+  def test_at_defaults_to_fourteen_days
+    (DATE..DATE + 13).each { |date| stub_showtimes(date, empty_showtimes_json) }
+
+    assert_equal [], CineworldUk::Performance.at(14, from: DATE)
+    assert_requested :get, %r{showtimes/by-business-date/}, times: 14
+  end
+
+  def test_at_rejects_range_ending_before_start
+    assert_raises(ArgumentError) { CineworldUk::Performance.at(14, from: DATE, to: DATE - 1) }
+  end
+
+  def test_new_sets_names
+    performance = CineworldUk::Performance.new(options)
+
+    assert_equal 'Iron Man 3', performance.film_name
+    assert_equal 'Cineworld Brighton', performance.cinema_name
+  end
+
+  def test_new_sets_defaults
+    performance = CineworldUk::Performance.new(options)
+
+    assert_nil performance.booking_url
+    assert_equal '2d', performance.dimension
+    assert_nil performance.festival
+    assert_nil performance.language
+    refute performance.subtitled?
+    assert_equal [], performance.variant
+  end
+
+  def test_dimension
+    assert_equal '3d', CineworldUk::Performance.new(options(dimension: '3d')).dimension
+  end
+
+  def test_starting_at_keeps_utc
+    assert_equal Time.utc(2013, 9, 12, 11, 0), CineworldUk::Performance.new(options).starting_at
+  end
+
+  def test_starting_at_converts_local_time_to_utc
+    starting_at = CineworldUk::Performance.new(
+      options(starting_at: Time.new(2013, 9, 12, 11, 0))
+    ).starting_at
+
+    assert_equal Time.utc(2013, 9, 12, 10, 0), starting_at
+    assert starting_at.utc?
+  end
+
+  def test_showing_on
+    assert_equal Date.new(2013, 9, 12), CineworldUk::Performance.new(options).showing_on
+  end
+
+  def test_variant_is_sorted_and_lower_case
+    assert_equal %w(kids), CineworldUk::Performance.new(options(variant: ['Kids'])).variant
+  end
+
+  private
+
+  def options(overrides = {})
+    {
+      film_name:   'Iron Man 3',
+      cinema_id:   3,
+      cinema_name: 'Cineworld Brighton',
+      starting_at: Time.utc(2013, 9, 12, 11, 0)
+    }.merge(overrides)
+  end
+
+  def performances_on_date
+    stub_showtimes(DATE)
+    CineworldUk::Performance.at(14, from: DATE, to: DATE)
   end
 end
