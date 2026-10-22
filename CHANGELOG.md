@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `4dx` and `screenx` variants from Vista's `4DX`, `4DX 3D` and `ScreenX` attributes.
 
 ### Changed
-- Require cinebase 5.3.
+- Require cinebase 5.4. Titles also lose `+ ... Q&A` and `+ Discussion` add-ons, `(35mm)`, `(70mm)` and `4K` markers, and `CFF:` festival prefixes.
 - Film titles lose their year suffix and the `(4DX)`, `(ScreenX)`, `M4J:`, `£2 Family Films :`, `Horror Season 2026` and `(Re-release)` markers, and Lithuanian versions. For example `Horror Season 2026 From Dusk Till Dawn (1996)` is now `From Dusk Till Dawn` with `film_year` 1996 and the Horror Season 2026 festival. Consumers matching films by name will see these names change.
 
 ## 4.2.0 - 2026-10-22
