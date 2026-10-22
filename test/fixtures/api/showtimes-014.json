@@ -37,6 +37,13 @@
       "requires3dGlasses": false
     },
     {
+      "id": "014-1007",
+      "filmId": "FILM-5",
+      "schedule": { "startsAt": "2026-10-24T21:00:00+01:00" },
+      "attributeIds": ["A-4DX"],
+      "requires3dGlasses": false
+    },
+    {
       "id": "014-1006",
       "filmId": "FILM-1",
       "schedule": { "startsAt": "2026-10-25T00:15:00+01:00" },
@@ -49,7 +56,8 @@
       { "id": "FILM-1", "title": { "text": "The Example Film" } },
       { "id": "FILM-2", "title": { "text": "Imaginary Picture (Tamil)" } },
       { "id": "FILM-3", "title": { "text": "Pretend Pups - Movies For Juniors" } },
-      { "id": "FILM-4", "title": { "text": "Cine-Excess 2026: Scum Of The Earth" } }
+      { "id": "FILM-4", "title": { "text": "Cine-Excess 2026: Scum Of The Earth" } },
+      { "id": "FILM-5", "title": { "text": "(4DX) Wildwood (2026)" } }
     ],
     "attributes": [
       { "id": "A-2D", "shortName": { "text": "2D" }, "name": { "text": "2D Film" } },
@@ -58,7 +66,8 @@
       { "id": "A-TAMIL", "shortName": { "text": "Tamil" }, "name": { "text": "Tamil" } },
       { "id": "A-ST", "shortName": { "text": "ST" }, "name": { "text": "Subtitled" } },
       { "id": "A-M4J", "shortName": { "text": "M4J" }, "name": { "text": "Movies for Juniors" } },
-      { "id": "A-AC", "shortName": { "text": "AC" }, "name": { "text": "Event Cinema" } }
+      { "id": "A-AC", "shortName": { "text": "AC" }, "name": { "text": "Event Cinema" } },
+      { "id": "A-4DX", "shortName": { "text": "4DX" }, "name": { "text": "4DX" } }
     ],
     "sites": [
       { "id": "014", "name": { "text": "Brighton" } }

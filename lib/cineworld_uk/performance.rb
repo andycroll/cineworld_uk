@@ -80,6 +80,7 @@ module CineworldUk
           dimension: film.dimension,
           festival: film.festival(starting_at.year),
           film_name: film.name,
+          film_year: film.film_year,
           language: performance.language,
           starting_at: starting_at,
           variant: (performance.variant + film.variant).sort

@@ -14,7 +14,8 @@ module CineworldUk
         "Subtitled" => "subbed", "Subtitles" => "subbed",
         "Autism Friendly" => "autism-friendly",
         "Movies for Juniors" => "junior",
-        "Unlimited Screening" => "unlimited-screening", "Q&A" => "qa"
+        "Unlimited Screening" => "unlimited-screening", "Q&A" => "qa",
+        "4DX" => "4dx", "4DX 3D" => "4dx", "ScreenX" => "screenx"
       }.freeze
       LANGUAGES = Cinebase::TitleSanitizer::LANGUAGES
 

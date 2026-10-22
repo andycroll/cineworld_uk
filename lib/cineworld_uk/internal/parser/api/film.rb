@@ -27,6 +27,11 @@ module CineworldUk
             Cinebase::Festival.from_title(@data['name'] || '', year: year)
           end
 
+          # @return [Integer, nil] the year at the end of the title
+          def film_year
+            Cinebase::TitleSanitizer.film_year(@data['name'] || '')
+          end
+
           # Sanitized film name
           # @return [String]
           def name
@@ -40,11 +45,13 @@ module CineworldUk
           def variant
             attrs = @data['attributeIds'] || []
             [
+              attrs.include?('4dx') ? '4dx' : nil,
               attrs.include?('autism-friendly') ? 'autism_friendly' : nil,
               attrs.include?('imax') ? 'imax' : nil,
               attrs.include?('junior') ? 'kids' : nil,
               attrs.include?('unlimited-screening') ? 'members' : nil,
-              attrs.include?('qa') ? 'q&a' : nil
+              attrs.include?('qa') ? 'q&a' : nil,
+              attrs.include?('screenx') ? 'screenx' : nil
             ].compact
           end
         end

@@ -90,6 +90,31 @@ class CineworldUk::Internal::TitleSanitizerTest < Minitest::Test
     assert_sanitized 'Bebefinn Sing-Along Movie', 'Bebefinn Sing-Along Movie'
   end
 
+  def test_removes_format_prefix
+    assert_sanitized 'Wildwood', '(4DX) Wildwood'
+    assert_sanitized 'Wildwood', '(ScreenX) Wildwood'
+  end
+
+  def test_removes_movies_for_juniors_prefix
+    assert_sanitized 'Paw Patrol: The Mighty Movie', 'M4J: Paw Patrol: The Mighty Movie'
+  end
+
+  def test_removes_family_films_prefix
+    assert_sanitized 'Paw Patrol: The Dino Movie', '£2 Family Films : Paw Patrol: The Dino Movie'
+  end
+
+  def test_removes_film_year
+    assert_sanitized 'Street Fighter', 'Street Fighter (2026)'
+  end
+
+  def test_removes_season_prefix_and_year
+    assert_sanitized 'From Dusk Till Dawn', 'Horror Season 2026 From Dusk Till Dawn (1996)'
+  end
+
+  def test_removes_re_release
+    assert_sanitized 'Zindagi Na Milegi Dobara', 'Zindagi Na Milegi Dobara (Re-release) (Hindi)'
+  end
+
   def test_removes_festival_prefix
     assert_sanitized 'Scum Of The Earth', 'Cine-Excess 2026: Scum Of The Earth'
   end
