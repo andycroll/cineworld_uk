@@ -18,13 +18,13 @@ class CineworldUk::PerformanceTest < Minitest::Test
     performances = performances_on_date
 
     assert(performances.all? { |p| p.instance_of?(CineworldUk::Performance) })
-    assert_equal 6, performances.count
+    assert_equal 7, performances.count
   end
 
   def test_at_accepts_string_id
     stub_showtimes(DATE)
 
-    assert_equal 6, CineworldUk::Performance.at('014', from: DATE, to: DATE).count
+    assert_equal 7, CineworldUk::Performance.at('014', from: DATE, to: DATE).count
   end
 
   def test_at_parses_first_performance
@@ -70,6 +70,18 @@ class CineworldUk::PerformanceTest < Minitest::Test
     assert_equal Cinebase::Festival.new(name: 'Cine-Excess', year: 2026), performance.festival
   end
 
+  def test_at_parses_format_and_film_year
+    performance = performances_on_date[5]
+
+    assert_equal 'Wildwood', performance.film_name
+    assert_equal 2026, performance.film_year
+    assert_equal %w(4dx), performance.variant
+  end
+
+  def test_new_sets_film_year
+    assert_equal 1996, CineworldUk::Performance.new(options(film_year: 1996)).film_year
+  end
+
   def test_at_keeps_after_midnight_on_next_utc_day
     assert_equal Time.utc(2026, 10, 24, 23, 15), performances_on_date.last.starting_at
   end
@@ -80,7 +92,7 @@ class CineworldUk::PerformanceTest < Minitest::Test
 
     performances = CineworldUk::Performance.at(14, from: DATE, to: DATE + 1)
 
-    assert_equal 6, performances.count
+    assert_equal 7, performances.count
     assert_not_requested :get, "#{BASE_URL}sites"
   end
 

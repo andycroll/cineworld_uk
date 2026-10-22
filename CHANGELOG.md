@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.3.0 - 2026-10-22
+
+### Added
+- `Performance#film_year`, read from a trailing `(1996)` in the title, so a re-release gives the original year.
+- `4dx` and `screenx` variants from Vista's `4DX`, `4DX 3D` and `ScreenX` attributes.
+
+### Changed
+- Require cinebase 5.3.
+- Film titles lose their year suffix and the `(4DX)`, `(ScreenX)`, `M4J:`, `£2 Family Films :`, `Horror Season 2026` and `(Re-release)` markers, and Lithuanian versions. For example `Horror Season 2026 From Dusk Till Dawn (1996)` is now `From Dusk Till Dawn` with `film_year` 1996 and the Horror Season 2026 festival. Consumers matching films by name will see these names change.
+
 ## 4.2.0 - 2026-10-22
 
 ### Added

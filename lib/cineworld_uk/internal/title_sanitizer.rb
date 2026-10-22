@@ -28,6 +28,9 @@ module CineworldUk
           /\ATake 2 -/,                         # take 2
           / - (Subtitled) Movies for Juniors/i, # movies for juniors
           '(IMAX)',                             # IMAX
+          /\A\((4DX|ScreenX)\)\s*/,             # format, kept as a variant
+          /\AM4J: /,                            # movies for juniors
+          /\A£2 Family Films : /,               # family pricing
           'SciScreen: ',                        # SciScreen
           /\s(-\s)*(With)*\sLive Q And A/i,     # Live Q&A
           /(\s+\-\s+)?MOVIES FOR JUNIORS/i,     # movies for juniors

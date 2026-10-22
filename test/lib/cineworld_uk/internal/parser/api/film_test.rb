@@ -47,6 +47,22 @@ class CineworldUk::Internal::Parser::Api::FilmTest < Minitest::Test
     assert_nil film.festival(2026)
   end
 
+  def test_film_year
+    assert_equal 1996, film('name' => 'Horror Season 2026 From Dusk Till Dawn (1996)').film_year
+  end
+
+  def test_film_year_without_year
+    assert_nil film.film_year
+  end
+
+  def test_variant_4dx
+    assert_includes film('attributeIds' => ['4dx']).variant, '4dx'
+  end
+
+  def test_variant_screenx
+    assert_includes film('attributeIds' => ['screenx']).variant, 'screenx'
+  end
+
   def test_variant_is_sorted
     variant = film('attributeIds' => %w(qa junior imax)).variant
 
