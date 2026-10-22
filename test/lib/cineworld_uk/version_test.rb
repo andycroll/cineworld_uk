@@ -1,7 +1,7 @@
 require_relative '../../test_helper'
 
-describe CineworldUk do
-  it 'must be defined' do
-    _(CineworldUk::VERSION).wont_be_nil
+class CineworldUk::VersionTest < Minitest::Test
+  def test_version_is_defined
+    refute_nil CineworldUk::VERSION
   end
 end

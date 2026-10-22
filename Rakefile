@@ -2,7 +2,9 @@
 require "bundler/gem_tasks"
 
 require 'rake/testtask'
-load File.expand_path('tasks/package.rake', __dir__)
+require 'cinebase/vista/package_task'
+
+Cinebase::Vista::PackageTask.new('cineworld_uk.gemspec', root: __dir__)
 
 Rake::TestTask.new do |t|
   t.libs << 'lib/cineworld_uk'
@@ -31,29 +33,6 @@ task :console do
   require 'cineworld_uk'
   ARGV.clear
   IRB.start
-end
-
-desc 'Recreate test fixtures'
-task :fixtures do
-  require 'cineworld_uk'
-  CineworldUk.token = ENV.fetch("CINEWORLD_TOKEN")
-
-  def js_fixture(name)
-    File.expand_path("../test/fixtures/#{name}.json", __FILE__)
-  end
-
-  api = CineworldUk::Internal::ApiResponse.new
-
-  File.open(js_fixture('api/cinema-list'), 'w') do |file|
-    puts '* API Cinema List'
-    file.write api.cinema_list
-  end
-
-  File.open(js_fixture('api/performances-tomorrow-14'), 'w') do |file|
-    puts '* API Performances in Brighton Tomorrow'
-    file.write api.performances(14, Date.today + 1)
-  end
-
 end
 
 task :default => :test

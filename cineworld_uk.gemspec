@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  spec.add_development_dependency 'base64'
   spec.add_development_dependency 'bundler', '>= 2.0'
   spec.add_development_dependency 'minitest-mock'
   spec.add_development_dependency 'minitest-reporters'
@@ -24,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov', '< 1'
   spec.add_development_dependency 'webmock'
 
-  spec.add_runtime_dependency 'base64', '~> 0.3'
-  spec.add_runtime_dependency 'cinebase', '~> 5.0'
+  spec.add_runtime_dependency 'cinebase', '~> 5.2'
   spec.add_runtime_dependency 'nokogiri', '>= 1.11'
 end

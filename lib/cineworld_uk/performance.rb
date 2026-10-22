@@ -71,14 +71,17 @@ module CineworldUk
       events.map do |event_data|
         performance = Internal::Parser::Api::Performance.new(event_data)
         film = films_hash[performance.film_id]
+        starting_at = utc(performance.starting_at)
 
         {
           cinema_name: response["body"]["cinemaName"] ||
             CineworldUk::Cinema.new(cinema_id).name,
           booking_url: performance.booking_url,
           dimension: film.dimension,
+          festival: film.festival(starting_at.year),
           film_name: film.name,
-          starting_at: utc(performance.starting_at),
+          language: performance.language,
+          starting_at: starting_at,
           variant: (performance.variant + film.variant).sort
         }
       end

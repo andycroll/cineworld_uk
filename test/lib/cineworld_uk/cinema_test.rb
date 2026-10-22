@@ -1,249 +1,89 @@
 require_relative '../../test_helper'
-require_relative '../../support/fixture_reader'
 
-describe CineworldUk::Cinema do
-  include Support::FixtureReader
+class CineworldUk::CinemaTest < Minitest::Test
+  include Support::VistaFixtures
 
-  let(:described_class) { CineworldUk::Cinema }
-  let(:api_response) { Minitest::Mock.new }
-
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '.all' do
-    subject { described_class.all }
-
-    before { api_response.expect(:cinema_list, cinema_list_json) }
-
-    it 'returns an Array of CineworldUK::Cinemas' do
-      CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        _(subject).must_be_instance_of(Array)
-        subject.each do |value|
-          _(value).must_be_instance_of(CineworldUk::Cinema)
-        end
-      end
-    end
-
-    it 'returns the correctly sized array' do
-      CineworldUk::Internal::ApiResponse.stub :new, api_response do
-        _(subject.size).must_equal(87)
-      end
-    end
+  def setup
+    setup_vista
+    stub_sites
   end
 
-  describe '#adr' do
-    subject { described_class.new(id).adr }
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the address hash' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal(
-            street_address: 'Brighton Marina Village',
-            extended_address: nil,
-            locality: 'Brighton',
-            region: nil,
-            postal_code: 'BN2 5UF',
-            country: 'United Kingdom'
-          )
-        end
-      end
-    end
+  def teardown
+    teardown_vista
+    super
   end
 
-  describe '#address' do
-    subject { described_class.new(id).address }
+  def test_all_returns_cinemas
+    cinemas = CineworldUk::Cinema.all
 
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the address hash' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal(
-            street_address: 'Brighton Marina Village',
-            extended_address: nil,
-            locality: 'Brighton',
-            region: nil,
-            postal_code: 'BN2 5UF',
-            country: 'United Kingdom'
-          )
-        end
-      end
-    end
+    assert(cinemas.all? { |cinema| cinema.instance_of?(CineworldUk::Cinema) })
+    assert_equal [14, 88, 103, 999], cinemas.map(&:id)
   end
 
-  describe '#extended_address' do
-    subject { described_class.new(id).extended_address }
+  def test_all_fetches_sites_once
+    CineworldUk::Cinema.all
+    CineworldUk::Cinema.new(14).name
 
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the address hash' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal('')
-        end
-      end
-    end
+    assert_requested :get, "#{BASE_URL}sites", times: 1
   end
 
-  describe '#full_name' do
-    subject { described_class.new(id).full_name }
+  def test_adr
+    expected = {
+      street_address: '1 Example Marina',
+      extended_address: nil,
+      locality: 'Brighton',
+      region: 'East Sussex',
+      postal_code: 'BN2 0ZZ',
+      country: 'United Kingdom'
+    }
 
-    before { api_response.expect(:cinema_list, cinema_list_json) }
-
-    describe 'simple name (Brighton)' do
-      let(:id) { 14 }
-
-      it 'returns the brand in the name' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'Cineworld Brighton'
-        end
-      end
-    end
-
-    describe 'simple name (Brighton) called with String' do
-      let(:id) { '14' }
-
-      it 'returns the brand in the name' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'Cineworld Brighton'
-        end
-      end
-    end
-
-    describe 'complex name (Glasgow Silverburn)' do
-      let(:id) { 88 }
-
-      it 'returns the brand in the name' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'Cineworld Glasgow: Silverburn'
-        end
-      end
-    end
+    assert_equal expected, CineworldUk::Cinema.new(14).adr
+    assert_equal expected, CineworldUk::Cinema.new(14).address
   end
 
-  describe '#locality' do
-    subject { described_class.new(id).locality }
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the town/city' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'Brighton'
-        end
-      end
-    end
-
-    describe 'London - Leicester Square (103)' do
-      let(:id) { 103 }
-
-      it 'returns borough of London' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'London'
-        end
-      end
-    end
+  def test_extended_address_is_empty
+    assert_equal '', CineworldUk::Cinema.new(14).extended_address
   end
 
-  describe '#postal_code' do
-    subject { described_class.new(id).postal_code }
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the post code' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'BN2 5UF'
-        end
-      end
-    end
+  def test_full_name
+    assert_equal 'Cineworld Brighton', CineworldUk::Cinema.new(14).full_name
   end
 
-  describe '#region' do
-    subject { described_class.new(id).region }
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'no region - Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the empty string is none exists' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal ''
-        end
-      end
-    end
-
-    describe 'London - Leicester Square (103)' do
-      let(:id) { 103 }
-
-      it 'returns "London"' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'London'
-        end
-      end
-    end
+  def test_full_name_accepts_string_id
+    assert_equal 'Cineworld Brighton', CineworldUk::Cinema.new('14').full_name
   end
 
-  describe '#street_address' do
-    subject { described_class.new(id).street_address }
-
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
-
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
-
-      it 'returns the first line of the Address' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal 'Brighton Marina Village'
-        end
-      end
-    end
+  def test_full_name_with_multiple_words
+    assert_equal 'Cineworld Glasgow Silverburn', CineworldUk::Cinema.new(88).full_name
   end
 
-  describe '#url' do
-    subject { described_class.new(id).url }
+  def test_name_replaces_dash_separator
+    assert_equal 'Example: Riverside', CineworldUk::Cinema.new(999).name
+  end
 
-    before do
-      api_response.expect(:cinema_list, cinema_list_json)
-    end
+  def test_locality
+    assert_equal 'Brighton', CineworldUk::Cinema.new(14).locality
+    assert_equal 'London', CineworldUk::Cinema.new(103).locality
+  end
 
-    describe 'Brighton (14)' do
-      let(:id) { 14 }
+  def test_postal_code
+    assert_equal 'BN2 0ZZ', CineworldUk::Cinema.new(14).postal_code
+  end
 
-      it 'returns the url' do
-        CineworldUk::Internal::ApiResponse.stub :new, api_response do
-          _(subject).must_equal(
-            "http://www.cineworld.co.uk/cinemas/#{id}/information"
-          )
-        end
-      end
-    end
+  def test_region
+    assert_equal 'East Sussex', CineworldUk::Cinema.new(14).region
+  end
+
+  def test_region_defaults_to_london_for_london_cinemas
+    assert_equal 'London', CineworldUk::Cinema.new(103).region
+  end
+
+  def test_street_address
+    assert_equal '1 Example Marina', CineworldUk::Cinema.new(14).street_address
+  end
+
+  def test_url
+    assert_equal 'http://www.cineworld.co.uk/cinemas/14/information',
+                 CineworldUk::Cinema.new(14).url
   end
 end

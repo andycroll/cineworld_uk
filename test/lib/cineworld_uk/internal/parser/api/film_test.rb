@@ -1,160 +1,82 @@
 require_relative '../../../../../test_helper'
-require_relative '../../../../../support/fixture_reader'
 
-describe CineworldUk::Internal::Parser::Api::Film do
-  include Support::FixtureReader
-
-  let(:described_class) { CineworldUk::Internal::Parser::Api::Film }
-  let(:data) { random_film }
-
-  before { WebMock.disable_net_connect! }
-  after { WebMock.allow_net_connect! }
-
-  describe '#id' do
-    subject { described_class.new(data).id }
-
-    it 'is a string' do
-      _(subject).must_be_instance_of(String)
-    end
-
-    it 'is the film id from the data' do
-      _(subject).must_equal(data['id'])
-    end
+class CineworldUk::Internal::Parser::Api::FilmTest < Minitest::Test
+  def test_id
+    assert_equal '014-1001', film.id
   end
 
-  describe '#dimension' do
-    subject { described_class.new(data).dimension }
-
-    it 'is a string' do
-      _(subject).must_be_instance_of(String)
-    end
-
-    it 'is 2d or 3d' do
-      _(subject).must_match(/[23]d/)
-    end
-
-    describe 'attributeIds includes "2d"' do
-      let(:data) { random_film.merge('attributeIds' => ['2d']) }
-
-      it 'is 2d' do
-        _(subject).must_equal('2d')
-      end
-    end
-
-    describe 'attributeIds includes "3d"' do
-      let(:data) { random_film.merge('attributeIds' => ['3d']) }
-
-      it 'is 3d' do
-        _(subject).must_equal('3d')
-      end
-    end
-
-    describe 'attributeIds with imax but not 3d' do
-      let(:data) { random_film.merge('attributeIds' => ['imax', '2d']) }
-
-      it 'is 2d' do
-        _(subject).must_equal('2d')
-      end
-    end
-
-    describe 'attributeIds with imax and 3d' do
-      let(:data) { random_film.merge('attributeIds' => ['imax', '3d']) }
-
-      it 'is 3d' do
-        _(subject).must_equal('3d')
-      end
-    end
+  def test_dimension_defaults_to_2d
+    assert_equal '2d', film.dimension
   end
 
-  describe '#name' do
-    subject { described_class.new(data).name }
-
-    it 'is a string' do
-      _(subject).must_be_instance_of(String)
-    end
-
-    describe 'film name' do
-      let(:data) do
-        random_film.merge('name' => 'Test Film Name')
-      end
-
-      it 'is the film name' do
-        _(subject).must_equal('Test Film Name')
-      end
-    end
-
-    describe 'film name is unsanitized' do
-      let(:data) { random_film.merge('name' => 'ROH: Something') }
-
-      it 'is sanitized' do
-        _(subject).must_equal('Royal Opera House: Something')
-      end
-    end
+  def test_dimension_2d
+    assert_equal '2d', film('attributeIds' => ['2d']).dimension
   end
 
-  describe '#variant' do
-    subject { described_class.new(data).variant }
+  def test_dimension_3d
+    assert_equal '3d', film('attributeIds' => ['3d']).dimension
+  end
 
-    it 'is a sorted array of strings' do
-      _(subject).must_be_instance_of(Array)
-      subject.each { |element| _(element).must_be_instance_of(String) }
-      _(subject.sort).must_equal(subject)
-    end
+  def test_dimension_imax_without_3d
+    assert_equal '2d', film('attributeIds' => %w(imax 2d)).dimension
+  end
 
-    describe 'attributeIds includes "junior"' do
-      let(:data) do
-        random_film.merge('attributeIds' => ['junior'])
-      end
+  def test_dimension_imax_with_3d
+    assert_equal '3d', film('attributeIds' => %w(imax 3d)).dimension
+  end
 
-      it 'includes "kids"' do
-        _(subject).must_include('kids')
-      end
-    end
+  def test_name
+    assert_equal 'Test Film Name', film('name' => 'Test Film Name').name
+  end
 
-    describe 'attributeIds includes "imax"' do
-      let(:data) do
-        random_film.merge('attributeIds' => ['imax', '3d'])
-      end
+  def test_name_is_sanitized
+    assert_equal 'Royal Opera House: Something', film('name' => 'ROH: Something').name
+  end
 
-      it 'includes "imax"' do
-        _(subject).must_include('imax')
-      end
-    end
+  def test_name_drops_festival_prefix
+    assert_equal 'Scum Of The Earth', film('name' => 'Cine-Excess 2026: Scum Of The Earth').name
+  end
 
-    describe 'attributeIds includes "unlimited-screening"' do
-      let(:data) do
-        random_film.merge('attributeIds' => ['unlimited-screening'])
-      end
+  def test_festival
+    festival = film('name' => 'Cine-Excess 2026: Scum Of The Earth').festival(2026)
 
-      it 'includes "members"' do
-        _(subject).must_include('members')
-      end
-    end
+    assert_equal Cinebase::Festival.new(name: 'Cine-Excess', year: 2026), festival
+  end
 
-    describe 'attributeIds includes "qa"' do
-      let(:data) do
-        random_film.merge('attributeIds' => ['qa'])
-      end
+  def test_festival_without_prefix
+    assert_nil film.festival(2026)
+  end
 
-      it 'includes "q&a"' do
-        _(subject).must_include('q&a')
-      end
-    end
+  def test_variant_is_sorted
+    variant = film('attributeIds' => %w(qa junior imax)).variant
 
-    describe 'combination' do
-      let(:data) do
-        random_film.merge('attributeIds' => ['imax', 'unlimited-screening'])
-      end
+    assert_equal variant.sort, variant
+  end
 
-      it 'includes "members"' do
-        _(subject).must_include('imax', 'members')
-      end
-    end
+  def test_variant_junior_is_kids
+    assert_includes film('attributeIds' => ['junior']).variant, 'kids'
+  end
+
+  def test_variant_imax
+    assert_includes film('attributeIds' => %w(imax 3d)).variant, 'imax'
+  end
+
+  def test_variant_unlimited_screening_is_members
+    assert_includes film('attributeIds' => ['unlimited-screening']).variant, 'members'
+  end
+
+  def test_variant_q_and_a
+    assert_includes film('attributeIds' => ['qa']).variant, 'q&a'
+  end
+
+  def test_variant_combination
+    assert_equal %w(imax members), film('attributeIds' => %w(imax unlimited-screening)).variant
   end
 
   private
 
-  def random_film
-    JSON.parse(performances_tomorrow_json(14))['body']['films'].sample
+  def film(overrides = {})
+    data = { 'id' => '014-1001', 'name' => 'The Example Film', 'attributeIds' => [] }
+    CineworldUk::Internal::Parser::Api::Film.new(data.merge(overrides))
   end
 end

@@ -1,0 +1,52 @@
+{
+  "sites": [
+    {
+      "id": "014",
+      "name": { "text": "Brighton" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "1 Example Marina" },
+          "line2": { "text": "Brighton" },
+          "line3": { "text": "East Sussex" },
+          "line4": { "text": "BN2 0ZZ" }
+        }
+      }
+    },
+    {
+      "id": "088",
+      "name": { "text": "Glasgow Silverburn" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "2 Example Centre" },
+          "line2": { "text": "Glasgow" },
+          "line3": { "text": "Lanarkshire" },
+          "line4": { "text": "G53 0ZZ" }
+        }
+      }
+    },
+    {
+      "id": "103",
+      "name": { "text": "Leicester Square" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "3 Example Square" },
+          "line2": { "text": "London" },
+          "line3": null,
+          "line4": { "text": "WC2H 0ZZ" }
+        }
+      }
+    },
+    {
+      "id": "999",
+      "name": { "text": "Example - Riverside" },
+      "contactDetails": {
+        "addressV2": {
+          "line1": { "text": "4 Example Quay" },
+          "line2": { "text": "Exampleton" },
+          "line3": null,
+          "line4": { "text": "EX1 0ZZ" }
+        }
+      }
+    }
+  ]
+}

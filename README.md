@@ -177,6 +177,15 @@ performance.dimension
 performance.variant
 #=> ['audio_described']
 
+performance.language
+#=> 'Tamil' # audio language, nil when the cinema does not tag one
+
+performance.subtitled?
+#=> true
+
+performance.festival
+#=> #<data Cinebase::Festival name="Cine-Excess", year=2026> # nil outside festivals
+
 performance.starting_at
 #=> 2026-10-14 14:40:00 UTC
 
@@ -193,6 +202,19 @@ performance.cinema_id
 #=> 14
 ```
 
+## Tests
+
+```sh
+bundle exec rake          # unit tests against fixtures
+bundle exec rake live     # live API, needs curl-impersonate or CINEWORLD_TOKEN
+```
+
+Fixtures in `test/fixtures/api` are hand-written: invented films and
+addresses in the shape of Vista responses, never recorded API output.
+`test/support/api_shapes.rb` describes the fields the gem reads. The unit suite
+checks the fixtures against it and the live suite checks real responses, held
+only in memory. When the API changes, update the shape first, then the fixtures.
+
 ## Building release packages
 
 ```sh
@@ -204,7 +226,7 @@ To build and check just one platform on a matching host:
 
 ```sh
 bundle exec rake 'package:native[x86_64-linux-gnu]'
-CINEWORLD_PACKAGE=pkg/cineworld_uk-4.1.0-x86_64-linux-gnu.gem bundle exec ruby test/package_test.rb
+CINEWORLD_PACKAGE=pkg/cineworld_uk-4.2.0-x86_64-linux-gnu.gem bundle exec ruby test/package_test.rb
 ```
 
 Native packaging downloads pinned upstream archives at **build time**, verifies

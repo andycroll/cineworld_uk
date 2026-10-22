@@ -21,6 +21,11 @@ module CineworldUk
             @data['filmId']
           end
 
+          # @return [String, nil] audio language, e.g. 'Tamil'
+          def language
+            @data['language']
+          end
+
           # @return [DateTime] in local time
           def starting_at
             Time.parse(@data['eventDateTime'])
