@@ -88,6 +88,9 @@ module CineworldUk
 
       def fetch(path, query = {})
         client.get(path, query)
+      rescue Cinebase::Vista::AuthenticationError
+        CineworldUk.reject_token!(@client_token)
+        raise
       end
 
       # One client keeps one connection open, so reuse it until the token changes.

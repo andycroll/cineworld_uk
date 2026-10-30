@@ -27,6 +27,16 @@ class CineworldUk::Internal::GuestTokenTest < Minitest::Test
     end
   end
 
+  def test_ensure_token_fetches_only_without_a_current_token
+    CineworldUk.token = nil
+    html, token = token_page(Time.now.to_i + 7200)
+    serve_token_page(html)
+
+    assert_equal token, CineworldUk.ensure_token!(curl: @curl)
+    serve_token_page("", exit_code: 7)
+    assert_equal token, CineworldUk.ensure_token!(curl: @curl)
+  end
+
   def test_rejects_expired_tokens_including_boundary_and_keeps_current_token
     now = Time.at(1_800_000_000)
     Time.stub(:now, now) do

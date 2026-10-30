@@ -68,6 +68,15 @@ class CineworldUk::Internal::ApiResponseTest < Minitest::Test
     refute_includes error.message, "expired-secret"
   end
 
+  def test_rejected_token_is_cleared
+    CineworldUk.token = "rejected-token"
+    stub_request(:get, "#{BASE_URL}sites").to_return(status: 401)
+
+    assert_raises(CineworldUk::AuthenticationError) { CineworldUk::Cinema.all }
+
+    assert_nil CineworldUk.token
+  end
+
   def test_uses_replacement_token
     CineworldUk.token = "replacement"
     stub_request(:get, "#{BASE_URL}sites")

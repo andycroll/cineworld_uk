@@ -36,6 +36,16 @@ CineworldUk.acquire_token!
 CineworldUk::Cinema.all
 ```
 
+`acquire_token!` always fetches a new token. `ensure_token!` fetches one only
+when there is no token, or the token expires within an hour, and otherwise
+keeps the current one. Call it before each batch of requests:
+
+```ruby
+CineworldUk.ensure_token!
+CineworldUk.token_expires_at
+#=> 2026-10-31 03:00:00 UTC
+```
+
 This shells out to **`curl-impersonate`**, not ordinary system `curl`, using its
 Chrome 150 TLS/HTTP profile. No Python, Chrome, JavaScript execution or browser
 cookies are needed. Platform-specific gem packages include the pinned
@@ -89,8 +99,9 @@ The gem sends `Authorization: Bearer ...` and `Connect-Region-Code: GB` to
 automatically.
 
 Missing tokens and HTTP 401 responses raise `CineworldUk::AuthenticationError`.
-Call `CineworldUk.acquire_token!` again, or set `CineworldUk.token` with a fresh
-token, before retrying. Tokens are never persisted by the gem. Other HTTP
+A token the API rejects is cleared from `CineworldUk.token`, so call
+`CineworldUk.ensure_token!`, or set `CineworldUk.token` with a fresh token,
+before retrying. Tokens are never persisted by the gem. Other HTTP
 failures raise an error rather than returning an empty schedule. Redirects are
 not followed, so credentials are not forwarded to another host.
 
