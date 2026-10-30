@@ -3,6 +3,7 @@
     {
       "id": "014",
       "name": { "text": "Brighton" },
+      "location": { "latitude": 50.8125991821289, "longitude": -0.104699999094009 },
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "1 Example Marina" },
@@ -15,6 +16,7 @@
     {
       "id": "088",
       "name": { "text": "Glasgow Silverburn" },
+      "location": { "latitude": 0, "longitude": 0 },
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "2 Example Centre" },
@@ -27,6 +29,7 @@
     {
       "id": "103",
       "name": { "text": "Leicester Square" },
+      "location": null,
       "contactDetails": {
         "addressV2": {
           "line1": { "text": "3 Example Square" },

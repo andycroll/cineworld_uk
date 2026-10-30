@@ -134,6 +134,12 @@ cinema.full_name
 cinema.id
 #=> 14
 
+cinema.latitude
+#=> 50.8125991821289
+
+cinema.longitude
+#=> -0.104699999094009
+
 cinema.postal_code
 #=> 'BN2 5UF'
 ```

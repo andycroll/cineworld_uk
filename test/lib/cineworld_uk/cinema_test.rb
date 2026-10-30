@@ -61,6 +61,25 @@ class CineworldUk::CinemaTest < Minitest::Test
     assert_equal 'Example: Riverside', CineworldUk::Cinema.new(999).name
   end
 
+  def test_latitude_and_longitude
+    cinema = CineworldUk::Cinema.new(14)
+
+    assert_in_delta 50.8126, cinema.latitude, 0.0001
+    assert_in_delta(-0.1047, cinema.longitude, 0.0001)
+  end
+
+  def test_latitude_and_longitude_are_nil_without_a_location
+    [103, 999].each do |id|
+      assert_nil CineworldUk::Cinema.new(id).latitude
+      assert_nil CineworldUk::Cinema.new(id).longitude
+    end
+  end
+
+  def test_latitude_and_longitude_are_nil_at_zero_zero
+    assert_nil CineworldUk::Cinema.new(88).latitude
+    assert_nil CineworldUk::Cinema.new(88).longitude
+  end
+
   def test_locality
     assert_equal 'Brighton', CineworldUk::Cinema.new(14).locality
     assert_equal 'London', CineworldUk::Cinema.new(103).locality

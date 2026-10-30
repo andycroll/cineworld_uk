@@ -25,6 +25,7 @@ module CineworldUk
           {
             "id" => site.fetch("id"),
             "displayName" => site.fetch("name").fetch("text"),
+            "location" => site["location"],
             "addressInfo" => {
               "address1" => address.dig("line1", "text"),
               "city" => address.dig("line2", "text"),
