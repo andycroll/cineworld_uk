@@ -101,6 +101,26 @@ module CineworldUk
     #     cinema.locality
     #     #=> 'Brighton'
 
+    # Latitude of the cinema
+    # @return [Float, nil] decimal degrees, or nil when unknown
+    # @example
+    #   cinema = CineworldUk::Cinema.new(14)
+    #   cinema.latitude
+    #   #=> 50.8125991821289
+    def latitude
+      coordinates&.first
+    end
+
+    # Longitude of the cinema
+    # @return [Float, nil] decimal degrees, or nil when unknown
+    # @example
+    #   cinema = CineworldUk::Cinema.new(14)
+    #   cinema.longitude
+    #   #=> -0.104699999094009
+    def longitude
+      coordinates&.last
+    end
+
     # The name of the cinema
     # @return [String]
     # @example
@@ -164,5 +184,19 @@ module CineworldUk
         JSON.parse(api.cinema_list)['body']['cinemas']
     end
     private_class_method :cinema_list_json
+
+    private
+
+    def cinema_hash
+      formatted_id = @id.to_s.rjust(3, '0')
+      self.class.send(:cinema_list_json).find { |cinema| cinema['id'] == formatted_id } || {}
+    end
+
+    # 0, 0 marks a site whose position was never set
+    def coordinates
+      location = cinema_hash['location'] || {}
+      pair = [location['latitude'], location['longitude']]
+      pair.map(&:to_f) if pair.all?(Numeric) && pair.any?(&:nonzero?)
+    end
   end
 end
