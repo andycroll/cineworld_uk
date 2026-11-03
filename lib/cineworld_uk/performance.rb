@@ -87,6 +87,7 @@ module CineworldUk
           film_year: film.film_year,
           language: performance.language,
           starting_at: starting_at,
+          title: film.title,
           variant: (performance.variant + film.variant).sort
         }
       end

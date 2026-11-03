@@ -42,17 +42,21 @@ class CineworldUk::Internal::TitleSanitizerTest < Minitest::Test
     assert_sanitized 'Met Opera: Le Nozze Di Figaro', 'MET Opera - Le Nozze Di Figaro'
   end
 
+  def test_met_opera_drops_composer
+    assert_sanitized 'Met Opera: Cosi Fan Tutte', 'Met Opera - Cosi Fan Tutte (Mozart)'
+  end
+
   def test_nt_live_encore
-    assert_sanitized 'National Theatre: Frankenstein (starring Benedict Cumberbatch)',
+    assert_sanitized 'National Theatre Live: Frankenstein (starring Benedict Cumberbatch)',
                      'NT Live Encore: Frankenstein (starring Benedict Cumberbatch)'
   end
 
   def test_nt_live
-    assert_sanitized 'National Theatre: Treasure Island', 'NT Live: Treasure Island'
+    assert_sanitized 'National Theatre Live: Treasure Island', 'NT Live: Treasure Island'
   end
 
   def test_nt_live_with_encore_suffix
-    assert_sanitized 'National Theatre: A Streetcar Named Desire (Young Vic)',
+    assert_sanitized 'National Theatre Live: A Streetcar Named Desire (Young Vic)',
                      'NT Live: A Streetcar Named Desire (Young Vic) - Encore'
   end
 

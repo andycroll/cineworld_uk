@@ -70,6 +70,16 @@ class CineworldUk::PerformanceTest < Minitest::Test
     assert_equal Cinebase::Festival.new(name: 'Cine-Excess', year: 2026), performance.festival
   end
 
+  def test_at_names_event_from_title
+    stub_showtimes(DATE, showtimes_json.sub('The Example Film', 'Met Opera - Cosi Fan Tutte (Mozart)'))
+    performance = CineworldUk::Performance.at(14, from: DATE, to: DATE).first
+
+    assert_equal 'Met Opera - Cosi Fan Tutte (Mozart)', performance.title
+    assert_equal 'Cosi Fan Tutte', performance.film_name
+    assert_equal Cinebase::Event.new(name: 'Met Opera'), performance.event
+    assert_equal %w(arts audio_described), performance.variant
+  end
+
   def test_at_parses_format_and_film_year
     performance = performances_on_date[5]
 
