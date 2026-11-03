@@ -24,19 +24,23 @@ module CineworldUk
           # @param [Integer] year edition when the title gives none
           # @return [Cinebase::Festival, nil]
           def festival(year)
-            Cinebase::Festival.from_title(@data['name'] || '', year: year)
+            Cinebase::Festival.from_title(title, year: year)
           end
 
           # @return [Integer, nil] the year at the end of the title
           def film_year
-            Cinebase::TitleSanitizer.film_year(@data['name'] || '')
+            Cinebase::TitleSanitizer.film_year(title)
           end
 
           # Sanitized film name
           # @return [String]
           def name
-            title = @data['name'] || ''
             TitleSanitizer.new(title).sanitized
+          end
+
+          # @return [String] the title as listed
+          def title
+            @data['name'] || ''
           end
 
           # List of strings representing different kinds of performance, such

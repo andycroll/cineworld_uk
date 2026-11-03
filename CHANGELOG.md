@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.5.0] - 2026-11-03
+
+### Changed
+- Uses cinebase 5.9: performances take the raw `title:`, so audience labels become variants, and series prefixes such as `Met Opera:` become the performance's `event`.
+- National Theatre Live screenings are named `National Theatre Live: `, not `National Theatre: `, before cinebase moves the series to `event`.
+
+### Fixed
+- `Met Opera - Cosi Fan Tutte (Mozart)` is now `Cosi Fan Tutte`: a Met Opera title loses a trailing bracketed composer.
+
 ## 4.4.0 - 2026-10-31
 
 ### Added

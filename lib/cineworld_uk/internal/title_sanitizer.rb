@@ -34,7 +34,8 @@ module CineworldUk
           'SciScreen: ',                        # SciScreen
           /\s(-\s)*(With)*\sLive Q And A/i,     # Live Q&A
           /(\s+\-\s+)?MOVIES FOR JUNIORS/i,     # movies for juniors
-          %r{\s20\d{2}[\/-]20\d{2} Season\b}
+          %r{\s20\d{2}[\/-]20\d{2} Season\b},
+          /\A(?i:Met Opera)\b.*\K\s*\(\p{Lu}[\p{L}-]+\)\z/ # Met Opera composer
         ] + COMMON_REMOVE
       end
 
